@@ -25,10 +25,9 @@ client.player = player
 
 client.on('messageCreate', async (interaction) => {
   const channelId = interaction.channel.id
-  switch (channelId) {
-    case getContextParam(contextTypes().MUSIC_CHANNELS).includes(channelId):
-      //* MUSIC_CHANNELS LOGIC
-      break
+  //* MUSIC_CHANNELS LOGIC
+  if (getContextParam(contextTypes().MUSIC_CHANNELS).includes(channelId)) {
+    console.log('MUSIC_CHANNELS')
   }
 })
 
@@ -42,7 +41,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   try {
-    const commandReturnValue = await command.execute(interaction, client, ctx)
+    const commandReturnValue = await command.execute(interaction, client)
 
     //* Manage the context of the app
     if (commandReturnValue) {

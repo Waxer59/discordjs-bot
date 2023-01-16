@@ -1,5 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const { ChannelType } = require('discord.js')
+const {
+  createContextParam,
+  getContextParam
+} = require('../../context/manageContext')
+const { contextTypes } = require('../../context/types/contextTypes')
 
 module.exports = {
   name: 'setup',
@@ -15,6 +20,12 @@ module.exports = {
       name: name ?? 'music',
       type: ChannelType.GuildText
     })
-    channel.send('context')
+    createContextParam(
+      contextTypes().MUSIC_CHANNELS,
+      [...getContextParam(contextTypes().MUSIC_CHANNELS), channel.id],
+      {
+        override: true
+      }
+    )
   }
 }
