@@ -6,19 +6,21 @@ const { getEnvVariables } = require('./environment/envVariables')
 // TODO: REPENSAR ESTA FUNCION
 // TODO: CAMBIAR FORS POR FOREACH
 const readCommandFiles = (dir = '', client) => {
-  const commandFolders = fs.readdirSync('./commands')
+  const commandFolders = fs.readdirSync(dir)
 
   const commands = []
 
   for (const folder of commandFolders) {
     const commandFiles = fs
-      .readdirSync(`./commands/${folder}`)
+      .readdirSync(`${dir}/${folder}`)
       .filter((file) => file.endsWith('.js'))
 
     for (const file of commandFiles) {
-      const command = require(`./commands/${folder}/${file}`)
-      commands.push(command.data.toJSON())
-      client.commands.set(command.name, command)
+      const command = require(`${dir}/${folder}/${file}`)
+      if (command.data) {
+        commands.push(command.data.toJSON())
+        client.commands.set(command.name, command)
+      }
     }
   }
   return commands
@@ -44,13 +46,13 @@ const initializeCommands = async (commands = [], rest) => {
 }
 
 const deploySlashCommands = async (client) => {
-  const commands = readCommandFiles('commands', client)
+  const slashCommands = readCommandFiles('./commands', client)
 
   const rest = new REST({ version: '10' }).setToken(
     getEnvVariables().DISCORD_TOKEN
   )
 
-  initializeCommands(commands, rest)
+  initializeCommands([...slashCommands], rest)
 }
 
 module.exports = {
