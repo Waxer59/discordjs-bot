@@ -12,8 +12,16 @@ const getContextParam = (param = '') => {
 }
 
 const addContextParam = (param = '', value, options = OPTIONS) => {
+  if (context[param]) {
+    throw new Error("You can't override a param in addContextParam function")
+  }
   context[param] = manageContextOptions(value, options)
   return context
+}
+
+const editContextParam = (param = '', value) => {
+  context[param] = value
+  return context[param]
 }
 
 const manageContextOptions = (value, { isArray }) => {
@@ -31,5 +39,6 @@ module.exports = {
   getAllContext,
   getContextParam,
   addContextParam,
-  removeContextParam
+  removeContextParam,
+  editContextParam
 }
