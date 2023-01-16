@@ -2,7 +2,7 @@ const { getEnvVariables } = require('./environment/envVariables')
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
 const { deploySlashCommands } = require('./deploy-commands')
 const { Player } = require('discord-music-player')
-const { getContextParam } = require('./context/manageContext')
+const { getContextParam, editContextParam } = require('./context/manageContext')
 const { contextTypes } = require('./context/types/contextTypes')
 
 const client = new Client({
@@ -28,6 +28,20 @@ client.on('messageCreate', async (interaction) => {
   //* MUSIC_CHANNELS LOGIC
   if (getContextParam(contextTypes().MUSIC_CHANNELS).includes(channelId)) {
     console.log('MUSIC_CHANNELS')
+    console.log(getContextParam(contextTypes().MUSIC_CHANNELS))
+  }
+})
+
+client.on('channelDelete', async (channel) => {
+  const channelId = channel.id
+  //* MUSIC_CHANNELS DELETE LOGIC
+  if (getContextParam(contextTypes().MUSIC_CHANNELS).includes(channelId)) {
+    editContextParam(
+      contextTypes().MUSIC_CHANNELS,
+      getContextParam(contextTypes().MUSIC_CHANNELS).filter(
+        (id) => id !== channelId
+      ) ?? []
+    )
   }
 })
 
