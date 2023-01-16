@@ -73,6 +73,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 //* READY!
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`)
+  c.user.setPresence({ activities: [{ name: 'discord.js' }] })
 })
 
 client.login(getEnvVariables().DISCORD_TOKEN)
