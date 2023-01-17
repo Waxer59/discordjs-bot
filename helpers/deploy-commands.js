@@ -1,11 +1,8 @@
 const { REST, Routes } = require('discord.js')
 const fs = require('node:fs')
 const { join } = require('node:path')
-// const path = require('node:path')
 const { getEnvVariables } = require('../environment/envVariables')
 
-// TODO: REPENSAR ESTA FUNCION
-// TODO: CAMBIAR FORS POR FOREACH
 const readCommandFiles = (dir = '', client) => {
   const rootPath = join(__dirname, '../', dir)
   const commandFolders = fs.readdirSync(rootPath)

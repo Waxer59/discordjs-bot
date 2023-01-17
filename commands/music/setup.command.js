@@ -38,13 +38,13 @@ module.exports = {
 
     const btnsControls = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId('next')
-        .setLabel('⏩')
+        .setCustomId('pause')
+        .setLabel('⏯️')
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
-        .setCustomId('pause')
-        .setLabel('⏯️')
+        .setCustomId('next')
+        .setLabel('⏩')
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
@@ -79,7 +79,6 @@ module.exports = {
       .setDescription('**No song playing currently.**')
       .setColor('Purple')
       .setFooter({
-        text: 'Powered by Core Discord Bot',
         iconURL: client.user.displayAvatarURL()
       })
       .setImage(
