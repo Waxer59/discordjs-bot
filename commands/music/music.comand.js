@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js')
 
 module.exports = {
-  name: 'music',
+  name: 'play',
   data: new SlashCommandBuilder()
-    .setName('music')
+    .setName('play')
     .setDescription('Play a song!')
     .addStringOption((option) =>
       option

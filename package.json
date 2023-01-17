@@ -1,7 +1,7 @@
 {
   "name": "discord-bot",
   "version": "1.0.0",
-  "description": "* /ping",
+  "description": "Discordjs bot",
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",

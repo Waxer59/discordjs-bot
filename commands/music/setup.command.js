@@ -13,9 +13,9 @@ const {
 const { contextTypes } = require('../../context/types/contextTypes')
 
 module.exports = {
-  name: 'setup',
+  name: 'music-setup',
   data: new SlashCommandBuilder()
-    .setName('setup')
+    .setName('music-setup')
     .setDescription('Setup a music channel!')
     .addStringOption((option) =>
       option.setName('name').setDescription('name for your channel')
