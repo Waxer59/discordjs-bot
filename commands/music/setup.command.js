@@ -7,7 +7,7 @@ const {
 } = require('discord.js')
 const { ChannelType } = require('discord.js')
 const {
-  createContextParam,
+  editContextParam,
   getContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
@@ -91,13 +91,10 @@ module.exports = {
       components: [btnsControls, playListButtons]
     })
 
-    createContextParam(
-      contextTypes().MUSIC_CHANNELS,
-      [...getContextParam(contextTypes().MUSIC_CHANNELS), channel.id],
-      {
-        override: true
-      }
-    )
+    editContextParam(contextTypes().MUSIC_CHANNELS, [
+      ...getContextParam(contextTypes().MUSIC_CHANNELS),
+      channel.id
+    ])
 
     interaction.reply({
       content: 'Channel successfully created!',
