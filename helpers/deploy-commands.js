@@ -1,22 +1,21 @@
 const { REST, Routes } = require('discord.js')
 const fs = require('node:fs')
-// const path = require('node:path')
-const { getEnvVariables } = require('./environment/envVariables')
+const { join } = require('node:path')
+const { getEnvVariables } = require('../environment/envVariables')
 
-// TODO: REPENSAR ESTA FUNCION
-// TODO: CAMBIAR FORS POR FOREACH
 const readCommandFiles = (dir = '', client) => {
-  const commandFolders = fs.readdirSync(dir)
+  const rootPath = join(__dirname, '../', dir)
+  const commandFolders = fs.readdirSync(rootPath)
 
   const commands = []
 
   for (const folder of commandFolders) {
     const commandFiles = fs
-      .readdirSync(`${dir}/${folder}`)
+      .readdirSync(`${rootPath}/${folder}`)
       .filter((file) => file.endsWith('.js'))
 
     for (const file of commandFiles) {
-      const command = require(`${dir}/${folder}/${file}`)
+      const command = require(`${rootPath}/${folder}/${file}`)
       if (command.data) {
         commands.push(command.data.toJSON())
         client.commands.set(command.name, command)
@@ -46,7 +45,7 @@ const initializeCommands = async (commands = [], rest) => {
 }
 
 const deploySlashCommands = async (client) => {
-  const slashCommands = readCommandFiles('./commands', client)
+  const slashCommands = readCommandFiles('commands', client)
 
   const rest = new REST({ version: '10' }).setToken(
     getEnvVariables().DISCORD_TOKEN

@@ -1,15 +1,18 @@
 const { SlashCommandBuilder } = require('discord.js')
 
 module.exports = {
-  name: 'music',
+  name: 'play',
   data: new SlashCommandBuilder()
-    .setName('music')
+    .setName('play')
     .setDescription('Play a song!')
     .addStringOption((option) =>
-      option.setName('url').setDescription('url of the song').setRequired(true)
+      option
+        .setName('query')
+        .setDescription('Name or URL of the song')
+        .setRequired(true)
     ),
   async execute(interaction, client) {
-    const url = interaction.options.getString('url')
+    const url = interaction.options.getString('query')
 
     const queue = client.player.createQueue(interaction.guild.id)
     await queue.join(interaction.member.voice.channel)

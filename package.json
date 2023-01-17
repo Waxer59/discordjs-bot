@@ -1,7 +1,7 @@
 {
   "name": "discord-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discordjs bot",
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
@@ -34,5 +34,13 @@
       "eslint . --fix",
       "prettier --write"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Waxer59/discordjs-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Waxer59/discordjs-bot/issues"
+  },
+  "homepage": "https://github.com/Waxer59/discordjs-bot#readme"
 }
