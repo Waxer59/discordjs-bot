@@ -24,18 +24,11 @@ module.exports = {
       option
         .setName('parent')
         .setDescription('Choose a category for the channel')
+        .addChannelTypes(ChannelType.GuildCategory)
     ),
   async execute(interaction, client) {
     const name = interaction.options.getString('name')
     const parent = interaction.options.getChannel('parent')
-
-    if (parent !== ChannelType.GuildCategory && parent !== null) {
-      interaction.reply({
-        content: 'Parent must be a category!',
-        ephemeral: true
-      })
-      return
-    }
 
     const channel = await interaction.guild.channels.create({
       name: name ?? 'music',
