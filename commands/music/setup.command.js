@@ -3,9 +3,9 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  ChannelType
 } = require('discord.js')
-const { ChannelType } = require('discord.js')
 const {
   editContextParam,
   getContextParam
@@ -31,20 +31,20 @@ module.exports = {
     const parent = interaction.options.getChannel('parent')
 
     const channel = await interaction.guild.channels.create({
-      name: name ?? 'music',
+      name: name ?? 'core-music',
       parent: parent ?? null,
       type: ChannelType.GuildText
     })
 
     const btnsControls = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId('pause')
-        .setLabel('⏯️')
+        .setCustomId('next')
+        .setLabel('⏩')
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
-        .setCustomId('next')
-        .setLabel('⏩')
+        .setCustomId('pause')
+        .setLabel('⏯️')
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()

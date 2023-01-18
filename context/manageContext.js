@@ -1,5 +1,6 @@
 const context = {
-  MUSIC_CHANNELS: []
+  MUSIC_CHANNELS: [],
+  TICKET_CHANNELS: []
 }
 const OPTIONS = {
   isArray: false,
