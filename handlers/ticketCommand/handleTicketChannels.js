@@ -38,6 +38,15 @@ const handleTicketChannels = async (client, interaction) => {
   }
 }
 
+const handleButtonsTickets = (client, interaction, butonId) => {
+  switch (butonId) {
+    case 'open':
+      handleTicketChannels(client, interaction)
+      break
+  }
+}
+
 module.exports = {
-  handleTicketChannels
+  handleTicketChannels,
+  handleButtonsTickets
 }

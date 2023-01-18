@@ -57,9 +57,8 @@ module.exports = {
       ...getContextParam(contextTypes().TICKET_CHANNELS),
       {
         channelId: channel.id,
-        ticketsMessage,
         controls: {
-          open: btnsControls.components[0]
+          open: buttons.components[0]
         }
       }
     ])

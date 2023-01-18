@@ -63,6 +63,7 @@ const handleClientEvents = (client) => {
   client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isButton()) {
       handleButtonsInteractions(client, interaction, interaction.customId)
+      handleButtonsTickets(client, interaction, interaction.customId)
       // console.log(getAllContext().MUSIC_CHANNELS[0].controls.pause);
     }
     if (!interaction.isChatInputCommand()) return
