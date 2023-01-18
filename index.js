@@ -1,7 +1,7 @@
 const { Client, Collection, GatewayIntentBits } = require('discord.js')
 const { deploySlashCommands } = require('./helpers/deploy-commands')
 const { Player } = require('discord-music-player')
-const { clientEvents } = require('./handlers/handleClientEvents')
+const { handleClientEvents } = require('./handlers/handleClientEvents')
 
 const client = new Client({
   intents: [
@@ -21,4 +21,4 @@ deploySlashCommands(client)
 const player = new Player(client)
 client.player = player
 
-clientEvents(client)
+handleClientEvents(client)

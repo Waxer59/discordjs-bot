@@ -5,31 +5,66 @@ const {
 const { contextTypes } = require('../context/types/contextTypes')
 const { getEnvVariables } = require('../environment/envVariables')
 const { Events } = require('discord.js')
+const {
+  handleMusicChannels,
+  handleBotDisconnection,
+  handleButtonsInteractions
+} = require('./musicCommand/handleMusicChannels')
 
-const clientEvents = (client) => {
-  client.on('messageCreate', async (interaction) => {
+const handleClientEvents = (client) => {
+  client.on(Events.MessageCreate, async (interaction) => {
+    if (interaction.author.bot) {
+      return
+    }
     const channelId = interaction.channel.id
+    const voiceChannel = interaction.member.voice.channel?.id
     //* MUSIC_CHANNELS LOGIC
-    if (getContextParam(contextTypes().MUSIC_CHANNELS).includes(channelId)) {
-      console.log('MUSIC_CHANNELS')
-      console.log(getContextParam(contextTypes().MUSIC_CHANNELS))
+    if (
+      getContextParam(contextTypes().MUSIC_CHANNELS).some(
+        (channel) => channel.channelId === channelId
+      )
+    ) {
+      await handleMusicChannels(client, interaction, {
+        voiceChannel,
+        channelId
+      })
     }
   })
 
-  client.on('channelDelete', async (channel) => {
+  client.on(Events.VoiceStateUpdate, (oldState, newState) => {
+    if (oldState.channelId === newState.chanelId)
+      return console.log('Mute/Deafen Update')
+
+    if (!oldState.channelId && newState.channelId)
+      return console.log('Connection Update')
+
+    if (oldState.channelId && !newState.channelId) {
+      handleBotDisconnection(client)
+      return console.log(`${client.user.username} was disconnected!`)
+    }
+  })
+
+  client.on(Events.ChannelDelete, async (channel) => {
     const channelId = channel.id
     //* MUSIC_CHANNELS DELETE LOGIC
-    if (getContextParam(contextTypes().MUSIC_CHANNELS).includes(channelId)) {
+    if (
+      getContextParam(contextTypes().MUSIC_CHANNELS).some(
+        (channel) => channel.channelId === channelId
+      )
+    ) {
       editContextParam(
         contextTypes().MUSIC_CHANNELS,
         getContextParam(contextTypes().MUSIC_CHANNELS).filter(
-          (id) => id !== channelId
+          (channel) => channel.channelId !== channelId
         ) ?? []
       )
     }
   })
-
   client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.isButton()) {
+      handleButtonsInteractions(client, interaction, interaction.customId)
+      // console.log(getAllContext().MUSIC_CHANNELS[0].controls.pause);
+    }
     if (!interaction.isChatInputCommand()) return
     const command = interaction.client.commands.get(interaction.commandName)
 
@@ -64,5 +99,5 @@ const clientEvents = (client) => {
 }
 
 module.exports = {
-  clientEvents
+  handleClientEvents
 }

@@ -79,20 +79,31 @@ module.exports = {
       .setDescription('**No song playing currently.**')
       .setColor('Purple')
       .setFooter({
+        text: 'Here will appear the url of the song!',
         iconURL: client.user.displayAvatarURL()
       })
       .setImage(
         'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
       )
 
-    channel.send({
+    const controlsMessage = await channel.send({
       embeds: [musicEmbed],
       components: [btnsControls, playListButtons]
     })
 
     editContextParam(contextTypes().MUSIC_CHANNELS, [
       ...getContextParam(contextTypes().MUSIC_CHANNELS),
-      channel.id
+      {
+        channelId: channel.id,
+        controlsMessage,
+        controls: {
+          pause: btnsControls.components[0],
+          next: btnsControls.components[1],
+          stop: btnsControls.components[2],
+          repeat: btnsControls.components[3],
+          shuffle: btnsControls.components[4]
+        }
+      }
     ])
 
     interaction.reply({
