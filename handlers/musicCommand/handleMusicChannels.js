@@ -19,26 +19,64 @@ const handleMusicChannels = async (
 
   const queue = client.player.createQueue(interaction.guild.id)
   const guildQueue = client.player.getQueue(interaction.guild.id)
-  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS).find(
-    (element) => element.channelId === channelId
-  )
+  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
 
   await queue.join(interaction.member.voice.channel)
-  await queue.play(query).catch((err) => {
-    console.error(err)
-    if (!guildQueue) queue.stop()
-  })
 
+  try {
+    await queue.play(query)
+    updateMusicEmbed(client, guildQueue.songs, currentChannel)
+  } catch (error) {
+    console.log(error)
+    if (!guildQueue) queue.stop()
+  }
+}
+
+const handleMusicButtonsInteractions = (client, interaction, butonId) => {
+  const guildQueue = client.player.getQueue(interaction.guild.id)
+  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
+  const [, ...queue] = guildQueue?.songs ?? []
+
+  const isPaused = guildQueue?.connection.paused
+  switch (butonId) {
+    case 'pause':
+      guildQueue?.setPaused(!isPaused)
+      if (!isPaused) {
+        interaction.update({ content: 'Queue paused ⏯️\n' })
+      } else {
+        interaction.update({ content: '' })
+      }
+      break
+    case 'next':
+      guildQueue?.skip()
+
+      updateMusicEmbed(client, queue, currentChannel)
+      interaction.update({ content: '' })
+
+      break
+  }
+}
+
+const updateMusicEmbed = (client, queueSongs = [], currentChannel) => {
   const songsArr = []
 
-  await guildQueue.songs.forEach(({ name, thumbnail, url }) => {
-    songsArr.push({ name, img: thumbnail, url })
-  })
+  if (queueSongs.length > 0) {
+    queueSongs.forEach(({ name, thumbnail, url }) => {
+      songsArr.push({ name, img: thumbnail, url })
+    })
+  }
 
   const musicEmbed = createMusicEmbed({
-    description: songsArr.map(({ name }) => '• ' + name).join('\n\n'),
-    footer: { text: songsArr[0].url, iconURL: client.user.displayAvatarURL() },
-    img: songsArr[0].img
+    description:
+      songsArr.map(({ name }) => '• ' + name).join('\n\n') ||
+      '**No song playing currently.**',
+    footer: {
+      text: songsArr[0]?.url ?? 'Here will appear the url of the song!',
+      iconURL: client?.user.displayAvatarURL()
+    },
+    img:
+      songsArr[0]?.img ??
+      'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
   })
 
   currentChannel.controlsMessage.edit({
@@ -46,18 +84,9 @@ const handleMusicChannels = async (
   })
 }
 
-const handleButtonsInteractions = (client, interaction, butonId) => {
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-  const isPaused = guildQueue.connection.paused
-  switch (butonId) {
-    case 'pause':
-      guildQueue.setPaused(!isPaused)
-      break
-  }
-}
-
 const handleBotDisconnection = (client) => {
   // TODO: REMOVE PLAYLIST && IMG ON DISCONNECTION
+  updateMusicEmbed()
 }
 
 const createMusicEmbed = ({
@@ -100,5 +129,5 @@ const handleExceptions = async (
 module.exports = {
   handleMusicChannels,
   handleBotDisconnection,
-  handleButtonsInteractions
+  handleMusicButtonsInteractions
 }

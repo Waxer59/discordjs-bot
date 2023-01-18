@@ -1,6 +1,5 @@
-const context = {
-  MUSIC_CHANNELS: []
-}
+const context = {}
+
 const OPTIONS = {
   isArray: false,
   override: false

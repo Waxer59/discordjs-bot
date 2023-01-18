@@ -7,8 +7,8 @@ const {
 } = require('discord.js')
 const { ChannelType } = require('discord.js')
 const {
-  editContextParam,
-  getContextParam
+  getContextParam,
+  createContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
 
@@ -27,6 +27,14 @@ module.exports = {
         .addChannelTypes(ChannelType.GuildCategory)
     ),
   async execute(interaction, client) {
+    if (getContextParam(contextTypes().MUSIC_CHANNELS)) {
+      interaction.reply({
+        content: 'There is already a music channel!',
+        ephemeral: true
+      })
+      return
+    }
+
     const name = interaction.options.getString('name')
     const parent = interaction.options.getChannel('parent')
 
@@ -91,20 +99,17 @@ module.exports = {
       components: [btnsControls, playListButtons]
     })
 
-    editContextParam(contextTypes().MUSIC_CHANNELS, [
-      ...getContextParam(contextTypes().MUSIC_CHANNELS),
-      {
-        channelId: channel.id,
-        controlsMessage,
-        controls: {
-          pause: btnsControls.components[0],
-          next: btnsControls.components[1],
-          stop: btnsControls.components[2],
-          repeat: btnsControls.components[3],
-          shuffle: btnsControls.components[4]
-        }
+    createContextParam(contextTypes().MUSIC_CHANNELS, {
+      channelId: channel.id,
+      controlsMessage,
+      controls: {
+        pause: btnsControls.components[0],
+        next: btnsControls.components[1],
+        stop: btnsControls.components[2],
+        repeat: btnsControls.components[3],
+        shuffle: btnsControls.components[4]
       }
-    ])
+    })
 
     interaction.reply({
       content: 'Channel successfully created!',
