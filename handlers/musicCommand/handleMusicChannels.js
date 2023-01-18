@@ -36,8 +36,9 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
   const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
   const [, ...queue] = guildQueue?.songs ?? []
-
+  const repeatMode = (guildQueue?.repeatMode + 1) % 3
   const isPaused = guildQueue?.connection.paused
+
   switch (butonId) {
     case 'pause':
       guildQueue?.setPaused(!isPaused)
@@ -52,7 +53,20 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
 
       updateMusicEmbed(client, queue, currentChannel)
       interaction.update({ content: '' })
-
+      break
+    case 'repeat':
+      guildQueue.setRepeatMode(repeatMode)
+      switch (repeatMode) {
+        case 0:
+          interaction.update({ content: '' })
+          break
+        case 1:
+          interaction.update({ content: 'Looping song 🔄️' })
+          break
+        case 2:
+          interaction.update({ content: 'Looping queue 🔄️' })
+          break
+      }
       break
   }
 }
