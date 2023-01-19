@@ -48,39 +48,32 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId('pause')
         .setLabel('⏯️')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
         .setCustomId('next')
         .setLabel('⏩')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
         .setCustomId('stop')
         .setLabel('⏹️')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
         .setCustomId('repeat')
+        .setDisabled(false)
         .setLabel('🔄️')
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
         .setCustomId('shuffle')
         .setLabel('🔀')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary)
-    )
-
-    const playListButtons = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('addToPlaylist')
-        .setLabel('Add to Playlist')
-        .setStyle(ButtonStyle.Success),
-
-      new ButtonBuilder()
-        .setCustomId('removeFromPlaylist')
-        .setLabel('Remove from Playlist')
-        .setStyle(ButtonStyle.Danger)
     )
 
     const musicEmbed = new EmbedBuilder()
@@ -96,7 +89,7 @@ module.exports = {
 
     const controlsMessage = await channel.send({
       embeds: [musicEmbed],
-      components: [btnsControls, playListButtons]
+      components: [btnsControls]
     })
 
     createContextParam(contextTypes().MUSIC_CHANNELS, {

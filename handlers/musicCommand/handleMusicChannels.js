@@ -19,13 +19,13 @@ const handleMusicChannels = async (
 
   const queue = client.player.createQueue(interaction.guild.id)
   const guildQueue = client.player.getQueue(interaction.guild.id)
-  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
 
   await queue.join(interaction.member.voice.channel)
 
   try {
     await queue.play(query)
-    updateMusicEmbed(client, guildQueue.songs, currentChannel)
+
+    updateMusicEmbed(client, guildQueue.songs)
   } catch (error) {
     console.log(error)
     if (!guildQueue) queue.stop()
@@ -34,47 +34,68 @@ const handleMusicChannels = async (
 
 const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
-  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
   const [, ...queue] = guildQueue?.songs ?? []
   const repeatMode = (guildQueue?.repeatMode + 1) % 3
   const isPaused = guildQueue?.connection.paused
+  const shuffleSongs = guildQueue?.shuffle()
 
-  switch (butonId) {
-    case 'pause':
-      guildQueue?.setPaused(!isPaused)
-      if (!isPaused) {
-        interaction.update({ content: 'Queue paused ⏯️\n' })
-      } else {
-        interaction.update({ content: '' })
-      }
-      break
-    case 'next':
-      guildQueue?.skip()
-
-      updateMusicEmbed(client, queue, currentChannel)
-      interaction.update({ content: '' })
-      break
-    case 'repeat':
-      guildQueue.setRepeatMode(repeatMode)
-      switch (repeatMode) {
-        case 0:
-          interaction.update({ content: '' })
-          break
-        case 1:
-          interaction.update({ content: 'Looping song 🔄️' })
-          break
-        case 2:
-          interaction.update({ content: 'Looping queue 🔄️' })
-          break
-      }
-      break
+  if (
+    !guildQueue?.songs.length ||
+    guildQueue?.isPlaying === undefined ||
+    guildQueue?.songs[0] === undefined
+  ) {
+    interaction.update({ content: '' })
+    if (guildQueue?.songs) {
+      guildQueue.songs = guildQueue.songs.filter((el) => el)
+    }
+    return
   }
+  try {
+    switch (butonId) {
+      case 'pause':
+        guildQueue.setPaused(!isPaused)
+        if (!isPaused && guildQueue?.songs) {
+          interaction.update({ content: 'Queue paused ⏯️\n' })
+          return
+        }
+        break
+      case 'next':
+        guildQueue?.skip()
+
+        updateMusicEmbed(client, queue)
+        break
+      case 'stop':
+        guildQueue?.clearQueue()
+        guildQueue?.stop()
+
+        updateMusicEmbed(client)
+        break
+      case 'repeat':
+        guildQueue.setRepeatMode(repeatMode)
+        switch (repeatMode) {
+          case 1:
+            interaction.update({ content: 'Looping song 🔄️' })
+            return
+          case 2:
+            interaction.update({ content: 'Looping queue 🔄️' })
+            return
+        }
+        break
+      case 'shuffle':
+        updateMusicEmbed(client, shuffleSongs)
+        break
+    }
+  } catch (error) {}
+
+  interaction.update({ content: '' })
 }
 
-const updateMusicEmbed = (client, queueSongs = [], currentChannel) => {
+const updateMusicEmbed = (client, queueSongs = []) => {
   const songsArr = []
+  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
+  queueSongs = queueSongs.filter((el) => el)
 
-  if (queueSongs.length > 0) {
+  if (queueSongs?.length > 0) {
     queueSongs.forEach(({ name, thumbnail, url }) => {
       songsArr.push({ name, img: thumbnail, url })
     })
@@ -93,14 +114,13 @@ const updateMusicEmbed = (client, queueSongs = [], currentChannel) => {
       'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
   })
 
-  currentChannel.controlsMessage.edit({
+  currentChannel?.controlsMessage.edit({
     embeds: [musicEmbed]
   })
 }
 
 const handleBotDisconnection = (client) => {
-  // TODO: REMOVE PLAYLIST && IMG ON DISCONNECTION
-  updateMusicEmbed()
+  updateMusicEmbed(client)
 }
 
 const createMusicEmbed = ({
@@ -134,7 +154,6 @@ const handleExceptions = async (
         channel.messages.delete(botMessage.id)
       })
     }, 3000)
-    console.error('User is not connected to a channel!')
     return true
   }
   return false

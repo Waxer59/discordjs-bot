@@ -1,12 +1,23 @@
 const { Events } = require('discord.js')
+const { getContextParam } = require('../../context/manageContext')
+const { contextTypes } = require('../../context/types/contextTypes')
 const {
   handleMusicButtonsInteractions
 } = require('../musicCommand/handleMusicChannels')
 
 const clientOnInteractionCreate = (client) => {
   client.on(Events.InteractionCreate, async (interaction) => {
+    const channelId = interaction.channel.id
     if (interaction.isButton()) {
-      handleMusicButtonsInteractions(client, interaction, interaction.customId)
+      if (
+        channelId === getContextParam(contextTypes().MUSIC_CHANNELS).channelId
+      ) {
+        handleMusicButtonsInteractions(
+          client,
+          interaction,
+          interaction.customId
+        )
+      }
     }
     if (!interaction.isChatInputCommand()) return
     const command = interaction.client.commands.get(interaction.commandName)

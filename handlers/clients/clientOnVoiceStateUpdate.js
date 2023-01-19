@@ -1,4 +1,7 @@
 const { Events } = require('discord.js')
+const {
+  handleBotDisconnection
+} = require('../musicCommand/handleMusicChannels')
 
 const clientOnVoiceStateUpdate = (client) => {
   client.on(Events.VoiceStateUpdate, (oldState, newState) => {
@@ -9,6 +12,7 @@ const clientOnVoiceStateUpdate = (client) => {
       return console.log('Connection Update')
 
     if (oldState.channelId && !newState.channelId) {
+      handleBotDisconnection(client)
       return console.log(`${client.user.username} was disconnected!`)
     }
   })
