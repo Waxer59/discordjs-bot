@@ -1,3 +1,4 @@
+const { clearMusicChart } = require('../../helpers/clearMusicChart')
 const {
   musicShuffle,
   musicPause,
@@ -60,8 +61,8 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   interaction.update({ content: '' })
 }
 
-const handleBotDisconnection = (client, interaction) => {
-  // updateMusicChart(client, interaction)
+const handleBotDisconnection = (client) => {
+  clearMusicChart(client)
 }
 
 const handleExceptions = async (

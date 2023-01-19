@@ -1,7 +1,6 @@
 const { updateMusicChart } = require('../../../helpers/updateMusicChart')
 
 const musicPause = (client, interaction, pause = null) => {
-  console.log(pause)
   const guildQueue = client.player.getQueue(interaction.guild.id)
   const isPaused = guildQueue?.connection.paused
   guildQueue.setPaused(pause ?? !isPaused)
