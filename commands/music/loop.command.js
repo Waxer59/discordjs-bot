@@ -24,5 +24,26 @@ module.exports = {
     const options = interaction.options.getString('options')
     musicLoop(client, interaction, +options)
     updateMusicChart(client, interaction)
+
+    switch (options) {
+      case '0':
+        interaction.reply({
+          content: 'Loop disabled',
+          ephemeral: true
+        })
+        break
+      case '1':
+        interaction.reply({
+          content: 'Looping song',
+          ephemeral: true
+        })
+        break
+      case '2':
+        interaction.reply({
+          content: 'Looping queue',
+          ephemeral: true
+        })
+        break
+    }
   }
 }

@@ -1,8 +1,12 @@
+const { updateMusicChart } = require('../../../helpers/updateMusicChart')
+
 const musicLoop = (client, interaction, repeatMode) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
   guildQueue.setRepeatMode(repeatMode)
-  console.log(repeatMode)
   switch (repeatMode) {
+    case 0:
+      updateMusicChart(client, interaction, {})
+      break
     case 1:
       updateMusicChart(client, interaction, {
         footer: { text: 'Looping song 🔄️' }

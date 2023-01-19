@@ -10,5 +10,9 @@ module.exports = {
     .setDescription('Shuffle the queue!'),
   async execute(interaction, client) {
     musicShuffle(client, interaction)
+    interaction.reply({
+      content: 'Queue shuffled!',
+      ephemeral: true
+    })
   }
 }
