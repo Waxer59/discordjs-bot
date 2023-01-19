@@ -6,6 +6,18 @@
 
 ## Music
 
-* /play
+* /music-play
 
-* /setup-music
+* /music-setup
+
+* /music-loop
+
+* /music-pause
+
+* /music-clear-queue
+
+* /music-skip
+
+* /music-stop
+
+* /music-volume

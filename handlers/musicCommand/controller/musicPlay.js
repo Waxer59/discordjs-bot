@@ -18,6 +18,7 @@ const musicPlay = async (client, interaction, query) => {
     console.log(error)
     queue.stop()
     if (!guildQueue) queue.stop()
+    throw new Error('Song not found')
   }
 }
 

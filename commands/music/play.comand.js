@@ -1,9 +1,12 @@
 const { SlashCommandBuilder } = require('discord.js')
+const {
+  musicPlay
+} = require('../../handlers/musicCommand/controller/musicPlay')
 
 module.exports = {
-  name: 'play',
+  name: 'music-play',
   data: new SlashCommandBuilder()
-    .setName('play')
+    .setName('music-play')
     .setDescription('Play a song!')
     .addStringOption((option) =>
       option
@@ -12,13 +15,19 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction, client) {
-    const url = interaction.options.getString('query')
-
-    const queue = client.player.createQueue(interaction.guild.id)
-    await queue.join(interaction.member.voice.channel)
-    await queue.play(url).catch((err) => {
-      console.log(err)
-      if (!guildQueue) queue.stop()
+    const query = interaction.options.getString('query')
+    try {
+      musicPlay(client, interaction, query)
+    } catch (error) {
+      interaction.reply({
+        content: 'Song not found! :(',
+        ephemeral: true
+      })
+      return
+    }
+    interaction.reply({
+      content: 'Song found! :)',
+      ephemeral: true
     })
   }
 }
