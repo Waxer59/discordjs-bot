@@ -52,7 +52,7 @@ module.exports = {
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
-        .setCustomId('next')
+        .setCustomId('skip')
         .setLabel('⏩')
         .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
@@ -64,7 +64,7 @@ module.exports = {
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
-        .setCustomId('repeat')
+        .setCustomId('loop')
         .setDisabled(false)
         .setLabel('🔄️')
         .setStyle(ButtonStyle.Secondary),
@@ -97,9 +97,9 @@ module.exports = {
       controlsMessage,
       controls: {
         pause: btnsControls.components[0],
-        next: btnsControls.components[1],
+        skip: btnsControls.components[1],
         stop: btnsControls.components[2],
-        repeat: btnsControls.components[3],
+        loop: btnsControls.components[3],
         shuffle: btnsControls.components[4]
       }
     })

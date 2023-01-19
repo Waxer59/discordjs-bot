@@ -1,6 +1,11 @@
-const { getContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
-const { EmbedBuilder } = require('discord.js')
+const {
+  musicShuffle,
+  musicPause,
+  musicLoop,
+  musicSkip,
+  musicStop,
+  musicPlay
+} = require('./controller')
 
 const handleMusicChannels = async (
   client,
@@ -17,31 +22,11 @@ const handleMusicChannels = async (
 
   interaction.delete()
 
-  const queue = client.player.createQueue(interaction.guild.id)
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-
-  await queue.join(interaction.member.voice.channel)
-
-  try {
-    if (query.includes('list=')) {
-      await queue.playlist(query)
-    } else {
-      await queue.play(query)
-    }
-
-    updateMusicEmbed(client, guildQueue.songs)
-  } catch (error) {
-    queue.stop()
-    if (!guildQueue) queue.stop()
-  }
+  musicPlay(client, interaction, query)
 }
 
 const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
-
-  const repeatMode = (guildQueue?.repeatMode + 1) % 3
-  const isPaused = guildQueue?.connection.paused
-  const shuffleSongs = guildQueue?.shuffle()
 
   if (guildQueue?.songs) {
     guildQueue.songs = guildQueue.songs.filter((el) => el)
@@ -55,36 +40,19 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   try {
     switch (butonId) {
       case 'pause':
-        guildQueue.setPaused(!isPaused)
-        if (!isPaused && guildQueue?.songs) {
-          interaction.update({ content: 'Queue paused ⏯️\n' })
-          return
-        }
+        musicPause(client, interaction)
         break
-      case 'next':
-        guildQueue?.skip()
-        guildQueue.connection.paused = false
-        guildQueue.songs = guildQueue?.songs.filter((_, i) => i) ?? []
-        updateMusicEmbed(client, guildQueue?.songs.filter((_, i) => i) ?? [])
+      case 'skip':
+        musicSkip(client, interaction)
         break
       case 'stop':
-        guildQueue?.clearQueue()
-        guildQueue?.stop()
-        updateMusicEmbed(client)
+        musicStop(client, interaction)
         break
-      case 'repeat':
-        guildQueue.setRepeatMode(repeatMode)
-        switch (repeatMode) {
-          case 1:
-            interaction.update({ content: 'Looping song 🔄️' })
-            return
-          case 2:
-            interaction.update({ content: 'Looping queue 🔄️' })
-            return
-        }
+      case 'loop':
+        musicLoop(client, interaction, (guildQueue?.repeatMode + 1) % 3)
         break
       case 'shuffle':
-        updateMusicEmbed(client, shuffleSongs)
+        musicShuffle(client, interaction)
         break
     }
   } catch (error) {}
@@ -92,53 +60,8 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   interaction.update({ content: '' })
 }
 
-const updateMusicEmbed = (client, queueSongs = []) => {
-  const songsArr = []
-  const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
-  queueSongs = queueSongs.filter((el) => el)
-
-  if (queueSongs?.length > 0) {
-    queueSongs.forEach(({ name, thumbnail, url }) => {
-      songsArr.push({ name, img: thumbnail, url })
-    })
-  }
-
-  const musicEmbed = createMusicEmbed({
-    description:
-      songsArr.map(({ name }) => '• ' + name).join('\n\n') ||
-      '**No song playing currently.**',
-    footer: {
-      text: songsArr[0]?.url ?? 'Here will appear the url of the song!',
-      iconURL: client?.user.displayAvatarURL()
-    },
-    img:
-      songsArr[0]?.img ??
-      'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
-  })
-
-  currentChannel?.controlsMessage.edit({
-    embeds: [musicEmbed]
-  })
-}
-
-const handleBotDisconnection = (client) => {
-  updateMusicEmbed(client)
-}
-
-const createMusicEmbed = ({
-  description = 'No song playing currently.',
-  color = 'Purple',
-  footer = {
-    text: 'Here will appear the url of the song!',
-    iconURL: client.user.displayAvatarURL()
-  },
-  img = 'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
-}) => {
-  return new EmbedBuilder()
-    .setDescription(description)
-    .setColor(color)
-    .setFooter(footer)
-    .setImage(img)
+const handleBotDisconnection = (client, interaction) => {
+  // updateMusicChart(client, interaction)
 }
 
 const handleExceptions = async (
