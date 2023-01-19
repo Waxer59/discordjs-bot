@@ -24,7 +24,6 @@ const handleMusicChannels = async (
 
   try {
     if (query.includes('list=')) {
-      console.log(query)
       await queue.playlist(query)
     } else {
       await queue.play(query)
@@ -32,13 +31,14 @@ const handleMusicChannels = async (
 
     updateMusicEmbed(client, guildQueue.songs)
   } catch (error) {
-    console.log(error)
+    queue.stop()
     if (!guildQueue) queue.stop()
   }
 }
 
 const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
+
   const repeatMode = (guildQueue?.repeatMode + 1) % 3
   const isPaused = guildQueue?.connection.paused
   const shuffleSongs = guildQueue?.shuffle()
@@ -63,13 +63,13 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
         break
       case 'next':
         guildQueue?.skip()
+        guildQueue.connection.paused = false
         guildQueue.songs = guildQueue?.songs.filter((_, i) => i) ?? []
         updateMusicEmbed(client, guildQueue?.songs.filter((_, i) => i) ?? [])
         break
       case 'stop':
         guildQueue?.clearQueue()
         guildQueue?.stop()
-
         updateMusicEmbed(client)
         break
       case 'repeat':
@@ -93,7 +93,6 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
 }
 
 const updateMusicEmbed = (client, queueSongs = []) => {
-  console.log(queueSongs)
   const songsArr = []
   const currentChannel = getContextParam(contextTypes().MUSIC_CHANNELS)
   queueSongs = queueSongs.filter((el) => el)

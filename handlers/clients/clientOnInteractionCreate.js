@@ -10,7 +10,7 @@ const clientOnInteractionCreate = (client) => {
     const channelId = interaction.channel.id
     if (interaction.isButton()) {
       if (
-        channelId === getContextParam(contextTypes().MUSIC_CHANNELS).channelId
+        channelId === getContextParam(contextTypes().MUSIC_CHANNELS)?.channelId
       ) {
         handleMusicButtonsInteractions(
           client,
