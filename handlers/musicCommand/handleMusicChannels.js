@@ -23,7 +23,12 @@ const handleMusicChannels = async (
   await queue.join(interaction.member.voice.channel)
 
   try {
-    await queue.play(query)
+    if (query.includes('list=')) {
+      console.log(query)
+      await queue.playlist(query)
+    } else {
+      await queue.play(query)
+    }
 
     updateMusicEmbed(client, guildQueue.songs)
   } catch (error) {
@@ -58,6 +63,7 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
         break
       case 'next':
         guildQueue?.skip()
+        guildQueue.songs = guildQueue?.songs.filter((_, i) => i) ?? []
         updateMusicEmbed(client, guildQueue?.songs.filter((_, i) => i) ?? [])
         break
       case 'stop':
