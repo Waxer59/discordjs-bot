@@ -39,15 +39,9 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   const isPaused = guildQueue?.connection.paused
   const shuffleSongs = guildQueue?.shuffle()
 
-  if (
-    !guildQueue?.songs.length ||
-    guildQueue?.isPlaying === undefined ||
-    guildQueue?.songs[0] === undefined
-  ) {
+  if (guildQueue?.songs[0] === undefined) {
     interaction.update({ content: '' })
-    if (guildQueue?.songs) {
-      guildQueue.songs = guildQueue.songs.filter((el) => el)
-    }
+    guildQueue.songs = guildQueue.songs.filter((el) => el)
     return
   }
   try {
