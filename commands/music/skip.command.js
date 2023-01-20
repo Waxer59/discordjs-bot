@@ -13,14 +13,14 @@ module.exports = {
     .setDescription('Skip the song!'),
   async execute(interaction, client) {
     if (await handleMusicExceptions(client, interaction)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Your not inside a chanel/Nothing to skip!',
         ephemeral: true
       })
       return
     }
     musicSkip(client, interaction)
-    interaction.reply({
+    await interaction.reply({
       content: 'Song skipped!',
       ephemeral: true
     })

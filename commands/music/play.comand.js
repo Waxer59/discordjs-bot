@@ -17,15 +17,21 @@ module.exports = {
   async execute(interaction, client) {
     const query = interaction.options.getString('query')
     try {
-      musicPlay(client, interaction, query)
+      if (!(await musicPlay(client, interaction, query))) {
+        await interaction.reply({
+          content: 'Your are not in the same channel',
+          ephemeral: true
+        })
+        return
+      }
     } catch (error) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Song not found! :(',
         ephemeral: true
       })
       return
     }
-    interaction.reply({
+    await interaction.reply({
       content: 'Song found! :)',
       ephemeral: true
     })

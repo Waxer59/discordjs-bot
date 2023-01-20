@@ -23,7 +23,7 @@ module.exports = {
     ),
   async execute(interaction, client) {
     if (await handleMusicExceptions(client, interaction)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Your not inside a chanel/Nothing to pause!',
         ephemeral: true
       })
@@ -32,13 +32,13 @@ module.exports = {
     const options = interaction.options.getString('options')
     switch (options) {
       case '0':
-        interaction.reply({
+        await interaction.reply({
           content: 'Song unpaused! :)',
           ephemeral: true
         })
         break
       case '1':
-        interaction.reply({
+        await interaction.reply({
           content: 'Song paused! :)',
           ephemeral: true
         })

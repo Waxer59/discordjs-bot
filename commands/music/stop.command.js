@@ -13,14 +13,14 @@ module.exports = {
     .setDescription('Stop the song!'),
   async execute(interaction, client) {
     if (await handleMusicExceptions(client, interaction)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Your not inside a chanel/Nothing to stop!',
         ephemeral: true
       })
       return
     }
     musicStop(client, interaction)
-    interaction.reply({
+    await interaction.reply({
       content: 'Queue stoped',
       ephemeral: true
     })

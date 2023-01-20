@@ -13,14 +13,14 @@ module.exports = {
     .setDescription('Shuffle the queue!'),
   async execute(interaction, client) {
     if (await handleMusicExceptions(client, interaction)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Your not inside a chanel/Nothing to shuffle!',
         ephemeral: true
       })
       return
     }
     musicShuffle(client, interaction)
-    interaction.reply({
+    await interaction.reply({
       content: 'Queue shuffled!',
       ephemeral: true
     })

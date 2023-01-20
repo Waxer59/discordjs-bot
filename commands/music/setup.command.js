@@ -28,7 +28,7 @@ module.exports = {
     ),
   async execute(interaction, client) {
     if (getContextParam(contextTypes().MUSIC_CHANNELS)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'There is already a music channel!',
         ephemeral: true
       })
@@ -104,7 +104,7 @@ module.exports = {
       }
     })
 
-    interaction.reply({
+    await interaction.reply({
       content: 'Channel successfully created!',
       ephemeral: true
     })

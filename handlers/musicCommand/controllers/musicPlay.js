@@ -3,9 +3,10 @@ const { updateMusicChart } = require('../../../helpers/music/updateMusicChart')
 const musicPlay = async (client, interaction, query) => {
   if (
     interaction.guild.members?.me.voice.channelId !==
-    interaction.member.voice.channelId
+      interaction.member.voice.channelId &&
+    interaction.guild?.members?.me?.voice?.channelId !== null
   ) {
-    return
+    return false
   }
   const guildQueue = client.player.getQueue(interaction.guild.id)
   const queue = client.player.createQueue(interaction.guild.id)
@@ -25,6 +26,8 @@ const musicPlay = async (client, interaction, query) => {
     queue.stop()
     if (!guildQueue) queue.stop()
   }
+
+  return true
 }
 
 module.exports = {

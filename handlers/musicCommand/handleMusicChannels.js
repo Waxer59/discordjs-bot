@@ -26,7 +26,6 @@ const handleMusicChannels = async (client, interaction) => {
   const query = interaction.content
 
   interaction.delete()
-
   musicPlay(client, interaction, query)
 }
 

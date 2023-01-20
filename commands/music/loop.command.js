@@ -25,7 +25,7 @@ module.exports = {
     ),
   async execute(interaction, client) {
     if (await handleMusicExceptions(client, interaction)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Your not inside a chanel/Nothing to loop!',
         ephemeral: true
       })
@@ -37,19 +37,19 @@ module.exports = {
 
     switch (options) {
       case '0':
-        interaction.reply({
+        await interaction.reply({
           content: 'Loop disabled',
           ephemeral: true
         })
         break
       case '1':
-        interaction.reply({
+        await interaction.reply({
           content: 'Looping song',
           ephemeral: true
         })
         break
       case '2':
-        interaction.reply({
+        await interaction.reply({
           content: 'Looping queue',
           ephemeral: true
         })

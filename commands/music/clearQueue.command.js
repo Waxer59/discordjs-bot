@@ -11,7 +11,7 @@ module.exports = {
     .setDescription('Clear the queue!'),
   async execute(interaction, client) {
     if (await handleMusicExceptions(client, interaction)) {
-      interaction.reply({
+      await interaction.reply({
         content: 'Your not inside a chanel/Nothing to clear!',
         ephemeral: true
       })
@@ -20,7 +20,7 @@ module.exports = {
     const guildQueue = client.player.getQueue(interaction.guild.id)
     guildQueue.clearQueue()
     updateMusicChart(client, interaction, {})
-    interaction.reply({
+    await interaction.reply({
       content: 'Queue cleared!',
       ephemeral: true
     })
