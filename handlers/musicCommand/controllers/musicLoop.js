@@ -1,4 +1,4 @@
-const { updateMusicChart } = require('../../../helpers/updateMusicChart')
+const { updateMusicChart } = require('../../../helpers/music/updateMusicChart')
 
 const musicLoop = (client, interaction, repeatMode) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)

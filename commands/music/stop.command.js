@@ -1,7 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicStop
-} = require('../../handlers/musicCommand/controller/musicStop')
+} = require('../../handlers/musicCommand/controllers/musicStop')
+const {
+  handleMusicExceptions
+} = require('../../handlers/musicCommand/handleMusicExceptions')
 
 module.exports = {
   name: 'music-stop',
@@ -9,6 +12,13 @@ module.exports = {
     .setName('music-stop')
     .setDescription('Stop the song!'),
   async execute(interaction, client) {
+    if (await handleMusicExceptions(client, interaction)) {
+      interaction.reply({
+        content: 'Your not inside a chanel/Nothing to stop!',
+        ephemeral: true
+      })
+      return
+    }
     musicStop(client, interaction)
     interaction.reply({
       content: 'Queue stoped',

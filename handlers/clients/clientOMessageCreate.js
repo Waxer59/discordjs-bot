@@ -9,15 +9,11 @@ const clientOnMessageCreate = (client) => {
       return
     }
     const channelId = interaction.channel.id
-    const voiceChannel = interaction.member.voice.channel?.id
     //* MUSIC_CHANNELS LOGIC
     if (
       getContextParam(contextTypes().MUSIC_CHANNELS)?.channelId === channelId
     ) {
-      await handleMusicChannels(client, interaction, {
-        voiceChannel,
-        channelId
-      })
+      await handleMusicChannels(client, interaction)
     }
   })
 }

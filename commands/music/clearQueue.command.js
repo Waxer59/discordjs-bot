@@ -1,5 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js')
-const { updateMusicChart } = require('../../helpers/updateMusicChart')
+const {
+  handleMusicExceptions
+} = require('../../handlers/musicCommand/handleMusicExceptions')
+const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
 
 module.exports = {
   name: 'music-clear-queue',
@@ -7,7 +10,14 @@ module.exports = {
     .setName('music-clear-queue')
     .setDescription('Clear the queue!'),
   async execute(interaction, client) {
-    const guildQueue = client.player.getQueue(message.guild.id)
+    if (await handleMusicExceptions(client, interaction)) {
+      interaction.reply({
+        content: 'Your not inside a chanel/Nothing to clear!',
+        ephemeral: true
+      })
+      return
+    }
+    const guildQueue = client.player.getQueue(interaction.guild.id)
     guildQueue.clearQueue()
     updateMusicChart(client, interaction, {})
     interaction.reply({

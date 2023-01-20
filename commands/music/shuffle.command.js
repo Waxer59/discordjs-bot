@@ -1,7 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicShuffle
-} = require('../../handlers/musicCommand/controller/musicShuflle')
+} = require('../../handlers/musicCommand/controllers/musicShuflle')
+const {
+  handleMusicExceptions
+} = require('../../handlers/musicCommand/handleMusicExceptions')
 
 module.exports = {
   name: 'music-shuffle',
@@ -9,6 +12,13 @@ module.exports = {
     .setName('music-shuffle')
     .setDescription('Shuffle the queue!'),
   async execute(interaction, client) {
+    if (await handleMusicExceptions(client, interaction)) {
+      interaction.reply({
+        content: 'Your not inside a chanel/Nothing to shuffle!',
+        ephemeral: true
+      })
+      return
+    }
     musicShuffle(client, interaction)
     interaction.reply({
       content: 'Queue shuffled!',

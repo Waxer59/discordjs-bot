@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders')
-const { getContextParam } = require('../context/manageContext')
-const { contextTypes } = require('../context/types/contextTypes')
+const { getContextParam } = require('../../context/manageContext')
+const { contextTypes } = require('../../context/types/contextTypes')
 
 const updateMusicChart = (
   client,

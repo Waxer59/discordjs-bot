@@ -1,4 +1,4 @@
-const { clearMusicChart } = require('../../helpers/clearMusicChart')
+const { clearMusicChart } = require('../../helpers/music/clearMusicChart')
 const {
   musicShuffle,
   musicPause,
@@ -6,16 +6,20 @@ const {
   musicSkip,
   musicStop,
   musicPlay
-} = require('./controller')
+} = require('./controllers')
 
-const handleMusicChannels = async (
-  client,
-  interaction,
-  { voiceChannel, channelId }
-) => {
-  if (
-    await handleExceptions(client, interaction, { voiceChannel, channelId })
-  ) {
+const handleMusicChannels = async (client, interaction) => {
+  const voiceChannel = interaction.member.voice.channel?.id
+  if (!voiceChannel) {
+    const botMessage = await interaction.channel.send({
+      content: `You have to be on a voice channel! <@${interaction.author.id}>`
+    })
+    interaction.delete()
+    setTimeout(() => {
+      client.channels.fetch(interaction.channel.id).then((channel) => {
+        channel.messages.delete(botMessage.id)
+      })
+    }, 3000)
     return
   }
 
@@ -63,26 +67,6 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
 
 const handleBotDisconnection = (client) => {
   clearMusicChart(client)
-}
-
-const handleExceptions = async (
-  client,
-  interaction,
-  { voiceChannel, channelId }
-) => {
-  if (!voiceChannel) {
-    const botMessage = await interaction.channel.send({
-      content: `You have to be on a voice channel! <@${interaction.author.id}>`
-    })
-    interaction.delete()
-    setTimeout(() => {
-      client.channels.fetch(channelId).then((channel) => {
-        channel.messages.delete(botMessage.id)
-      })
-    }, 3000)
-    return true
-  }
-  return false
 }
 
 module.exports = {

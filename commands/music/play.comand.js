@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicPlay
-} = require('../../handlers/musicCommand/controller/musicPlay')
+} = require('../../handlers/musicCommand/controllers/musicPlay')
 
 module.exports = {
   name: 'music-play',
