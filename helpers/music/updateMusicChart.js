@@ -46,6 +46,8 @@ const updateMusicChart = (
   currentChannel?.controlsMessage.edit({
     embeds: [musicEmbed]
   })
+
+  return musicEmbed
 }
 
 module.exports = {
