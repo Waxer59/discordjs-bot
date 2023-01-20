@@ -23,7 +23,7 @@ module.exports = {
   async execute(interaction, client) {
     const options = interaction.options.getString('options')
     musicLoop(client, interaction, +options)
-    updateMusicChart(client, interaction)
+    updateMusicChart(client, interaction, {})
 
     switch (options) {
       case '0':

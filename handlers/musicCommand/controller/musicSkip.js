@@ -5,8 +5,7 @@ const musicSkip = (client, interaction) => {
 
   guildQueue?.skip()
   guildQueue.connection.paused = false
-  guildQueue.songs = guildQueue?.songs.filter((_, i) => i) ?? []
-  updateMusicChart(client, interaction)
+  updateMusicChart(client, interaction, { isSkiped: true })
 }
 
 module.exports = {

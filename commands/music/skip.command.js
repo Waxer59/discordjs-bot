@@ -10,5 +10,9 @@ module.exports = {
     .setDescription('Skip the song!'),
   async execute(interaction, client) {
     musicSkip(client, interaction)
+    interaction.reply({
+      content: 'Song skipped!',
+      ephemeral: true
+    })
   }
 }
