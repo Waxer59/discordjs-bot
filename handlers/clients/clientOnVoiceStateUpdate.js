@@ -13,7 +13,6 @@ const clientOnVoiceStateUpdate = (client) => {
 
     if (oldState.channelId && !newState.channelId) {
       handleBotDisconnection(client)
-      return console.log(`${client.user.username} was disconnected!`)
     }
   })
 }

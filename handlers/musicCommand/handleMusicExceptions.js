@@ -5,6 +5,13 @@ const handleMusicExceptions = async (client, interaction) => {
     return true
   }
 
+  if (
+    interaction.guild.members?.me.voice.channelId !==
+    interaction.member.voice.channelId
+  ) {
+    return true
+  }
+
   return false
 }
 

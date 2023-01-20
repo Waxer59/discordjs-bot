@@ -9,7 +9,6 @@ const clientOnMessageCreate = (client) => {
       return
     }
     const channelId = interaction.channel.id
-    //* MUSIC_CHANNELS LOGIC
     if (
       getContextParam(contextTypes().MUSIC_CHANNELS)?.channelId === channelId
     ) {
