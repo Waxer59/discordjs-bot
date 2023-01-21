@@ -79,8 +79,8 @@ const handleMusicButtonsInteractions = async (client, interaction, butonId) => {
   interaction.update({ content: '' })
 }
 
-const handleBotDisconnection = (interaction) => {
-  resetMusicChart(interaction.guild.id)
+const handleBotDisconnection = (client, interaction) => {
+  resetMusicChart(interaction.guild.id, client)
 }
 
 const handleMusicChannelDelete = async (client, channelId) => {
