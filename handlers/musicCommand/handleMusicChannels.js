@@ -1,4 +1,3 @@
-const { Player } = require('discord-music-player')
 const { removeContextParam } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
 const {
@@ -84,8 +83,6 @@ const handleBotDisconnection = (client, interaction) => {
 }
 
 const handleMusicChannelDelete = async (client, channelId) => {
-  const player = new Player(client)
-  client.player = player
   await deleteMusicChannelByServerId(channelId)
   removeContextParam(`${channelId}_${contextTypes().MUSIC_CHANNELS}`)
 }

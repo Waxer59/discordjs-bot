@@ -1,6 +1,5 @@
 const {
   SlashCommandBuilder,
-  EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle
@@ -12,6 +11,7 @@ const {
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
+const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
 
 module.exports = {
   name: 'music-setup',
@@ -81,16 +81,7 @@ module.exports = {
         .setStyle(ButtonStyle.Secondary)
     )
 
-    const musicEmbed = new EmbedBuilder()
-      .setDescription('**No song playing currently.**')
-      .setColor('Purple')
-      .setFooter({
-        text: 'Here will appear the url of the song!',
-        iconURL: client.user.displayAvatarURL()
-      })
-      .setImage(
-        'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
-      )
+    const musicEmbed = updateMusicChart(client, interaction, {})
 
     const controlsMessage = await channel.send({
       embeds: [musicEmbed],
