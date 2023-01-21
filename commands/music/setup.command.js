@@ -81,7 +81,7 @@ module.exports = {
         .setStyle(ButtonStyle.Secondary)
     )
 
-    const musicEmbed = updateMusicChart(client, interaction, {})
+    const musicEmbed = await updateMusicChart(client, interaction, {})
 
     const controlsMessage = await channel.send({
       embeds: [musicEmbed],

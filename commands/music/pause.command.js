@@ -44,6 +44,6 @@ module.exports = {
         })
         break
     }
-    musicPause(client, interaction, Boolean(+options))
+    await musicPause(client, interaction, Boolean(+options))
   }
 }

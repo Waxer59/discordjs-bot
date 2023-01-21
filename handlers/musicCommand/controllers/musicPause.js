@@ -1,18 +1,16 @@
 const { updateMusicChart } = require('../../../helpers/music/updateMusicChart')
 
-const musicPause = (client, interaction, pause = null) => {
+const musicPause = async (client, interaction, pause = null) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
   const isPaused = guildQueue?.connection.paused
   guildQueue.setPaused(pause ?? !isPaused)
   if (!isPaused && guildQueue?.songs) {
-    updateMusicChart(client, interaction, {
+    await updateMusicChart(client, interaction, {
       footer: { text: 'Song paused ⏸️' }
     })
     return
   }
-  updateMusicChart(client, interaction, {
-    footer: { text: null }
-  })
+  await updateMusicChart(client, interaction, {})
 }
 
 module.exports = {

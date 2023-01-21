@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('@discordjs/builders')
 const { getContextParam } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
 
-const updateMusicChart = (
+const updateMusicChart = async (
   client,
   interaction,
   {
@@ -47,7 +47,7 @@ const updateMusicChart = (
     })
     .setImage(songsArr[0]?.img ?? img)
   if (editChannel) {
-    currentChannel?.controlsMessage.edit({
+    await currentChannel?.controlsMessage.edit({
       embeds: [musicEmbed]
     })
   }
@@ -57,3 +57,5 @@ const updateMusicChart = (
 module.exports = {
   updateMusicChart
 }
+
+// TODO: FIX EMBEDS
