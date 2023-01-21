@@ -2,7 +2,8 @@ const {
   SlashCommandBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  PermissionFlagsBits
 } = require('discord.js')
 const { ChannelType } = require('discord.js')
 const {
@@ -26,7 +27,8 @@ module.exports = {
         .setName('parent')
         .setDescription('Choose a category for the channel')
         .addChannelTypes(ChannelType.GuildCategory)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
     if (
       getContextParam(
