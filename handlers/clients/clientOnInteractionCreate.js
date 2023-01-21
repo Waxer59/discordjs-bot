@@ -11,7 +11,9 @@ const clientOnInteractionCreate = (client) => {
     if (interaction.isButton()) {
       if (
         channelId ===
-          getContextParam(contextTypes().MUSIC_CHANNELS)?.channelId &&
+          getContextParam(
+            `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
+          )?.channelId &&
         interaction.guild.members?.me.voice.channelId ===
           interaction.member.voice.channelId
       ) {
@@ -24,7 +26,6 @@ const clientOnInteractionCreate = (client) => {
     }
     if (!interaction.isChatInputCommand()) return
     const command = interaction.client.commands.get(interaction.commandName)
-
     if (!command) {
       console.error(`No command matching ${interaction.commandName} was found.`)
       return

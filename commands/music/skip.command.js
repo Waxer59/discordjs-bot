@@ -19,10 +19,17 @@ module.exports = {
       })
       return
     }
-    musicSkip(client, interaction)
-    await interaction.reply({
-      content: 'Song skipped!',
-      ephemeral: true
-    })
+    const skipSong = musicSkip(client, interaction)
+    if (skipSong) {
+      await interaction.reply({
+        content: 'Song skipped!',
+        ephemeral: true
+      })
+    } else {
+      await interaction.reply({
+        content: 'You cant skip a paused song!',
+        ephemeral: true
+      })
+    }
   }
 }

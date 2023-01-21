@@ -1,20 +1,18 @@
-const { Player } = require('discord-music-player')
 const { Events } = require('discord.js')
-const {
-  getContextParam,
-  removeContextParam
-} = require('../../context/manageContext')
+const { getContextParam } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
+const {
+  handleMusicChannelDelete
+} = require('../musicCommand/handleMusicChannels')
 
 const clientOnChannelDelete = (client) => {
   client.on(Events.ChannelDelete, async (channel) => {
     const channelId = channel.id
     if (
-      getContextParam(contextTypes().MUSIC_CHANNELS)?.channelId === channelId
+      getContextParam(`${channel.guildId}_${contextTypes().MUSIC_CHANNELS}`)
+        ?.channelId === channelId
     ) {
-      const player = new Player(client)
-      client.player = player
-      removeContextParam(contextTypes().MUSIC_CHANNELS)
+      handleMusicChannelDelete(client, channel.guildId)
     }
   })
 }

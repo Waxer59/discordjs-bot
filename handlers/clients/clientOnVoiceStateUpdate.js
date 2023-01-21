@@ -12,7 +12,7 @@ const clientOnVoiceStateUpdate = (client) => {
       return console.log('Connection Update')
 
     if (oldState.channelId && !newState.channelId) {
-      handleBotDisconnection(client)
+      handleBotDisconnection(client, newState)
     }
   })
 }

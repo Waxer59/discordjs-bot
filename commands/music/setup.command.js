@@ -11,6 +11,7 @@ const {
   createContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
+const { createMusicChannel } = require('../../db/services/musicChannelService')
 
 module.exports = {
   name: 'music-setup',
@@ -27,7 +28,11 @@ module.exports = {
         .addChannelTypes(ChannelType.GuildCategory)
     ),
   async execute(interaction, client) {
-    if (getContextParam(contextTypes().MUSIC_CHANNELS)) {
+    if (
+      getContextParam(
+        `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
+      )
+    ) {
       await interaction.reply({
         content: 'There is already a music channel!',
         ephemeral: true
@@ -92,16 +97,19 @@ module.exports = {
       components: [btnsControls]
     })
 
-    createContextParam(contextTypes().MUSIC_CHANNELS, {
-      channelId: channel.id,
-      controlsMessage,
-      controls: {
-        pause: btnsControls.components[0],
-        skip: btnsControls.components[1],
-        stop: btnsControls.components[2],
-        loop: btnsControls.components[3],
-        shuffle: btnsControls.components[4]
+    createContextParam(
+      `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`,
+      {
+        serverId: interaction.guild.id,
+        channelId: channel.id,
+        controlsMessage
       }
+    )
+
+    await createMusicChannel({
+      serverId: interaction.guild.id,
+      channelId: channel.id,
+      controlsMessageId: controlsMessage.id
     })
 
     await interaction.reply({

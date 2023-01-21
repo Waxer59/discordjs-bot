@@ -3,7 +3,8 @@ const { getEnvVariables } = require('../environment/envVariables')
 
 const dbConnection = async () => {
   try {
-    await mongoose.connect(getEnvVariables().MONGO_CNN)
+    mongoose.set('strictQuery', false)
+    await mongoose.connect(getEnvVariables().MONGODB_CNN)
 
     console.log('DB is ready!')
   } catch (err) {

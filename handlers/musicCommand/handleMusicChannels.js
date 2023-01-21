@@ -1,4 +1,10 @@
-const { clearMusicChart } = require('../../helpers/music/clearMusicChart')
+const { Player } = require('discord-music-player')
+const { removeContextParam } = require('../../context/manageContext')
+const { contextTypes } = require('../../context/types/contextTypes')
+const {
+  deleteMusicChannelByServerId
+} = require('../../db/services/musicChannelService')
+const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
 const {
   musicShuffle,
   musicPause,
@@ -29,7 +35,7 @@ const handleMusicChannels = async (client, interaction) => {
   musicPlay(client, interaction, query)
 }
 
-const handleMusicButtonsInteractions = (client, interaction, butonId) => {
+const handleMusicButtonsInteractions = async (client, interaction, butonId) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)
 
   if (guildQueue?.songs) {
@@ -47,7 +53,16 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
         musicPause(client, interaction)
         break
       case 'skip':
-        musicSkip(client, interaction)
+        if (!musicSkip(client, interaction)) {
+          const botMessage = await interaction.channel.send({
+            content: 'You cant skip a paused song!'
+          })
+          setTimeout(() => {
+            client.channels.fetch(interaction.channel.id).then((channel) => {
+              channel.messages.delete(botMessage.id)
+            })
+          }, 3000)
+        }
         break
       case 'stop':
         musicStop(client, interaction)
@@ -64,12 +79,20 @@ const handleMusicButtonsInteractions = (client, interaction, butonId) => {
   interaction.update({ content: '' })
 }
 
-const handleBotDisconnection = (client) => {
-  clearMusicChart(client)
+const handleBotDisconnection = (interaction) => {
+  resetMusicChart(interaction.guild.id)
+}
+
+const handleMusicChannelDelete = async (client, channelId) => {
+  const player = new Player(client)
+  client.player = player
+  await deleteMusicChannelByServerId(channelId)
+  removeContextParam(`${channelId}_${contextTypes().MUSIC_CHANNELS}`)
 }
 
 module.exports = {
   handleMusicChannels,
   handleBotDisconnection,
-  handleMusicButtonsInteractions
+  handleMusicButtonsInteractions,
+  handleMusicChannelDelete
 }

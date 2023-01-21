@@ -1,10 +1,32 @@
-# Commands
+# How to run the proyect
 
-## Fun
+1. Install all the dependencies using
+
+```console
+npm install
+```
+
+2. Rename __.env.template__ and fill all the fields
+
+3. Create the mongo database with the command
+
+```console
+docker-compse up -d
+```
+
+4. Start the proyect using
+
+```console
+npm run start 
+```
+
+## Commands
+
+### Fun
 
 * /ping
 
-## Music
+### Music
 
 * /music-play
 
@@ -20,4 +42,4 @@
 
 * /music-stop
 
-* /music-volume
+* /music-get-queue
