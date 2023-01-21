@@ -42,7 +42,7 @@ const updateMusicChart = (
     )
     //! .setColor(color) TODO: FIX PROPERTY
     .setFooter({
-      text: footer.text ?? songsArr[0]?.url,
+      text: footer.text ?? songsArr[0]?.url ?? '**Here will appear the url**',
       iconURL: footer.iconURL ?? client.user.displayAvatarURL()
     })
     .setImage(songsArr[0]?.img ?? img)
