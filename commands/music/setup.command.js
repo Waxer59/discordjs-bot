@@ -1,16 +1,18 @@
 const {
   SlashCommandBuilder,
-  EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  PermissionFlagsBits
 } = require('discord.js')
 const { ChannelType } = require('discord.js')
 const {
-  editContextParam,
-  getContextParam
+  getContextParam,
+  createContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
+const { createMusicChannel } = require('../../db/services/musicChannelService')
+const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
 
 module.exports = {
   name: 'music-setup',
@@ -25,8 +27,21 @@ module.exports = {
         .setName('parent')
         .setDescription('Choose a category for the channel')
         .addChannelTypes(ChannelType.GuildCategory)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
+    if (
+      getContextParam(
+        `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
+      )
+    ) {
+      await interaction.reply({
+        content: 'There is already a music channel!',
+        ephemeral: true
+      })
+      return
+    }
+
     const name = interaction.options.getString('name')
     const parent = interaction.options.getChannel('parent')
 
@@ -40,62 +55,57 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId('pause')
         .setLabel('⏯️')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
-        .setCustomId('next')
+        .setCustomId('skip')
         .setLabel('⏩')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
         .setCustomId('stop')
         .setLabel('⏹️')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
-        .setCustomId('repeat')
+        .setCustomId('loop')
+        .setDisabled(false)
         .setLabel('🔄️')
         .setStyle(ButtonStyle.Secondary),
 
       new ButtonBuilder()
         .setCustomId('shuffle')
         .setLabel('🔀')
+        .setDisabled(false)
         .setStyle(ButtonStyle.Secondary)
     )
 
-    const playListButtons = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('addToPlaylist')
-        .setLabel('Add to Playlist')
-        .setStyle(ButtonStyle.Success),
+    const musicEmbed = await updateMusicChart(client, interaction, {})
 
-      new ButtonBuilder()
-        .setCustomId('removeFromPlaylist')
-        .setLabel('Remove from Playlist')
-        .setStyle(ButtonStyle.Danger)
-    )
-
-    const musicEmbed = new EmbedBuilder()
-      .setDescription('**No song playing currently.**')
-      .setColor('Purple')
-      .setFooter({
-        iconURL: client.user.displayAvatarURL()
-      })
-      .setImage(
-        'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5'
-      )
-
-    channel.send({
+    const controlsMessage = await channel.send({
       embeds: [musicEmbed],
-      components: [btnsControls, playListButtons]
+      components: [btnsControls]
     })
 
-    editContextParam(contextTypes().MUSIC_CHANNELS, [
-      ...getContextParam(contextTypes().MUSIC_CHANNELS),
-      channel.id
-    ])
+    createContextParam(
+      `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`,
+      {
+        serverId: interaction.guild.id,
+        channelId: channel.id,
+        controlsMessage
+      }
+    )
 
-    interaction.reply({
+    await createMusicChannel({
+      serverId: interaction.guild.id,
+      channelId: channel.id,
+      controlsMessageId: controlsMessage.id
+    })
+
+    await interaction.reply({
       content: 'Channel successfully created!',
       ephemeral: true
     })

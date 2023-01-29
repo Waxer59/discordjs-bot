@@ -1,7 +1,8 @@
 const { Client, Collection, GatewayIntentBits } = require('discord.js')
 const { deploySlashCommands } = require('./helpers/deploy-commands')
 const { Player } = require('discord-music-player')
-const { clientEvents } = require('./handlers/handleClientEvents')
+const { handleClientEvents } = require('./handlers/handleClientEvents')
+const { dbConnection } = require('./db/config')
 
 const client = new Client({
   intents: [
@@ -12,6 +13,8 @@ const client = new Client({
   ]
 })
 
+connectToDatabase()
+
 client.commands = new Collection()
 
 //* SETUP COMMANDS
@@ -21,4 +24,8 @@ deploySlashCommands(client)
 const player = new Player(client)
 client.player = player
 
-clientEvents(client)
+handleClientEvents(client)
+
+async function connectToDatabase() {
+  await dbConnection()
+}

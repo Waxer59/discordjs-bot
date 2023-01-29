@@ -1,8 +1,6 @@
-const context = {
-  MUSIC_CHANNELS: []
-}
+const context = {}
+
 const OPTIONS = {
-  isArray: false,
   override: false
 }
 
@@ -16,22 +14,15 @@ const getContextParam = (param = '') => {
 
 const createContextParam = (param = '', value, options = OPTIONS) => {
   if (context[param] && !options.override) {
-    throw new Error("You can't override a param in addContextParam function")
+    throw new Error("You can't override a param in createContextParam function")
   }
-  context[param] = manageContextOptions(param, value, options)
+  context[param] = value
   return context
 }
 
-const editContextParam = (param = '', value) => {
+const editContextParam = async (param = '', value) => {
   context[param] = value
   return context[param]
-}
-
-const manageContextOptions = (param = '', value = '', options) => {
-  if (options?.isArray) {
-    return [value]
-  }
-  return value
 }
 
 const removeContextParam = (param = '') => {
