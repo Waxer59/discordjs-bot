@@ -16,6 +16,7 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "isomorphic-unfetch": "^4.0.2",
+    "just-jokes": "^1.0.2",
     "mongoose": "^6.8.4"
   },
   "devDependencies": {

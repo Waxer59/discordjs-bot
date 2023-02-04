@@ -26,6 +26,12 @@ npm run start
 
 * /ping
 
+* /decision
+
+* /emoji
+
+* /roll
+
 ### Music
 
 * /music-play
