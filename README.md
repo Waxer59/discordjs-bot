@@ -6,7 +6,7 @@
 npm install
 ```
 
-2. Rename __.env.template__ and fill all the fields
+2. Rename __.env.template__ to __.env__ and fill all the fields
 
 3. Create the mongo database with the command
 
