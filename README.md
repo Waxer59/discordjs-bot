@@ -30,6 +30,10 @@ npm run start
 
 * /emoji
 
+* /rock-paper-scissors
+
+* /joke
+
 * /roll
 
 ### Music
