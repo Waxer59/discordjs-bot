@@ -17,7 +17,7 @@ module.exports = {
   async execute(interaction, client) {
     const limit = interaction.options.getInteger('amount')
 
-    await interaction.channel.bulkDelete(limit)
+    await interaction.channel.bulkDelete(limit, true)
 
     await interaction.reply({
       content: `Deleted ${limit} messages`,
