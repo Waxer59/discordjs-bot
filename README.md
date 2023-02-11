@@ -53,3 +53,7 @@ npm run start
 * /music-stop
 
 * /music-get-queue
+
+### Admin
+
+* /clear-chat
