@@ -15,4 +15,4 @@ const MusicChannelSchema = new Schema({
   }
 })
 
-module.exports = model('music-channel', MusicChannelSchema)
+module.exports = model('musicChannel', MusicChannelSchema)
