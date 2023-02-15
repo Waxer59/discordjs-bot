@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const {
   musicStop
-} = require('../../handlers/musicCommand/controllers/musicStop')
+} = require('../../handlers/musicCommand/controllers/musicStop');
 const {
   handleMusicExceptions
-} = require('../../handlers/musicCommand/handleMusicExceptions')
+} = require('../../handlers/musicCommand/handleMusicExceptions');
 
 module.exports = {
   name: 'music-stop',
@@ -16,13 +16,13 @@ module.exports = {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to stop!',
         ephemeral: true
-      })
-      return
+      });
+      return;
     }
-    musicStop(client, interaction)
+    musicStop(client, interaction);
     await interaction.reply({
       content: 'Queue stoped',
       ephemeral: true
-    })
+    });
   }
-}
+};

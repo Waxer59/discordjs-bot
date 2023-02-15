@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require('@discordjs/builders')
-const { getContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { EmbedBuilder } = require('@discordjs/builders');
+const { getContextParam } = require('../../context/manageContext');
+const { contextTypes } = require('../../context/types/contextTypes');
 
 const updateMusicChart = async (
   client,
@@ -17,23 +17,23 @@ const updateMusicChart = async (
     editChannel = true
   }
 ) => {
-  const songsArr = []
-  const guildQueue = client.player.getQueue(interaction.guild.id)
+  const songsArr = [];
+  const guildQueue = client.player.getQueue(interaction.guild.id);
   const currentChannel = getContextParam(
     `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
-  )
+  );
 
   const queueSongs = guildQueue?.songs.filter((el, idx) => {
     if (isSkiped && idx === 0) {
-      return false
+      return false;
     }
-    return el
-  })
+    return el;
+  });
 
   if (queueSongs?.length > 0) {
     queueSongs.forEach(({ name, thumbnail, url }) => {
-      songsArr.push({ name, img: thumbnail, url })
-    })
+      songsArr.push({ name, img: thumbnail, url });
+    });
   }
 
   const musicEmbed = new EmbedBuilder()
@@ -45,17 +45,17 @@ const updateMusicChart = async (
       text: footer.text ?? songsArr[0]?.url ?? '**Here will appear the url**',
       iconURL: footer.iconURL ?? client.user.displayAvatarURL()
     })
-    .setImage(songsArr[0]?.img ?? img)
+    .setImage(songsArr[0]?.img ?? img);
   if (editChannel) {
     await currentChannel?.controlsMessage.edit({
       embeds: [musicEmbed]
-    })
+    });
   }
-  return musicEmbed
-}
+  return musicEmbed;
+};
 
 module.exports = {
   updateMusicChart
-}
+};
 
 // TODO: FIX EMBEDS

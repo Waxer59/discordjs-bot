@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const emojis = [
   '😄',
   '😃',
@@ -819,7 +819,7 @@ const emojis = [
   '🔷',
   '🔸',
   '🔹'
-]
+];
 
 module.exports = {
   name: 'emoji',
@@ -827,6 +827,6 @@ module.exports = {
     .setName('emoji')
     .setDescription('Gives a random emoji!'),
   async execute(interaction, client) {
-    await interaction.reply(emojis[Math.floor(Math.random() * emojis.length)])
+    await interaction.reply(emojis[Math.floor(Math.random() * emojis.length)]);
   }
-}
+};

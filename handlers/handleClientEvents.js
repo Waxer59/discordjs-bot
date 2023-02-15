@@ -1,26 +1,26 @@
-const { getEnvVariables } = require('../environment/envVariables')
+const { getEnvVariables } = require('../environment/envVariables');
 const {
   clientOnMessageCreate,
   clientOnVoiceStateUpdate,
   clientOnChannelDelete,
   clientOnInteractionCreate,
   clientOnReady
-} = require('./clients')
+} = require('./clients');
 
 const handleClientEvents = (client) => {
-  clientOnMessageCreate(client)
+  clientOnMessageCreate(client);
 
-  clientOnVoiceStateUpdate(client)
+  clientOnVoiceStateUpdate(client);
 
-  clientOnChannelDelete(client)
+  clientOnChannelDelete(client);
 
-  clientOnInteractionCreate(client)
+  clientOnInteractionCreate(client);
 
-  clientOnReady(client)
+  clientOnReady(client);
 
-  client.login(getEnvVariables().DISCORD_TOKEN)
-}
+  client.login(getEnvVariables().DISCORD_TOKEN);
+};
 
 module.exports = {
   handleClientEvents
-}
+};

@@ -1,4 +1,4 @@
-const { updateMusicChart } = require('../../../helpers/music/updateMusicChart')
+const { updateMusicChart } = require('../../../helpers/music/updateMusicChart');
 
 const musicPlay = async (client, interaction, query) => {
   if (
@@ -6,30 +6,30 @@ const musicPlay = async (client, interaction, query) => {
       interaction.member.voice.channelId &&
     interaction.guild?.members?.me?.voice?.channelId !== null
   ) {
-    return false
+    return false;
   }
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-  const queue = client.player.createQueue(interaction.guild.id)
+  const guildQueue = client.player.getQueue(interaction.guild.id);
+  const queue = client.player.createQueue(interaction.guild.id);
 
-  await queue.join(interaction.member.voice.channel)
+  await queue.join(interaction.member.voice.channel);
   try {
     if (query.includes('list=')) {
-      await queue.playlist(query)
+      await queue.playlist(query);
     } else {
-      await queue.play(query)
+      await queue.play(query);
     }
     updateMusicChart(client, interaction, {
       color: '#fb644c'
-    })
+    });
   } catch (error) {
-    console.log(error)
-    queue.stop()
-    if (!guildQueue) queue.stop()
+    console.log(error);
+    queue.stop();
+    if (!guildQueue) queue.stop();
   }
 
-  return true
-}
+  return true;
+};
 
 module.exports = {
   musicPlay
-}
+};

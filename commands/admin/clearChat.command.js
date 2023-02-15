@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'clear-chat',
@@ -15,13 +15,13 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
-    const limit = interaction.options.getInteger('amount')
+    const limit = interaction.options.getInteger('amount');
 
-    await interaction.channel.bulkDelete(limit, true)
+    await interaction.channel.bulkDelete(limit, true);
 
     await interaction.reply({
-      content: `Deleted ${limit} messages`,
+      content: `Deleted **${limit}** messages at <#${interaction.channel.id}>`,
       ephemeral: true
-    })
+    });
   }
-}
+};

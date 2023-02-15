@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js')
-const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
+const { SlashCommandBuilder } = require('discord.js');
+const { updateMusicChart } = require('../../helpers/music/updateMusicChart');
 
 module.exports = {
   name: 'music-get-queue',
@@ -9,10 +9,10 @@ module.exports = {
   async execute(interaction, client) {
     const musicEmbed = updateMusicChart(client, interaction, {
       footer: { text: 'Current music queue' }
-    })
+    });
     await interaction.reply({
       embeds: [musicEmbed],
       ephemeral: true
-    })
+    });
   }
-}
+};

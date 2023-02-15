@@ -5,5 +5,5 @@
   "bracketSameLine": true,
   "arrowParens": "always",
   "trailingComma": "none",
-  "semi": false
+  "semi": true
 }

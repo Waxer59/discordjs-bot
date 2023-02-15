@@ -1,8 +1,8 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const {
   handleMusicExceptions
-} = require('../../handlers/musicCommand/handleMusicExceptions')
-const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
+} = require('../../handlers/musicCommand/handleMusicExceptions');
+const { updateMusicChart } = require('../../helpers/music/updateMusicChart');
 
 module.exports = {
   name: 'music-clear-queue',
@@ -14,15 +14,15 @@ module.exports = {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to clear!',
         ephemeral: true
-      })
-      return
+      });
+      return;
     }
-    const guildQueue = client.player.getQueue(interaction.guild.id)
-    guildQueue.clearQueue()
-    updateMusicChart(client, interaction, {})
+    const guildQueue = client.player.getQueue(interaction.guild.id);
+    guildQueue.clearQueue();
+    updateMusicChart(client, interaction, {});
     await interaction.reply({
       content: 'Queue cleared!',
       ephemeral: true
-    })
+    });
   }
-}
+};

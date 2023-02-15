@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const decisionsAlternatives = [
   'Absolutely not',
   'No',
@@ -18,7 +18,7 @@ const decisionsAlternatives = [
   'Definitely not',
   "I'm certain",
   "I'm not certain"
-]
+];
 
 module.exports = {
   name: 'decision',
@@ -30,6 +30,6 @@ module.exports = {
       decisionsAlternatives[
         Math.floor(Math.random() * decisionsAlternatives.length)
       ]
-    )
+    );
   }
-}
+};

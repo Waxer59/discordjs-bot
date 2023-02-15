@@ -1,13 +1,13 @@
-const { Events } = require('discord.js')
-const { getContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { Events } = require('discord.js');
+const { getContextParam } = require('../../context/manageContext');
+const { contextTypes } = require('../../context/types/contextTypes');
 const {
   handleMusicButtonsInteractions
-} = require('../musicCommand/handleMusicChannels')
+} = require('../musicCommand/handleMusicChannels');
 
 const clientOnInteractionCreate = (client) => {
   client.on(Events.InteractionCreate, async (interaction) => {
-    const channelId = interaction.channel.id
+    const channelId = interaction.channel.id;
     if (interaction.isButton()) {
       if (
         channelId ===
@@ -21,33 +21,35 @@ const clientOnInteractionCreate = (client) => {
           client,
           interaction,
           interaction.customId
-        )
+        );
       }
     }
-    if (!interaction.isChatInputCommand()) return
-    const command = interaction.client.commands.get(interaction.commandName)
+    if (!interaction.isChatInputCommand()) return;
+    const command = interaction.client.commands.get(interaction.commandName);
     if (!command) {
-      console.error(`No command matching ${interaction.commandName} was found.`)
-      return
+      console.error(
+        `No command matching ${interaction.commandName} was found.`
+      );
+      return;
     }
 
     try {
-      const commandReturnValue = await command.execute(interaction, client)
+      const commandReturnValue = await command.execute(interaction, client);
 
       //* Manage the context of the app
       if (commandReturnValue) {
-        context[commandReturnValue.name] = commandReturnValue.value
+        context[commandReturnValue.name] = commandReturnValue.value;
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
       await interaction.reply({
         content: 'There was an error while executing this command!',
         ephemeral: true
-      })
+      });
     }
-  })
-}
+  });
+};
 
 module.exports = {
   clientOnInteractionCreate
-}
+};

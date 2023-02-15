@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const MusicChannelSchema = new Schema({
+const TicketChannelSchema = new Schema({
   serverId: {
     type: String,
     required: [true, 'The server id is required']
@@ -15,4 +15,4 @@ const MusicChannelSchema = new Schema({
   }
 });
 
-module.exports = model('music-channel', MusicChannelSchema);
+module.exports = model('ticket-channel', TicketChannelSchema);

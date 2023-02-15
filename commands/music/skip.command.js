@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const {
   musicSkip
-} = require('../../handlers/musicCommand/controllers/musicSkip')
+} = require('../../handlers/musicCommand/controllers/musicSkip');
 const {
   handleMusicExceptions
-} = require('../../handlers/musicCommand/handleMusicExceptions')
+} = require('../../handlers/musicCommand/handleMusicExceptions');
 
 module.exports = {
   name: 'music-skip',
@@ -16,20 +16,20 @@ module.exports = {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to skip!',
         ephemeral: true
-      })
-      return
+      });
+      return;
     }
-    const skipSong = musicSkip(client, interaction)
+    const skipSong = musicSkip(client, interaction);
     if (skipSong) {
       await interaction.reply({
         content: 'Song skipped!',
         ephemeral: true
-      })
+      });
     } else {
       await interaction.reply({
         content: 'You cant skip a paused song!',
         ephemeral: true
-      })
+      });
     }
   }
-}
+};

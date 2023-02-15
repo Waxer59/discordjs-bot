@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js')
-const rockPaperScissors = ['Rock! 🪨', 'Paper! 📜', 'Scissors! ✂️']
+const { SlashCommandBuilder } = require('discord.js');
+const rockPaperScissors = ['Rock! 🪨', 'Paper! 📜', 'Scissors! ✂️'];
 
 module.exports = {
   name: 'rock-paper-scissors',
@@ -9,6 +9,6 @@ module.exports = {
   async execute(interaction, client) {
     await interaction.reply(
       rockPaperScissors[Math.floor(Math.random() * rockPaperScissors.length)]
-    )
+    );
   }
-}
+};

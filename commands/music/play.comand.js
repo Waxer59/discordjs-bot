@@ -1,7 +1,7 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const {
   musicPlay
-} = require('../../handlers/musicCommand/controllers/musicPlay')
+} = require('../../handlers/musicCommand/controllers/musicPlay');
 
 module.exports = {
   name: 'music-play',
@@ -15,29 +15,29 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction, client) {
-    const query = interaction.options.getString('query')
+    const query = interaction.options.getString('query');
     await interaction.reply({
       content: 'Loading...',
       ephemeral: true
-    })
+    });
     try {
-      const music = await musicPlay(client, interaction, query)
+      const music = await musicPlay(client, interaction, query);
       if (!music) {
         await interaction.editReply({
           content: 'Your are not in the same channel',
           ephemeral: true
-        })
-        return
+        });
+        return;
       }
     } catch (error) {
       await interaction.editReply({
         content: 'Song not found! :(',
         ephemeral: true
-      })
+      });
     }
     await interaction.editReply({
       content: 'Song found! :)',
       ephemeral: true
-    })
+    });
   }
-}
+};

@@ -1,8 +1,8 @@
-const { clientOnMessageCreate } = require('./clientOMessageCreate')
-const { clientOnChannelDelete } = require('./clientOnChannelDelete')
-const { clientOnInteractionCreate } = require('./clientOnInteractionCreate')
-const { clientOnReady } = require('./clientOnReady')
-const { clientOnVoiceStateUpdate } = require('./clientOnVoiceStateUpdate')
+const { clientOnMessageCreate } = require('./clientOMessageCreate');
+const { clientOnChannelDelete } = require('./clientOnChannelDelete');
+const { clientOnInteractionCreate } = require('./clientOnInteractionCreate');
+const { clientOnReady } = require('./clientOnReady');
+const { clientOnVoiceStateUpdate } = require('./clientOnVoiceStateUpdate');
 
 module.exports = {
   clientOnMessageCreate,
@@ -10,4 +10,4 @@ module.exports = {
   clientOnInteractionCreate,
   clientOnReady,
   clientOnVoiceStateUpdate
-}
+};

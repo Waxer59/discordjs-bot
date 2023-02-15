@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const {
   musicPause
-} = require('../../handlers/musicCommand/controllers/musicPause')
+} = require('../../handlers/musicCommand/controllers/musicPause');
 const {
   handleMusicExceptions
-} = require('../../handlers/musicCommand/handleMusicExceptions')
+} = require('../../handlers/musicCommand/handleMusicExceptions');
 
 module.exports = {
   name: 'music-pause',
@@ -26,24 +26,24 @@ module.exports = {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to pause!',
         ephemeral: true
-      })
-      return
+      });
+      return;
     }
-    const options = interaction.options.getString('options')
+    const options = interaction.options.getString('options');
     switch (options) {
       case '0':
         await interaction.reply({
           content: 'Song unpaused! :)',
           ephemeral: true
-        })
-        break
+        });
+        break;
       case '1':
         await interaction.reply({
           content: 'Song paused! :)',
           ephemeral: true
-        })
-        break
+        });
+        break;
     }
-    await musicPause(client, interaction, Boolean(+options))
+    await musicPause(client, interaction, Boolean(+options));
   }
-}
+};

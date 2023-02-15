@@ -1,24 +1,26 @@
 const {
   SlashCommandBuilder,
+  ChannelType,
+  PermissionFlagsBits,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  PermissionFlagsBits
+  EmbedBuilder
 } = require('discord.js');
-const { ChannelType } = require('discord.js');
 const {
   getContextParam,
   createContextParam
 } = require('../../context/manageContext');
 const { contextTypes } = require('../../context/types/contextTypes');
-const { createMusicChannel } = require('../../db/services/musicChannelService');
-const { updateMusicChart } = require('../../helpers/music/updateMusicChart');
+const {
+  createTicketChannel
+} = require('../../db/services/ticketChannelService');
 
 module.exports = {
-  name: 'music-setup',
+  name: 'ticket-setup',
   data: new SlashCommandBuilder()
-    .setName('music-setup')
-    .setDescription('Setup a music channel!')
+    .setName('ticket-setup')
+    .setDescription('Setup the ticket system for your server!')
     .addStringOption((option) =>
       option.setName('name').setDescription('name for your channel')
     )
@@ -32,11 +34,11 @@ module.exports = {
   async execute(interaction, client) {
     if (
       getContextParam(
-        `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
+        `${interaction.guild.id}_${contextTypes().TICKET_CHANNELS}`
       )
     ) {
       await interaction.reply({
-        content: 'There is already a music channel!',
+        content: 'There is already a ticket channel!',
         ephemeral: true
       });
       return;
@@ -46,52 +48,30 @@ module.exports = {
     const parent = interaction.options.getChannel('parent');
 
     const channel = await interaction.guild.channels.create({
-      name: name ?? 'music',
+      name: name ?? 'tickets',
       parent: parent ?? null,
       type: ChannelType.GuildText
     });
 
     const btnsControls = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId('pause')
-        .setLabel('⏯️')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('skip')
-        .setLabel('⏩')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('stop')
-        .setLabel('⏹️')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('loop')
-        .setDisabled(false)
-        .setLabel('🔄️')
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('shuffle')
-        .setLabel('🔀')
+        .setCustomId('ticket')
+        .setLabel('Open ticket')
         .setDisabled(false)
         .setStyle(ButtonStyle.Secondary)
     );
 
-    const musicEmbed = await updateMusicChart(client, interaction, {});
+    const ticketEmbed = new EmbedBuilder()
+      .setDescription('**Tickets**\nClick the button below to open a ticket!')
+      .setColor('Blurple');
 
     const controlsMessage = await channel.send({
-      embeds: [musicEmbed],
+      embeds: [ticketEmbed],
       components: [btnsControls]
     });
 
     createContextParam(
-      `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`,
+      `${interaction.guild.id}_${contextTypes().TICKET_CHANNELS}`,
       {
         serverId: interaction.guild.id,
         channelId: channel.id,
@@ -99,7 +79,7 @@ module.exports = {
       }
     );
 
-    await createMusicChannel({
+    await createTicketChannel({
       serverId: interaction.guild.id,
       channelId: channel.id,
       controlsMessageId: controlsMessage.id

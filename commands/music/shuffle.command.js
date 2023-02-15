@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 const {
   musicShuffle
-} = require('../../handlers/musicCommand/controllers/musicShuflle')
+} = require('../../handlers/musicCommand/controllers/musicShuflle');
 const {
   handleMusicExceptions
-} = require('../../handlers/musicCommand/handleMusicExceptions')
+} = require('../../handlers/musicCommand/handleMusicExceptions');
 
 module.exports = {
   name: 'music-shuffle',
@@ -16,13 +16,13 @@ module.exports = {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to shuffle!',
         ephemeral: true
-      })
-      return
+      });
+      return;
     }
-    musicShuffle(client, interaction)
+    musicShuffle(client, interaction);
     await interaction.reply({
       content: 'Queue shuffled!',
       ephemeral: true
-    })
+    });
   }
-}
+};
