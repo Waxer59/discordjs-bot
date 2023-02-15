@@ -14,5 +14,3 @@ const MusicChannelSchema = new Schema({
     required: [true, 'The controls message is required']
   }
 });
-
-module.exports = model('music-channel', MusicChannelSchema);

@@ -11,7 +11,7 @@ npm install
 3. Create the mongo database with the command
 
 ```console
-docker-compse up -d
+docker-compose up -d
 ```
 
 4. Start the proyect using
@@ -29,6 +29,10 @@ npm run start
 * /decision
 
 * /emoji
+
+* /rock-paper-scissors
+
+* /joke
 
 * /roll
 
