@@ -31,9 +31,7 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
     if (
-      getContextParam(
-        `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
-      )
+      getContextParam(`${interaction.guild.id}`)?.[contextTypes().MUSIC_CHANNEL]
     ) {
       await interaction.reply({
         content: 'There is already a music channel!',
@@ -90,15 +88,13 @@ module.exports = {
       components: [btnsControls]
     })
 
-    createContextParam(
-      `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`,
-      {
+    createContextParam(`${interaction.guild.id}`, {
+      [contextTypes().MUSIC_CHANNEL]: {
         serverId: interaction.guild.id,
         channelId: channel.id,
         controlsMessage
       }
-    )
-
+    })
     await createMusicChannel({
       serverId: interaction.guild.id,
       channelId: channel.id,

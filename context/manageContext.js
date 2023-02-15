@@ -16,17 +16,17 @@ const createContextParam = (param = '', value, options = OPTIONS) => {
   if (context[param] && !options.override) {
     throw new Error("You can't override a param in createContextParam function")
   }
-  context[param] = value
+  context[param] = { ...value }
   return context
 }
 
 const editContextParam = async (param = '', value) => {
-  context[param] = value
+  context[param] = { ...value }
   return context[param]
 }
 
-const removeContextParam = (param = '') => {
-  delete context[param]
+const removeContextParam = (serverId = '', param = '') => {
+  delete context[serverId][param]
 }
 
 module.exports = {

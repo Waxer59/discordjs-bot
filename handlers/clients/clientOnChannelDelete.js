@@ -8,11 +8,15 @@ const {
 const clientOnChannelDelete = (client) => {
   client.on(Events.ChannelDelete, async (channel) => {
     const channelId = channel.id
+    //! TODO
     if (
-      getContextParam(`${channel.guildId}_${contextTypes().MUSIC_CHANNELS}`)
+      getContextParam(`${channel.guildId}`)?.[contextTypes().MUSIC_CHANNEL]
         ?.channelId === channelId
     ) {
-      handleMusicChannelDelete(client, channel.guildId)
+      handleMusicChannelDelete(
+        getContextParam(`${channel.guildId}`)[contextTypes().MUSIC_CHANNEL]
+          .serverId
+      )
     }
   })
 }

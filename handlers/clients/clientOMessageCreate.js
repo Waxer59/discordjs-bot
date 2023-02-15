@@ -11,8 +11,8 @@ const clientOnMessageCreate = (client) => {
     const channelId = interaction.channel.id
     if (
       getContextParam(
-        `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
-      )?.channelId === channelId
+        `${interaction.guild.id}`
+      )?.[contextTypes().MUSIC_CHANNEL]?.channelId === channelId
     ) {
       await handleMusicChannels(client, interaction)
     }

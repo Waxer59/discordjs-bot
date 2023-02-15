@@ -11,9 +11,9 @@ const clientOnInteractionCreate = (client) => {
     if (interaction.isButton()) {
       if (
         channelId ===
-          getContextParam(
-            `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
-          )?.channelId &&
+        getContextParam(
+          `${interaction.guild.id}`
+        )?.[contextTypes().MUSIC_CHANNEL]?.channelId &&
         interaction.guild.members?.me.voice.channelId ===
           interaction.member.voice.channelId
       ) {

@@ -1,6 +1,6 @@
 const contextTypes = () => {
   return {
-    MUSIC_CHANNELS: 'MUSIC_CHANNELS'
+    MUSIC_CHANNEL: 'MUSIC_CHANNEL'
   }
 }
 

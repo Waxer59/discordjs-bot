@@ -82,9 +82,9 @@ const handleBotDisconnection = (client, interaction) => {
   resetMusicChart(interaction.guild.id, client)
 }
 
-const handleMusicChannelDelete = async (client, channelId) => {
-  await deleteMusicChannelByServerId(channelId)
-  removeContextParam(`${channelId}_${contextTypes().MUSIC_CHANNELS}`)
+const handleMusicChannelDelete = async (serverId) => {
+  await deleteMusicChannelByServerId(serverId)
+  removeContextParam(serverId, contextTypes().MUSIC_CHANNEL)
 }
 
 module.exports = {
