@@ -21,7 +21,7 @@ const createContextParam = (param = '', value, options = OPTIONS) => {
 }
 
 const editContextParam = async (param = '', value) => {
-  context[param] = { ...value }
+  context[param] = { ...value, ...context[param] }
   return context[param]
 }
 

@@ -88,13 +88,19 @@ module.exports = {
       components: [btnsControls]
     })
 
-    createContextParam(`${interaction.guild.id}`, {
-      [contextTypes().MUSIC_CHANNEL]: {
-        serverId: interaction.guild.id,
-        channelId: channel.id,
-        controlsMessage
+    createContextParam(
+      `${interaction.guild.id}`,
+      {
+        [contextTypes().MUSIC_CHANNEL]: {
+          serverId: interaction.guild.id,
+          channelId: channel.id,
+          controlsMessage
+        }
+      },
+      {
+        override: true
       }
-    })
+    )
     await createMusicChannel({
       serverId: interaction.guild.id,
       channelId: channel.id,
