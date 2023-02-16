@@ -19,9 +19,9 @@ const updateMusicChart = async (
 ) => {
   const songsArr = []
   const guildQueue = client.player.getQueue(interaction.guild.id)
-  const currentChannel = getContextParam(
-    `${interaction.guild.id}_${contextTypes().MUSIC_CHANNELS}`
-  )
+  const currentChannel = getContextParam(`${interaction.guild.id}`)?.[
+    contextTypes().MUSIC_CHANNEL
+  ]
 
   const queueSongs = guildQueue?.songs.filter((el, idx) => {
     if (isSkiped && idx === 0) {

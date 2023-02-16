@@ -1,9 +1,9 @@
-const { removeContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { removeContextParam } = require('../../../context/manageContext')
+const { contextTypes } = require('../../../context/types/contextTypes')
 const {
   deleteMusicChannelByServerId
-} = require('../../db/services/musicChannelService')
-const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
+} = require('../../../db/services/musicChannelService')
+const { resetMusicChart } = require('../../../helpers/music/resetMusicChart')
 const {
   musicShuffle,
   musicPause,
@@ -82,9 +82,9 @@ const handleBotDisconnection = (client, interaction) => {
   resetMusicChart(interaction.guild.id, client)
 }
 
-const handleMusicChannelDelete = async (client, channelId) => {
-  await deleteMusicChannelByServerId(channelId)
-  removeContextParam(`${channelId}_${contextTypes().MUSIC_CHANNELS}`)
+const handleMusicChannelDelete = async (serverId) => {
+  await deleteMusicChannelByServerId(serverId)
+  removeContextParam(serverId, contextTypes().MUSIC_CHANNEL)
 }
 
 module.exports = {

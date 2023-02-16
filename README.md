@@ -57,3 +57,5 @@ npm run start
 ### Admin
 
 * /clear-chat
+
+### Tools
