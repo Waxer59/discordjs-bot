@@ -1,10 +1,10 @@
 const { Schema, model } = require('mongoose')
 
-const MemberChannelCounterSchema = new Schema({
+const MemberCounterChannelSchema = new Schema({
   channelId: {
     type: String,
     required: [true, 'The channel id is required']
   }
 })
 
-module.exports = model('memberChanelCounter', MemberChannelCounterSchema)
+module.exports = model('memberChanelCounter', MemberCounterChannelSchema)

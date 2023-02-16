@@ -1,4 +1,6 @@
-const { updateMusicChart } = require('../../../helpers/music/updateMusicChart')
+const {
+  updateMusicChart
+} = require('../../../../helpers/music/updateMusicChart')
 
 const musicPause = async (client, interaction, pause = null) => {
   const guildQueue = client.player.getQueue(interaction.guild.id)

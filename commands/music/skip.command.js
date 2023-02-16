@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicSkip
-} = require('../../handlers/musicCommand/controllers/musicSkip')
+} = require('../../handlers/commands/musicCommand/controllers/musicSkip')
 const {
   handleMusicExceptions
-} = require('../../handlers/musicCommand/handleMusicExceptions')
+} = require('../../handlers/commands/musicCommand/handleMusicExceptions')
 
 module.exports = {
   name: 'music-skip',

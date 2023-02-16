@@ -10,23 +10,27 @@ const {
   getContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
+const DEFAULT_CHANNEL_NAME = '📈 | Members:'
 
 module.exports = {
   name: 'create-member-channel-counter',
   data: new SlashCommandBuilder()
-    .setName('create-member-channel-counter')
-    .setDescription('Create a member channel counter!')
+    .setName('create-member-counter-channel')
+    .setDescription('Create a member counter channel!')
     .addChannelOption((option) =>
       option
         .setName('parent')
         .setDescription('Choose a category for the channel')
         .addChannelTypes(ChannelType.GuildCategory)
     )
+    .addStringOption((option) =>
+      option.setName('name').setDescription('Channel name!')
+    )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
     if (
       getContextParam(`${interaction.guild.id}`)?.[
-        contextTypes().MEMBER_CHANNEL_COUNTER
+        contextTypes().MEMBER_COUNTER_CHANNEL
       ]
     ) {
       await interaction.reply({
@@ -36,8 +40,11 @@ module.exports = {
       return
     }
     const parent = interaction.options.getChannel('parent')
+    const channelName =
+      interaction.options.getString('name') ?? DEFAULT_CHANNEL_NAME
+
     const memberCounterChannelId = await interaction.guild.channels.create({
-      name: `📈 | Members: ${interaction.guild.memberCount}`,
+      name: `${channelName} ${interaction.guild.memberCount}`,
       parent: parent ?? null,
       type: ChannelType.GuildVoice,
       permissionOverwrites: [
@@ -50,8 +57,9 @@ module.exports = {
     editContextParam(
       `${interaction.guild.id}`,
       {
-        [contextTypes().MEMBER_CHANNEL_COUNTER]: {
-          channelId: memberCounterChannelId
+        [contextTypes().MEMBER_COUNTER_CHANNEL]: {
+          channelId: memberCounterChannelId,
+          channelName
         }
       },
       {

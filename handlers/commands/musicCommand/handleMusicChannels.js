@@ -1,9 +1,9 @@
-const { removeContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { removeContextParam } = require('../../../context/manageContext')
+const { contextTypes } = require('../../../context/types/contextTypes')
 const {
   deleteMusicChannelByServerId
-} = require('../../db/services/musicChannelService')
-const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
+} = require('../../../db/services/musicChannelService')
+const { resetMusicChart } = require('../../../helpers/music/resetMusicChart')
 const {
   musicShuffle,
   musicPause,
