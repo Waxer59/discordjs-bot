@@ -59,3 +59,5 @@ npm run start
 * /clear-chat
 
 ### Tools
+
+* /ticket-setup

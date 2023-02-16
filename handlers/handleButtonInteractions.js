@@ -1,10 +1,11 @@
 const { getContextParam } = require('../context/manageContext')
 const { contextTypes } = require('../context/types/contextTypes')
+const { handleGlobalButtons } = require('./commands/handleGlobalButtons')
 const {
   handleMusicButtons
 } = require('./commands/musicCommand/handleMusicChannels')
 const {
-  handleTickeSystemButtons
+  handleTicketSystemButtons
 } = require('./commands/ticketSystem/handleTicketSystemChannels')
 
 const handleButtonInteractions = (client, interaction) => {
@@ -22,7 +23,9 @@ const handleButtonInteractions = (client, interaction) => {
     getContextParam(`${interaction.guild.id}`)?.[contextTypes().TICKET_CHANNEL]
       ?.channelId
   ) {
-    handleTickeSystemButtons(client, interaction)
+    handleTicketSystemButtons(client, interaction)
+  } else {
+    handleGlobalButtons(client, interaction)
   }
 }
 
