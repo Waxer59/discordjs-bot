@@ -13,7 +13,13 @@ const initializeTicketSystem = async (client, id) => {
   const { channelId, serverId, controlsMessageId, forumCategoryId } = content[0]
   const channel = client.channels.cache.get(channelId)
   const category = client.channels.cache.get(forumCategoryId)
-  if (!channel && !category) {
+  if (!channel || !category) {
+    if (channel) {
+      channel.delete()
+    }
+    if (category) {
+      category.delete()
+    }
     deleteTicketSystemByServerId(id)
     return
   }

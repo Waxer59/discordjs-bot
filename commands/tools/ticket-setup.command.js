@@ -5,7 +5,8 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  EmbedBuilder,
+  PermissionsBitField
 } = require('discord.js')
 const {
   getContextParam,
@@ -55,7 +56,13 @@ module.exports = {
     const forumCategory = await interaction.guild.channels.create({
       name: name ?? DEFAULT_CHANNEL_NAME,
       parent: parent ?? null,
-      type: ChannelType.GuildCategory
+      type: ChannelType.GuildCategory,
+      permissionOverwrites: [
+        {
+          id: interaction.user.id,
+          deny: [PermissionsBitField.Flags.SendMessages]
+        }
+      ]
     })
 
     const btnsControls = new ActionRowBuilder().addComponents(
@@ -75,14 +82,20 @@ module.exports = {
       components: [btnsControls]
     })
 
-    createContextParam(`${interaction.guild.id}`, {
-      [contextTypes().TICKET_CHANNEL]: {
-        serverId: interaction.guild.id,
-        channelId: channel.id,
-        forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-        controlsMessage
+    createContextParam(
+      `${interaction.guild.id}`,
+      {
+        [contextTypes().TICKET_CHANNEL]: {
+          serverId: interaction.guild.id,
+          channelId: channel.id,
+          forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
+          controlsMessage
+        }
+      },
+      {
+        override: true
       }
-    })
+    )
 
     await createTicketSystem({
       serverId: interaction.guild.id,

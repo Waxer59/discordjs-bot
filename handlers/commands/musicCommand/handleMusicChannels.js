@@ -34,7 +34,8 @@ const handleMusicChannels = async (client, interaction) => {
   musicPlay(client, interaction, query)
 }
 
-const handleMusicButtonsInteractions = async (client, interaction, butonId) => {
+const handleMusicButtons = async (client, interaction) => {
+  const buttonId = interaction.customId
   const guildQueue = client.player.getQueue(interaction.guild.id)
 
   if (guildQueue?.songs) {
@@ -47,7 +48,7 @@ const handleMusicButtonsInteractions = async (client, interaction, butonId) => {
   }
 
   try {
-    switch (butonId) {
+    switch (buttonId) {
       case 'pause':
         musicPause(client, interaction)
         break
@@ -90,6 +91,6 @@ const handleMusicChannelDelete = async (serverId) => {
 module.exports = {
   handleMusicChannels,
   handleBotDisconnection,
-  handleMusicButtonsInteractions,
+  handleMusicButtons,
   handleMusicChannelDelete
 }
