@@ -32,12 +32,7 @@ const clientOnInteractionCreate = (client) => {
     }
 
     try {
-      const commandReturnValue = await command.execute(interaction, client)
-
-      //* Manage the context of the app
-      if (commandReturnValue) {
-        context[commandReturnValue.name] = commandReturnValue.value
-      }
+      await command.execute(interaction, client)
     } catch (error) {
       console.error(error)
       await interaction.reply({
