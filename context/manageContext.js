@@ -16,7 +16,7 @@ const createContextParam = (param = '', value, options = OPTIONS) => {
   if (context[param] && !options.override) {
     throw new Error("You can't override a param in createContextParam function")
   }
-  context[param] = { ...value }
+  context[param] = { ...value, ...context[param] }
   return context
 }
 

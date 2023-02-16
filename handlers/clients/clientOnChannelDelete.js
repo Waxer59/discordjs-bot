@@ -3,7 +3,7 @@ const { getContextParam } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
 const {
   handleDeleteMemberCounterChannel
-} = require('../commands/memberCounterChannel/handleMemberCounterChannel')
+} = require('../commands/memberCounterChannel/handleMemberCounterChannels')
 const {
   handleMusicChannelDelete
 } = require('../commands/musicCommand/handleMusicChannels')

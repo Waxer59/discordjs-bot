@@ -5,15 +5,17 @@ const {
   PermissionsBitField
 } = require('discord.js')
 const {
-  editContextParam,
-  getAllContext,
-  getContextParam
+  getContextParam,
+  createContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
+const {
+  createMemberCounterChannel
+} = require('../../db/services/memberCounterChannelService')
 const DEFAULT_CHANNEL_NAME = '📈 | Members:'
 
 module.exports = {
-  name: 'create-member-channel-counter',
+  name: 'create-member-counter-channel',
   data: new SlashCommandBuilder()
     .setName('create-member-counter-channel')
     .setDescription('Create a member counter channel!')
@@ -39,6 +41,7 @@ module.exports = {
       })
       return
     }
+
     const parent = interaction.options.getChannel('parent')
     const channelName =
       interaction.options.getString('name') ?? DEFAULT_CHANNEL_NAME
@@ -54,19 +57,27 @@ module.exports = {
         }
       ]
     })
-    editContextParam(
+
+    createContextParam(
       `${interaction.guild.id}`,
       {
         [contextTypes().MEMBER_COUNTER_CHANNEL]: {
-          channelId: memberCounterChannelId,
-          channelName
+          channelId: `${memberCounterChannelId}`.replace(/[^0-9]/g, ''),
+          channelName,
+          serverId: interaction.guild.id
         }
       },
       {
         override: true
       }
     )
-    console.log(getAllContext())
+
+    await createMemberCounterChannel({
+      channelId: `${memberCounterChannelId}`.replace(/[^0-9]/g, ''),
+      channelName,
+      serverId: interaction.guild.id
+    })
+
     await interaction.reply({ content: 'Channel created!', ephemeral: true })
   }
 }
