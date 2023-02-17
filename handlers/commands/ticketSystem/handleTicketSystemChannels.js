@@ -51,11 +51,26 @@ const MODAL_TICKET = new ModalBuilder()
   .setTitle('New ticket')
   .addComponents(TICKET_DESCRIPTION)
 
+const MAX_TICKET_CHANNELS_IN_A_CATEGORY = 50
+
 const handleTicketSystemButtons = async (client, interaction) => {
   const buttonId = interaction.customId
 
   switch (buttonId) {
     case 'open-ticket':
+      if (
+        client.channels.cache.get(
+          getContextParam(interaction.guild.id)[contextTypes().TICKET_CHANNEL]
+            .forumCategoryId
+        ).children.cache.size >= MAX_TICKET_CHANNELS_IN_A_CATEGORY
+      ) {
+        interaction.reply({
+          content:
+            '**All our support channels are busy, please try again later.**',
+          ephemeral: true
+        })
+        return
+      }
       if (
         interaction.guild.channels.cache.find(
           (channel) => channel.topic === interaction.user.id
