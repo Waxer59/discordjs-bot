@@ -25,7 +25,13 @@ const DELETE_TICKET_COMPONENTS = new ActionRowBuilder().addComponents(
     .setCustomId('close-ticket')
     .setLabel('🔒 Close')
     .setDisabled(false)
-    .setStyle(ButtonStyle.Secondary)
+    .setStyle(ButtonStyle.Secondary),
+
+  new ButtonBuilder()
+    .setCustomId('transcript-ticket')
+    .setLabel('📜 Transcript')
+    .setDisabled(false)
+    .setStyle(ButtonStyle.Primary)
 )
 
 const handleTicketSystemButtons = async (client, interaction) => {
@@ -69,9 +75,13 @@ const handleTicketSystemButtons = async (client, interaction) => {
         components: [DELETE_TICKET_COMPONENTS],
         content: `Welcome <@${interaction.user.id}>`
       })
+
+      interaction.reply({
+        content: `**Ticket created in** ${ticketChannel}`,
+        ephemeral: true
+      })
       break
   }
-  interaction.update({ content: '' })
 }
 
 const handleTicketSystemDelete = async (client, serverId, channel) => {
