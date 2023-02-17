@@ -4,7 +4,10 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle
 } = require('discord.js')
 const {
   getContextParam,
@@ -34,12 +37,25 @@ const DELETE_TICKET_COMPONENTS = new ActionRowBuilder().addComponents(
     .setStyle(ButtonStyle.Primary)
 )
 
+const TICKET_DESCRIPTION = new ActionRowBuilder().addComponents(
+  new TextInputBuilder()
+    .setCustomId('description-ticket')
+    .setLabel('Describe your ticket')
+    .setPlaceholder('Describe in a few words the reason for your ticket')
+    .setStyle(TextInputStyle.Paragraph)
+    .setRequired(true)
+)
+
+const MODAL_TICKET = new ModalBuilder()
+  .setCustomId('form-ticket')
+  .setTitle('New ticket')
+  .addComponents(TICKET_DESCRIPTION)
+
 const handleTicketSystemButtons = async (client, interaction) => {
   const buttonId = interaction.customId
-  const serverId = interaction.guild.id
 
   switch (buttonId) {
-    case 'ticket':
+    case 'open-ticket':
       if (
         interaction.guild.channels.cache.find(
           (channel) => channel.topic === interaction.user.id
@@ -51,37 +67,48 @@ const handleTicketSystemButtons = async (client, interaction) => {
         })
         return
       }
-      const ticketChannel = await interaction.guild.channels.create({
-        name: `ticket-${interaction.user.username}-${interaction.user.discriminator}`,
-        parent:
-          getContextParam(serverId)[contextTypes().TICKET_CHANNEL]
-            .forumCategoryId,
-        type: ChannelType.GuildText,
-        topic: interaction.user.id,
-        permissionOverwrites: [
-          {
-            id: interaction.guild.id,
-            deny: [PermissionsBitField.Flags.ViewChannel]
-          },
-          {
-            id: interaction.user.id,
-            allow: [PermissionsBitField.Flags.ViewChannel]
-          }
-        ]
-      })
-
-      await ticketChannel.send({
-        embeds: [DELETE_TICKET_EMBED],
-        components: [DELETE_TICKET_COMPONENTS],
-        content: `Welcome <@${interaction.user.id}>`
-      })
-
-      interaction.reply({
-        content: `**Ticket created in** ${ticketChannel}`,
-        ephemeral: true
-      })
+      await interaction.showModal(MODAL_TICKET)
       break
   }
+}
+
+const handleSumbitTicketForm = async (interaction) => {
+  const serverId = interaction.guild.id
+  const ticketDescription =
+    interaction.fields.getTextInputValue('description-ticket')
+
+  const ticketChannel = await interaction.guild.channels.create({
+    name: `ticket-${interaction.user.username}-${interaction.user.discriminator}`,
+    parent:
+      getContextParam(serverId)[contextTypes().TICKET_CHANNEL].forumCategoryId,
+    type: ChannelType.GuildText,
+    topic: interaction.user.id,
+    permissionOverwrites: [
+      {
+        id: interaction.guild.id,
+        deny: [PermissionsBitField.Flags.ViewChannel]
+      },
+      {
+        id: interaction.user.id,
+        allow: [PermissionsBitField.Flags.ViewChannel]
+      }
+    ]
+  })
+
+  await ticketChannel.send({
+    embeds: [DELETE_TICKET_EMBED],
+    components: [DELETE_TICKET_COMPONENTS],
+    content: `Welcome <@${interaction.user.id}>`
+  })
+
+  await ticketChannel.send({
+    content: `**Reason for opening this ticket given by <@${interaction.user.id}>** :\n${ticketDescription}`
+  })
+
+  await interaction.reply({
+    content: `**Ticket created in** ${ticketChannel}`,
+    ephemeral: true
+  })
 }
 
 const handleTicketSystemDelete = async (client, serverId, channel) => {
@@ -103,5 +130,6 @@ const handleTicketSystemDelete = async (client, serverId, channel) => {
 
 module.exports = {
   handleTicketSystemButtons,
-  handleTicketSystemDelete
+  handleTicketSystemDelete,
+  handleSumbitTicketForm
 }

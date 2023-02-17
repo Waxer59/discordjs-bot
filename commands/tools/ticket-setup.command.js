@@ -96,7 +96,7 @@ module.exports = {
 
     const btnsControls = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId('ticket')
+        .setCustomId('open-ticket')
         .setLabel('Open ticket')
         .setDisabled(false)
         .setStyle(ButtonStyle.Secondary)
