@@ -112,8 +112,7 @@ const handleSumbitTicketForm = async (interaction) => {
 
   await ticketChannel.send({
     embeds: [DELETE_TICKET_EMBED],
-    components: [DELETE_TICKET_COMPONENTS],
-    content: `Welcome <@${interaction.user.id}>`
+    components: [DELETE_TICKET_COMPONENTS]
   })
 
   await ticketChannel.send({
