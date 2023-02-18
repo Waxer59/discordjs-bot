@@ -13,6 +13,7 @@ const {
 const { contextTypes } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
 const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
+const DEFAULT_MUSIC_CHANNEL_NAME = '🎶 Music'
 
 module.exports = {
   name: 'music-setup',
@@ -40,12 +41,13 @@ module.exports = {
       return
     }
 
-    const name = interaction.options.getString('name')
-    const parent = interaction.options.getChannel('parent')
+    const name =
+      interaction.options.getString('name') ?? DEFAULT_MUSIC_CHANNEL_NAME
+    const parent = interaction.options.getChannel('parent-category') ?? null
 
     const channel = await interaction.guild.channels.create({
-      name: name ?? 'music',
-      parent: parent ?? null,
+      name,
+      parent,
       type: ChannelType.GuildText
     })
 

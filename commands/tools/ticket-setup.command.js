@@ -58,7 +58,8 @@ module.exports = {
   async execute(interaction, client) {
     const name =
       interaction.options.getString('name') ?? DEFAULT_TICKET_SYSTEM_NAME
-    const parent = interaction.options.getChannel('parent') ?? null
+    const parent = interaction.options.getChannel('parent-category')
+    console.log(parent)
     const description =
       interaction.options.getString('description') ??
       DEFAULT_TICKET_SYSTEM_DESCRIPTION
