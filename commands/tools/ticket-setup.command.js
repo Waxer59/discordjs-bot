@@ -10,7 +10,8 @@ const {
 } = require('discord.js')
 const {
   getContextParam,
-  createContextParam
+  createContextParam,
+  pushContextParam
 } = require('../../context/manageContext')
 const { contextTypes } = require('../../context/types/contextTypes')
 const { createTicketSystem } = require('../../db/services/ticketSystemService')
@@ -55,18 +56,6 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
-    if (
-      getContextParam(`${interaction.guild.id}`)?.[
-        contextTypes().TICKET_CHANNEL
-      ]
-    ) {
-      await interaction.reply({
-        content: 'There is already a ticket channel!',
-        ephemeral: true
-      })
-      return
-    }
-
     const name =
       interaction.options.getString('name') ?? DEFAULT_TICKET_SYSTEM_NAME
     const parent = interaction.options.getChannel('parent') ?? null
@@ -97,7 +86,7 @@ module.exports = {
     const btnsControls = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('open-ticket')
-        .setLabel('Open ticket')
+        .setLabel('📩 Open ticket')
         .setDisabled(false)
         .setStyle(ButtonStyle.Secondary)
     )
@@ -112,20 +101,39 @@ module.exports = {
       components: [btnsControls]
     })
 
-    createContextParam(
-      `${interaction.guild.id}`,
-      {
-        [contextTypes().TICKET_CHANNEL]: {
+    if (
+      getContextParam(`${interaction.guild.id}`)?.[
+        contextTypes().TICKET_CHANNEL
+      ]
+    ) {
+      pushContextParam(
+        `${interaction.guild.id}`,
+        contextTypes().TICKET_CHANNEL,
+        {
           serverId: interaction.guild.id,
           channelId: channel.id,
           forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
           controlsMessage
         }
-      },
-      {
-        override: true
-      }
-    )
+      )
+    } else {
+      createContextParam(
+        `${interaction.guild.id}`,
+        {
+          [contextTypes().TICKET_CHANNEL]: [
+            {
+              serverId: interaction.guild.id,
+              channelId: channel.id,
+              forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
+              controlsMessage
+            }
+          ]
+        },
+        {
+          override: true
+        }
+      )
+    }
 
     await createTicketSystem({
       serverId: interaction.guild.id,

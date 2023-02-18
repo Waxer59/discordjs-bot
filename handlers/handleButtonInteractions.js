@@ -19,9 +19,9 @@ const handleButtonInteractions = (client, interaction) => {
   ) {
     handleMusicButtons(client, interaction)
   } else if (
-    channelId ===
-    getContextParam(`${interaction.guild.id}`)?.[contextTypes().TICKET_CHANNEL]
-      ?.channelId
+    getContextParam(`${interaction.guild.id}`)?.[
+      contextTypes().TICKET_CHANNEL
+    ].find((el) => el.channelId === channelId)
   ) {
     handleTicketSystemButtons(client, interaction)
   } else {

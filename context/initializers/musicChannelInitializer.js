@@ -6,15 +6,15 @@ const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
 const { createContextParam } = require('../manageContext')
 const { contextTypes } = require('../types/contextTypes')
 
-const initializeMusicChannels = async (client, id) => {
-  const content = await getMusicChannelByServerId(id)
+const initializeMusicChannels = async (client, serverId) => {
+  const content = await getMusicChannelByServerId(serverId)
   if (content.length <= 0) {
     return
   }
-  const { controlsMessageId, channelId, serverId } = content[0]
+  const { controlsMessageId, channelId } = content[0]
   const channel = client.channels.cache.get(channelId)
   if (!channel) {
-    deleteMusicChannelByServerId(id)
+    deleteMusicChannelByServerId(serverId)
     return
   }
   createContextParam(
@@ -30,7 +30,7 @@ const initializeMusicChannels = async (client, id) => {
       override: true
     }
   )
-  resetMusicChart(id, client)
+  resetMusicChart(serverId, client)
 }
 
 module.exports = {

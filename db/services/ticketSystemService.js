@@ -18,12 +18,20 @@ const createTicketSystem = async ({
 }
 
 const getTicketSystemByServerId = async (serverId) => {
-  const ticketSystem = await TicketSystem.find({ serverId })
+  const ticketSystem = await TicketSystem.find({ serverId }, '-_id -__v')
   return ticketSystem
 }
 
-const deleteTicketSystemByServerId = async (serverId) => {
-  const ticketSystem = await TicketSystem.findOneAndRemove({ serverId })
+const deleteTicketSystemByServerId = async ({
+  serverId,
+  channelId,
+  forumCategoryId
+}) => {
+  const ticketSystem = await TicketSystem.findOneAndRemove({
+    serverId,
+    channelId,
+    forumCategoryId
+  })
   return ticketSystem
 }
 
