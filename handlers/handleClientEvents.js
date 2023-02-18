@@ -4,12 +4,10 @@ const {
   clientOnVoiceStateUpdate,
   clientOnChannelDelete,
   clientOnInteractionCreate,
-  clientOnReady
+  clientOnReady,
+  clientOnGuildMemberRemove,
+  clientOnGuildMemberAdd
 } = require('./clients')
-const {
-  clientOnGuildMemberRemove
-} = require('./clients/clienOnGuildMemberRemove')
-const { clientOnGuildMemberAdd } = require('./clients/clientOnGuildMemberAdd')
 
 const handleClientEvents = (client) => {
   clientOnMessageCreate(client)

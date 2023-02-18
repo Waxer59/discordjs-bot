@@ -20,9 +20,14 @@ const createContextParam = (param = '', value, options = OPTIONS) => {
   return context
 }
 
-const editContextParam = async (param = '', value) => {
-  context[param] = { ...value, ...context[param] }
-  return context[param]
+const editContextParam = (serverId = '', param = '', value) => {
+  context[serverId][param] = value
+  return context[serverId]
+}
+
+const pushContextParam = (serverId = '', param = '', value) => {
+  context[serverId][param].push(value)
+  return context[serverId]
 }
 
 const removeContextParam = (serverId = '', param = '') => {
@@ -34,5 +39,6 @@ module.exports = {
   getContextParam,
   createContextParam,
   removeContextParam,
-  editContextParam
+  editContextParam,
+  pushContextParam
 }
