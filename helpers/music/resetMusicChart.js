@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('@discordjs/builders')
 const { getContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 
 const resetMusicChart = (serverId, client) => {
-  const currentChannel = getContextParam(`${serverId}`)?.[contextTypes().MUSIC_CHANNEL]
+  const currentChannel = getContextParam(`${serverId}`)?.[MUSIC_CHANNEL]
   const musicEmbed = new EmbedBuilder()
     .setDescription('**No song playing currently.**')
     //! .setColor(color) TODO: FIX PROPERTY

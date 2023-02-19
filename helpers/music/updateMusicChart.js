@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders')
 const { getContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 
 const updateMusicChart = async (
   client,
@@ -20,7 +20,7 @@ const updateMusicChart = async (
   const songsArr = []
   const guildQueue = client.player.getQueue(interaction.guild.id)
   const currentChannel = getContextParam(`${interaction.guild.id}`)?.[
-    contextTypes().MUSIC_CHANNEL
+    MUSIC_CHANNEL
   ]
 
   const queueSongs = guildQueue?.songs.filter((el, idx) => {
@@ -57,5 +57,3 @@ const updateMusicChart = async (
 module.exports = {
   updateMusicChart
 }
-
-// TODO: FIX EMBEDS

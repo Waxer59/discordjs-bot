@@ -1,6 +1,6 @@
 const { Events } = require('discord.js')
 const { getContextParam } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const {
   handleMusicChannels
 } = require('../commands/musicCommand/handleMusicChannels')
@@ -12,8 +12,8 @@ const clientOnMessageCreate = (client) => {
     }
     const channelId = interaction.channel.id
     if (
-      getContextParam(`${interaction.guild.id}`)?.[contextTypes().MUSIC_CHANNEL]
-        ?.channelId === channelId
+      getContextParam(`${interaction.guild.id}`)?.[MUSIC_CHANNEL]?.channelId ===
+      channelId
     ) {
       await handleMusicChannels(client, interaction)
     }
