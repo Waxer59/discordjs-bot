@@ -1,5 +1,5 @@
 const { removeContextParam } = require('../../../context/manageContext')
-const { contextTypes } = require('../../../context/types/contextTypes')
+const { MUSIC_CHANNEL } = require('../../../context/types/contextTypes')
 const {
   deleteMusicChannelByServerId
 } = require('../../../db/services/musicChannelService')
@@ -85,7 +85,7 @@ const handleBotDisconnection = (client, interaction) => {
 
 const handleMusicChannelDelete = async (serverId) => {
   await deleteMusicChannelByServerId(serverId)
-  removeContextParam(serverId, contextTypes().MUSIC_CHANNEL)
+  removeContextParam(serverId, MUSIC_CHANNEL)
 }
 
 module.exports = {

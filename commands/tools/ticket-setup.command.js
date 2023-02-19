@@ -13,7 +13,7 @@ const {
   createContextParam,
   pushContextParam
 } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { TICKET_CHANNEL } = require('../../context/types/contextTypes')
 const { createTicketSystem } = require('../../db/services/ticketSystemService')
 const DEFAULT_TICKET_SYSTEM_NAME = '📌 Ticket system'
 const DEFAULT_TICKET_SYSTEM_DESCRIPTION =
@@ -59,7 +59,6 @@ module.exports = {
     const name =
       interaction.options.getString('name') ?? DEFAULT_TICKET_SYSTEM_NAME
     const parent = interaction.options.getChannel('parent-category')
-    console.log(parent)
     const description =
       interaction.options.getString('description') ??
       DEFAULT_TICKET_SYSTEM_DESCRIPTION
@@ -102,26 +101,18 @@ module.exports = {
       components: [btnsControls]
     })
 
-    if (
-      getContextParam(`${interaction.guild.id}`)?.[
-        contextTypes().TICKET_CHANNEL
-      ]
-    ) {
-      pushContextParam(
-        `${interaction.guild.id}`,
-        contextTypes().TICKET_CHANNEL,
-        {
-          serverId: interaction.guild.id,
-          channelId: channel.id,
-          forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-          controlsMessage
-        }
-      )
+    if (getContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL]) {
+      pushContextParam(`${interaction.guild.id}`, TICKET_CHANNEL, {
+        serverId: interaction.guild.id,
+        channelId: channel.id,
+        forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
+        controlsMessage
+      })
     } else {
       createContextParam(
         `${interaction.guild.id}`,
         {
-          [contextTypes().TICKET_CHANNEL]: [
+          [TICKET_CHANNEL]: [
             {
               serverId: interaction.guild.id,
               channelId: channel.id,

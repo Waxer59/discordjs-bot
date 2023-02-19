@@ -3,7 +3,7 @@ const {
   deleteTicketSystemByServerId
 } = require('../../db/services/ticketSystemService')
 const { createContextParam } = require('../manageContext')
-const { contextTypes } = require('../types/contextTypes')
+const { TICKET_CHANNEL } = require('../types/contextTypes')
 
 const initializeTicketSystem = async (client, serverId) => {
   const content = await getTicketSystemByServerId(serverId)
@@ -28,7 +28,7 @@ const initializeTicketSystem = async (client, serverId) => {
   createContextParam(
     `${serverId}`,
     {
-      [contextTypes().TICKET_CHANNEL]: content
+      [TICKET_CHANNEL]: content
     },
     {
       override: true

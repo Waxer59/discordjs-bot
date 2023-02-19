@@ -13,7 +13,7 @@ const {
   getContextParam,
   editContextParam
 } = require('../../../context/manageContext')
-const { contextTypes } = require('../../../context/types/contextTypes')
+const { TICKET_CHANNEL } = require('../../../context/types/contextTypes')
 const {
   deleteTicketSystemByServerId
 } = require('../../../db/services/ticketSystemService')
@@ -61,7 +61,7 @@ const handleTicketSystemButtons = async (client, interaction) => {
     case 'open-ticket':
       if (
         client.channels.cache.get(
-          getContextParam(serverId)[contextTypes().TICKET_CHANNEL].find(
+          getContextParam(serverId)[TICKET_CHANNEL].find(
             (el) => el.channelId === interaction.channel.id
           ).forumCategoryId
         ).children.cache.size >= MAX_TICKET_CHANNELS_IN_A_CATEGORY
@@ -78,7 +78,7 @@ const handleTicketSystemButtons = async (client, interaction) => {
           (channel) =>
             channel.topic ===
             `${interaction.user.id}-${
-              getContextParam(serverId)[contextTypes().TICKET_CHANNEL].find(
+              getContextParam(serverId)[TICKET_CHANNEL].find(
                 (el) => el.channelId === interaction.channel.id
               ).forumCategoryId
             }`
@@ -99,9 +99,9 @@ const handleSumbitTicketForm = async (interaction) => {
   const serverId = interaction.guild.id
   const ticketDescription =
     interaction.fields.getTextInputValue('description-ticket')
-  const ticketSystem = getContextParam(serverId)[
-    contextTypes().TICKET_CHANNEL
-  ].find((el) => el.channelId === interaction.channel.id)
+  const ticketSystem = getContextParam(serverId)[TICKET_CHANNEL].find(
+    (el) => el.channelId === interaction.channel.id
+  )
 
   const ticketChannel = await interaction.guild.channels.create({
     name: `ticket-${interaction.user.username}-${interaction.user.discriminator}`,
@@ -136,12 +136,11 @@ const handleSumbitTicketForm = async (interaction) => {
 }
 
 const handleTicketSystemDelete = async (client, serverId, channel) => {
-  const deletedTicketSystem = getContextParam(serverId)[
-    contextTypes().TICKET_CHANNEL
-  ].find((el) =>
-    channel.type === ChannelType.GuildText
-      ? el.channelId
-      : el.forumCategoryId === channel.id
+  const deletedTicketSystem = getContextParam(serverId)[TICKET_CHANNEL].find(
+    (el) =>
+      channel.type === ChannelType.GuildText
+        ? el.channelId
+        : el.forumCategoryId === channel.id
   )
 
   await deleteTicketSystemByServerId({
@@ -164,8 +163,8 @@ const handleTicketSystemDelete = async (client, serverId, channel) => {
 
   editContextParam(
     serverId,
-    contextTypes().TICKET_CHANNEL,
-    getContextParam(serverId)?.[contextTypes().TICKET_CHANNEL].filter(
+    TICKET_CHANNEL,
+    getContextParam(serverId)?.[TICKET_CHANNEL].filter(
       (el) => el.channelId !== channel.id
     )
   )

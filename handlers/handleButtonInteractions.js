@@ -1,5 +1,8 @@
 const { getContextParam } = require('../context/manageContext')
-const { contextTypes } = require('../context/types/contextTypes')
+const {
+  MUSIC_CHANNEL,
+  TICKET_CHANNEL
+} = require('../context/types/contextTypes')
 const { handleGlobalButtons } = require('./commands/handleGlobalButtons')
 const {
   handleMusicButtons
@@ -12,16 +15,15 @@ const handleButtonInteractions = (client, interaction) => {
   const channelId = interaction.channel.id
   if (
     channelId ===
-      getContextParam(`${interaction.guild.id}`)?.[contextTypes().MUSIC_CHANNEL]
-        ?.channelId &&
+      getContextParam(`${interaction.guild.id}`)?.[MUSIC_CHANNEL]?.channelId &&
     interaction.guild.members?.me.voice.channelId ===
       interaction.member.voice.channelId
   ) {
     handleMusicButtons(client, interaction)
   } else if (
-    getContextParam(`${interaction.guild.id}`)?.[
-      contextTypes().TICKET_CHANNEL
-    ].find((el) => el.channelId === channelId)
+    getContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL].find(
+      (el) => el.channelId === channelId
+    )
   ) {
     handleTicketSystemButtons(client, interaction)
   } else {

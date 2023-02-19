@@ -4,7 +4,7 @@ const {
 } = require('../../db/services/musicChannelService')
 const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
 const { createContextParam } = require('../manageContext')
-const { contextTypes } = require('../types/contextTypes')
+const { MUSIC_CHANNEL } = require('../types/contextTypes')
 
 const initializeMusicChannels = async (client, serverId) => {
   const content = await getMusicChannelByServerId(serverId)
@@ -20,7 +20,7 @@ const initializeMusicChannels = async (client, serverId) => {
   createContextParam(
     `${serverId}`,
     {
-      [contextTypes().MUSIC_CHANNEL]: {
+      [MUSIC_CHANNEL]: {
         channelId,
         serverId,
         controlsMessage: await channel.messages.fetch(controlsMessageId)

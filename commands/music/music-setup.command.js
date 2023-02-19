@@ -10,7 +10,7 @@ const {
   getContextParam,
   createContextParam
 } = require('../../context/manageContext')
-const { contextTypes } = require('../../context/types/contextTypes')
+const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
 const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
 const DEFAULT_MUSIC_CHANNEL_NAME = '🎶 Music'
@@ -31,9 +31,7 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
-    if (
-      getContextParam(`${interaction.guild.id}`)?.[contextTypes().MUSIC_CHANNEL]
-    ) {
+    if (getContextParam(`${interaction.guild.id}`)?.[MUSIC_CHANNEL]) {
       await interaction.reply({
         content: 'There is already a music channel!',
         ephemeral: true
@@ -93,7 +91,7 @@ module.exports = {
     createContextParam(
       `${interaction.guild.id}`,
       {
-        [contextTypes().MUSIC_CHANNEL]: {
+        [MUSIC_CHANNEL]: {
           serverId: interaction.guild.id,
           channelId: channel.id,
           controlsMessage
