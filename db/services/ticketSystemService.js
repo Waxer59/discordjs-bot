@@ -35,8 +35,14 @@ const deleteTicketSystemByServerId = async ({
   return ticketSystem
 }
 
+const deleteAllTicketSystemsByServerId = async (serverId) => {
+  const ticketSystems = await TicketSystem.deleteMany({ serverId })
+  return ticketSystems
+}
+
 module.exports = {
   getTicketSystemByServerId,
   createTicketSystem,
-  deleteTicketSystemByServerId
+  deleteTicketSystemByServerId,
+  deleteAllTicketSystemsByServerId
 }

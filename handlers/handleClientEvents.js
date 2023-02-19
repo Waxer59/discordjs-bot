@@ -6,7 +6,8 @@ const {
   clientOnInteractionCreate,
   clientOnReady,
   clientOnGuildMemberRemove,
-  clientOnGuildMemberAdd
+  clientOnGuildMemberAdd,
+  clientOnGuildDelete
 } = require('./clients')
 
 const handleClientEvents = (client) => {
@@ -23,6 +24,8 @@ const handleClientEvents = (client) => {
   clientOnGuildMemberAdd(client)
 
   clientOnGuildMemberRemove(client)
+
+  clientOnGuildDelete(client)
 
   client.login(getEnvVariables().DISCORD_TOKEN)
 }

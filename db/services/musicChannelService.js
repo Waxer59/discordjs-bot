@@ -25,8 +25,14 @@ const deleteMusicChannelByServerId = async (serverId) => {
   return musicChannel
 }
 
+const deleteAllMusicChannelsByServerId = async (serverId) => {
+  const musicChannels = await MusicChannel.deleteMany({ serverId })
+  return musicChannels
+}
+
 module.exports = {
   getMusicChannelByServerId,
   createMusicChannel,
-  deleteMusicChannelByServerId
+  deleteMusicChannelByServerId,
+  deleteAllMusicChannelsByServerId
 }

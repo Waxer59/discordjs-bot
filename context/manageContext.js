@@ -34,11 +34,16 @@ const removeContextParam = (serverId = '', param = '') => {
   delete context[serverId][param]
 }
 
+const removeContextServer = (serverId = '') => {
+  delete context[serverId]
+}
+
 module.exports = {
   getAllContext,
   getContextParam,
   createContextParam,
   removeContextParam,
   editContextParam,
-  pushContextParam
+  pushContextParam,
+  removeContextServer
 }
