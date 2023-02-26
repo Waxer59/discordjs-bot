@@ -20,7 +20,8 @@
     "isomorphic-unfetch": "^4.0.2",
     "just-jokes": "^1.0.2",
     "mongoose": "^6.8.4",
-    "sourcebin": "^5.0.0"
+    "sourcebin": "^5.0.0",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "eslint": "^8.32.0",

@@ -6,25 +6,25 @@ const handleSumbitSourcebin = async (interaction) => {
   const description =
     interaction.fields.getTextInputValue('description-sourcebin') ?? ''
 
-  const language =
-    interaction.fields
-      .getTextInputValue('content-language-sourcebin')
-      .toLowerCase() ?? 'text'
-
   const content = interaction.fields.getTextInputValue('content-sourcebin')
 
-  const bin = await create({
-    title,
-    description,
-    files: [
-      {
-        content,
-        language
-      }
-    ]
-  })
-
-  await interaction.reply(bin.shortUrl)
+  try {
+    const bin = await create({
+      title,
+      description,
+      files: [
+        {
+          content,
+          language: 'text'
+        }
+      ]
+    })
+    await interaction.reply(bin.shortUrl)
+  } catch (error) {
+    await interaction.reply({
+      content: 'Something went wrong :('
+    })
+  }
 }
 
 module.exports = {

@@ -24,15 +24,6 @@ const DESCRIPTION_FIELD = new ActionRowBuilder().addComponents(
     .setRequired(false)
 )
 
-const CONTENT_LANGUAGE_FIELD = new ActionRowBuilder().addComponents(
-  new TextInputBuilder()
-    .setCustomId('content-language-sourcebin')
-    .setLabel('Language')
-    .setValue('Text')
-    .setPlaceholder('Place here your content language')
-    .setStyle(TextInputStyle.Short)
-    .setRequired(false)
-)
 const CONTENT_FIELD = new ActionRowBuilder().addComponents(
   new TextInputBuilder()
     .setMinLength(1)
@@ -46,12 +37,7 @@ const CONTENT_FIELD = new ActionRowBuilder().addComponents(
 const MODAL = new ModalBuilder()
   .setCustomId('sourcebin')
   .setTitle('Create a source bin')
-  .addComponents(
-    TITLE_FILED,
-    DESCRIPTION_FIELD,
-    CONTENT_LANGUAGE_FIELD,
-    CONTENT_FIELD
-  )
+  .addComponents(TITLE_FILED, DESCRIPTION_FIELD, CONTENT_FIELD)
 
 module.exports = {
   name: 'sourcebin',
