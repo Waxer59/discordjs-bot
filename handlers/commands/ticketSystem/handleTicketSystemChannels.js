@@ -39,6 +39,7 @@ const DELETE_TICKET_COMPONENTS = new ActionRowBuilder().addComponents(
 
 const TICKET_DESCRIPTION = new ActionRowBuilder().addComponents(
   new TextInputBuilder()
+    .setMinLength(1)
     .setCustomId('description-ticket')
     .setLabel('Describe your ticket')
     .setPlaceholder('Describe in a few words the reason for your ticket')

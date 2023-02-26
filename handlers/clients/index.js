@@ -5,7 +5,7 @@ const { clientOnReady } = require('./clientOnReady')
 const { clientOnVoiceStateUpdate } = require('./clientOnVoiceStateUpdate')
 const { clientOnGuildMemberRemove } = require('./clienOnGuildMemberRemove')
 const { clientOnGuildMemberAdd } = require('./clientOnGuildMemberAdd')
-const { clientOnGuildDelete } = require('./clientOnGuildDelte')
+const { clientOnGuildDelete } = require('./clientOnGuildDelete')
 
 module.exports = {
   clientOnMessageCreate,
