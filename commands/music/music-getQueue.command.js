@@ -7,7 +7,7 @@ module.exports = {
     .setName('music-get-queue')
     .setDescription('Get the queue!'),
   async execute(interaction, client) {
-    const musicEmbed = updateMusicChart(client, interaction, {
+    const musicEmbed = await updateMusicChart(client, interaction, {
       footer: { text: 'Current music queue' }
     })
     await interaction.reply({

@@ -21,7 +21,7 @@ const handleButtonInteractions = (client, interaction) => {
   ) {
     handleMusicButtons(client, interaction)
   } else if (
-    getContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL].find(
+    getContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL]?.find(
       (el) => el.channelId === channelId
     )
   ) {
