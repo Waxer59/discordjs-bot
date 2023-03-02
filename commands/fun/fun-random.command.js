@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js')
+
 const emojis = [
   '😄',
   '😃',
@@ -821,12 +822,178 @@ const emojis = [
   '🔹'
 ]
 
+const decisionsAlternatives = [
+  'Absolutely not',
+  'No',
+  'Maybe',
+  'Not sure',
+  'Yes!',
+  'Absolutely yes!',
+  'Likely',
+  'Unlikely',
+  'Very likely',
+  'Not likely',
+  'Possible',
+  'Improbable',
+  'Never',
+  'Impossible',
+  'Certainly',
+  'Definitely not',
+  "I'm certain",
+  "I'm not certain"
+]
+
+const warthunderGroundUSA = [
+  'M2A4',
+  'M2',
+  'LVT(A)(1)',
+  'M13 MGMC',
+  'M2A2',
+  'M2A4 (1st Arm.Div.)',
+  'M8 LAC',
+  'M3',
+  'M3A1 Stuart',
+  'M22',
+  'M8 HMC',
+  'LVT(A)(4)',
+  'M8A1 GMC',
+  'M3 GMC',
+  'M3A1 (USMC)',
+  'M5A1',
+  'M3 Lee',
+  'M4A3 CGMC',
+  'M15 CGMC',
+  'M10 GMC',
+  'Stuart VI (5th CAD)',
+  'M5A1 TD',
+  'M24',
+  'M4A1',
+  'M16 MGMC',
+  'Grant I',
+  'LVT(A)(4) (ZIS-2)',
+  'M4',
+  'M4A5',
+  'T18E2',
+  'M24 (TL)',
+  'M4A2',
+  'M6A1',
+  'M19A1',
+  'M18GMC',
+  'T14',
+  'T55E1',
+  'M4A1 (76) W',
+  'M4A3E2',
+  'M42',
+  'M18 "Black Cat"',
+  'Cobra King',
+  'M4A2 (76) W',
+  'Calliope',
+  'T20',
+  'M41A1',
+  'M4A3 (76) W',
+  'M4A3E2 (76) W',
+  'M36 GMC',
+  'Super Hellcat',
+  'T28',
+  'M56',
+  'T25',
+  'T26E5',
+  'M36B2',
+  'M26 T99',
+  'T29',
+  'T92',
+  'M26',
+  'T26E1-1',
+  'M26E1',
+  'T30',
+  'T34',
+  'M46 "Tiger"',
+  'M6A2E1',
+  'M50',
+  'M46',
+  'M47',
+  'T32',
+  'T32E1',
+  'M163',
+  'T95',
+  'T114',
+  'Magach 3 (ERA)',
+  'M48',
+  'M60',
+  'M103',
+  'M728 CEV',
+  'T54E1',
+  'M551',
+  'M60A1 (AOS)',
+  'T95E1',
+  'M247',
+  'M60A2',
+  'XM-1 (GM)',
+  'Merkava Mk.1',
+  'M3 Bradley',
+  'M60A1 RISE (P)',
+  'MBT',
+  'XM',
+  'LAV-AD',
+  'XM-1 (Chrysler)',
+  'Merkava Mk.2B',
+  'M3A3 Bradley',
+  'M60A3 TTS',
+  'M1 Abrams',
+  'M901',
+  'XM8',
+  'M1128 Wolfpack',
+  'AGS',
+  'CCVL',
+  'HSTV-L',
+  'M1A1',
+  'XM975',
+  'M1128',
+  'M1A1 AIM',
+  'M60 AMBT',
+  'IPM1',
+  'ADATS',
+  'Merkava Mk.3D',
+  'M1A1 HC',
+  'M1A2 Abrams',
+  'M1A2 SEP'
+]
+
 module.exports = {
-  name: 'emoji',
+  name: 'random',
   data: new SlashCommandBuilder()
-    .setName('emoji')
-    .setDescription('Gives a random emoji!'),
-  async execute(interaction, client) {
-    await interaction.reply(emojis[Math.floor(Math.random() * emojis.length)])
+    .setName('random')
+    .setDescription('Return any random option avaible!')
+    .addStringOption((option) =>
+      option
+        .setName('type')
+        .setDescription('Choose any type of random choice!')
+        .addChoices(
+          { name: 'emoji', value: 'emoji' },
+          { name: 'decision', value: 'decision' },
+          { name: 'Warthunder Tanks (USA)', value: 'warthunderTanksUsa' }
+        )
+        .setRequired(true)
+    ),
+  execute(interaction, client) {
+    switch (interaction.options.get('type').value) {
+      case 'emoji':
+        interaction.reply(emojis[Math.floor(Math.random() * emojis.length)])
+        break
+      case 'decision':
+        interaction.reply(
+          decisionsAlternatives[
+            Math.floor(Math.random() * decisionsAlternatives.length)
+          ]
+        )
+        break
+      case 'warthunderTanksUsa':
+        interaction.reply(
+          warthunderGroundUSA[
+            Math.floor(Math.random() * warthunderGroundUSA.length)
+          ]
+        )
+        break
+    }
   }
 }

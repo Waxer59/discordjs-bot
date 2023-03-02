@@ -6,6 +6,8 @@ module.exports = {
     .setName('ping')
     .setDescription('Replies with Pong!'),
   async execute(interaction, client) {
-    await interaction.reply('Pong!')
+    await interaction.reply({
+      content: `🦕 ${client.ws.ping}ms | status: ${client.ws.status}`
+    })
   }
 }
