@@ -3,8 +3,7 @@ const {
 } = require('../../../../helpers/music/updateMusicChart')
 
 const musicShuffle = (client, interaction) => {
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-  guildQueue?.shuffle()
+  client.player.shuffle(interaction)
   updateMusicChart(client, interaction, {})
 }
 
