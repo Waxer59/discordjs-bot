@@ -3,14 +3,13 @@ const {
 } = require('../../../../helpers/music/updateMusicChart')
 
 const musicSkip = (client, interaction) => {
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-  if (guildQueue.connection.paused) {
-    return false
+  const musicQueue = client.player.getQueue(interaction.guild.id)
+  if (musicQueue.songs.length <= 1) {
+    client.player.stop(interaction)
+  } else {
+    client.player.skip(interaction)
   }
-  guildQueue?.skip()
-  guildQueue.connection.paused = false
   updateMusicChart(client, interaction, { isSkiped: true })
-  return true
 }
 
 module.exports = {

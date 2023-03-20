@@ -53,16 +53,7 @@ const handleMusicButtons = async (client, interaction) => {
         musicPause(client, interaction)
         break
       case 'skip':
-        if (!musicSkip(client, interaction)) {
-          const botMessage = await interaction.channel.send({
-            content: 'You cant skip a paused song!'
-          })
-          setTimeout(() => {
-            client.channels.fetch(interaction.channel.id).then((channel) => {
-              channel.messages.delete(botMessage.id)
-            })
-          }, 3000)
-        }
+        musicSkip(client, interaction)
         break
       case 'stop':
         musicStop(client, interaction)

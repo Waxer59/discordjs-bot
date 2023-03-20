@@ -3,8 +3,7 @@ const {
 } = require('../../../../helpers/music/updateMusicChart')
 
 const musicLoop = (client, interaction, repeatMode) => {
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-  guildQueue.setRepeatMode(repeatMode)
+  client.player.setRepeatMode(interaction, repeatMode)
   switch (repeatMode) {
     case 0:
       updateMusicChart(client, interaction, {})

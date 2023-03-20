@@ -1,6 +1,6 @@
 const { Client, Collection, GatewayIntentBits } = require('discord.js')
+const { DisTube } = require('distube')
 const { deploySlashCommands } = require('./helpers/deploy-commands')
-const { Player } = require('discord-music-player')
 const { handleClientEvents } = require('./handlers/handleClientEvents')
 const { dbConnection } = require('./db/config')
 
@@ -22,7 +22,7 @@ client.commands = new Collection()
 deploySlashCommands(client)
 
 //* MUSIC LIBRARY
-const player = new Player(client)
+const player = new DisTube(client)
 client.player = player
 
 handleClientEvents(client)

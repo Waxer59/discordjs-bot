@@ -10,23 +10,16 @@ const musicPlay = async (client, interaction, query) => {
   ) {
     return false
   }
-  const guildQueue = client.player.getQueue(interaction.guild.id)
-  const queue = client.player.createQueue(interaction.guild.id)
+  const voiceChannel = interaction.member?.voice?.channel
 
-  await queue.join(interaction.member.voice.channel)
   try {
-    if (query.includes('list=')) {
-      await queue.playlist(query)
-    } else {
-      await queue.play(query)
-    }
+    await client.player.play(voiceChannel, query)
     updateMusicChart(client, interaction, {
       color: '#fb644c'
     })
   } catch (error) {
     console.log(error)
-    queue.stop()
-    if (!guildQueue) queue.stop()
+    client.player.stop(interaction)
   }
 
   return true

@@ -18,7 +18,7 @@ const updateMusicChart = async (
   }
 ) => {
   const songsArr = []
-  const guildQueue = client.player.getQueue(interaction.guild.id)
+  const guildQueue = client.player.getQueue(interaction)
   const currentChannel = getContextParam(`${interaction.guild.id}`)?.[
     MUSIC_CHANNEL
   ]
@@ -38,9 +38,11 @@ const updateMusicChart = async (
 
   const musicEmbed = new EmbedBuilder()
     .setDescription(
-      songsArr.map(({ name }) => '• ' + name).join('\n\n') || description
+      songsArr
+        .map(({ name }) => '• ' + name)
+        .splice(0, 10)
+        .join('\n\n') || description
     )
-    //! .setColor(color) TODO: FIX PROPERTY
     .setFooter({
       text: footer.text ?? songsArr[0]?.url ?? '**Here will appear the url**',
       iconURL: footer.iconURL ?? client.user.displayAvatarURL()

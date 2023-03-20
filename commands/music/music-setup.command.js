@@ -14,6 +14,7 @@ const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
 const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
 const DEFAULT_MUSIC_CHANNEL_NAME = '🎶 Music'
+const rateLimitPerUser = 5 // <-- Seconds
 
 module.exports = {
   name: 'music-setup',
@@ -46,7 +47,8 @@ module.exports = {
     const channel = await interaction.guild.channels.create({
       name,
       parent,
-      type: ChannelType.GuildText
+      type: ChannelType.GuildText,
+      rateLimitPerUser
     })
 
     const btnsControls = new ActionRowBuilder().addComponents(
