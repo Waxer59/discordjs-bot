@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicPause
-} = require('../../handlers/commands/musicCommand/controllers/musicPause')
+} = require('../../handlers/commands/music/controllers/musicPause')
 const {
   handleMusicExceptions
-} = require('../../handlers/commands/musicCommand/handleMusicExceptions')
+} = require('../../handlers/commands/music/handleMusicExceptions')
 
 module.exports = {
   name: 'music-pause',

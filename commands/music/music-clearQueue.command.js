@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   handleMusicExceptions
-} = require('../../handlers/commands/musicCommand/handleMusicExceptions')
+} = require('../../handlers/commands/music/handleMusicExceptions')
 const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
 
 module.exports = {

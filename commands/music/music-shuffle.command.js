@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicShuffle
-} = require('../../handlers/commands/musicCommand/controllers/musicShuflle')
+} = require('../../handlers/commands/music/controllers/musicShuflle')
 const {
   handleMusicExceptions
-} = require('../../handlers/commands/musicCommand/handleMusicExceptions')
+} = require('../../handlers/commands/music/handleMusicExceptions')
 
 module.exports = {
   name: 'music-shuffle',

@@ -18,7 +18,7 @@ const musicPlay = async (client, interaction, query) => {
       color: '#fb644c'
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     client.player.stop(interaction)
   }
 

@@ -6,7 +6,7 @@ const {
 const { handleGlobalButtons } = require('./commands/handleGlobalButtons')
 const {
   handleMusicButtons
-} = require('./commands/musicCommand/handleMusicChannels')
+} = require('./commands/music/handleMusicChannels')
 const {
   handleTicketSystemButtons
 } = require('./commands/ticketSystem/handleTicketSystemChannels')

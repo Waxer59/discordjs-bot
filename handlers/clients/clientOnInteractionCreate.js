@@ -2,17 +2,12 @@ const { Events } = require('discord.js')
 const { handleButtonInteractions } = require('../handleButtonInteractions')
 const { handleModalsInteractions } = require('../handleModalsInteractions')
 
-const MODALS_IDS = ['form-ticket', 'sourcebin']
-
 const clientOnInteractionCreate = (client) => {
   client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isButton()) {
       handleButtonInteractions(client, interaction)
     }
-    if (
-      MODALS_IDS.includes(interaction.customId) &&
-      interaction.isModalSubmit()
-    ) {
+    if (interaction.isModalSubmit()) {
       handleModalsInteractions(interaction, client)
     }
     if (!interaction.isChatInputCommand()) return

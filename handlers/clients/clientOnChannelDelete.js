@@ -6,7 +6,7 @@ const {
 } = require('../../context/types/contextTypes')
 const {
   handleMusicChannelDelete
-} = require('../commands/musicCommand/handleMusicChannels')
+} = require('../commands/music/handleMusicChannels')
 const {
   handleTicketSystemDelete
 } = require('../commands/ticketSystem/handleTicketSystemChannels')
