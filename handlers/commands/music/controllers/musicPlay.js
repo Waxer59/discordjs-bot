@@ -11,7 +11,6 @@ const musicPlay = async (client, interaction, query) => {
     return false
   }
   const voiceChannel = interaction.member?.voice?.channel
-
   try {
     await client.player.play(voiceChannel, query)
     updateMusicChart(client, interaction, {
@@ -20,6 +19,7 @@ const musicPlay = async (client, interaction, query) => {
   } catch (error) {
     console.error(error)
     client.player.stop(interaction)
+    return new Error("Song no found!")
   }
 
   return true
