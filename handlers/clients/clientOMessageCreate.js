@@ -3,7 +3,7 @@ const { getContextParam } = require('../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const {
   handleMusicChannels
-} = require('../commands/music/handleMusicChannels')
+} = require('../commands/musicSystem/handleMusicSystem')
 
 const clientOnMessageCreate = (client) => {
   client.on(Events.MessageCreate, async (interaction) => {

@@ -1,7 +1,7 @@
 const { Events } = require('discord.js')
 const {
   handleBotDisconnection
-} = require('../commands/music/handleMusicChannels')
+} = require('../commands/musicSystem/handleMusicSystem')
 
 const clientOnVoiceStateUpdate = (client) => {
   client.on(Events.VoiceStateUpdate, (oldState, newState) => {

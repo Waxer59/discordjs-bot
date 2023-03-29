@@ -3,7 +3,7 @@ const {
 } = require('./commands/sourcebin/handleSourcebin')
 const {
   handleSumbitTicketForm
-} = require('./commands/ticketSystem/handleTicketSystemChannels')
+} = require('./commands/ticketSystem/handleTicketSystem')
 
 const handleModalsInteractions = (interaction, client) => {
   switch (interaction.customId) {

@@ -6,10 +6,10 @@ const {
 } = require('../../context/types/contextTypes')
 const {
   handleMusicChannelDelete
-} = require('../commands/music/handleMusicChannels')
+} = require('../commands/musicSystem/handleMusicSystem')
 const {
   handleTicketSystemDelete
-} = require('../commands/ticketSystem/handleTicketSystemChannels')
+} = require('../commands/ticketSystem/handleTicketSystem')
 
 const clientOnChannelDelete = (client) => {
   client.on(Events.ChannelDelete, async (channel) => {
