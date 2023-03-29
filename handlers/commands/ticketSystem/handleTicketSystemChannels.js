@@ -16,48 +16,6 @@ const {
   DELETE_TICKET_CONFIRMATION_COMPONENT
 } = require('./ticketConstants')
 
-const handleTicketSystemButtons = async (client, interaction) => {
-  const buttonId = interaction.customId
-  const serverId = interaction.guild.id
-
-  switch (buttonId) {
-    case 'open-ticket':
-      if (
-        client.channels.cache.get(
-          getContextParam(serverId)[TICKET_CHANNEL].find(
-            (el) => el.channelId === interaction.channel.id
-          ).forumCategoryId
-        ).children.cache.size >= MAX_TICKET_CHANNELS_IN_A_CATEGORY
-      ) {
-        interaction.reply({
-          content:
-            '**All our support channels are busy, please try again later.**',
-          ephemeral: true
-        })
-        return
-      }
-      if (
-        interaction.guild.channels.cache.find(
-          (channel) =>
-            channel.topic ===
-            `${interaction.user.id}-${
-              getContextParam(serverId)[TICKET_CHANNEL].find(
-                (el) => el.channelId === interaction.channel.id
-              ).forumCategoryId
-            }`
-        )
-      ) {
-        await interaction.reply({
-          content: 'You already have a ticket created',
-          ephemeral: true
-        })
-        return
-      }
-      await interaction.showModal(MODAL_TICKET)
-      break
-  }
-}
-
 const handleSumbitTicketForm = async (interaction) => {
   const serverId = interaction.guild.id
   const ticketDescription =
@@ -133,7 +91,9 @@ const handleTicketSystemDelete = async (client, serverId, channel) => {
   )
 }
 
-const handleTicketButtonsInteraction = async (interaction, action) => {
+const handleTicketButtonsInteraction = async (client, interaction, action) => {
+  const serverId = interaction.guild.id
+
   switch (action) {
     case 'close-ticket-confirm':
       interaction.channel.delete()
@@ -154,11 +114,44 @@ const handleTicketButtonsInteraction = async (interaction, action) => {
         ephemeral: true
       })
       break
+    case 'open-ticket':
+      if (
+        client.channels.cache.get(
+          getContextParam(serverId)[TICKET_CHANNEL].find(
+            (el) => el.channelId === interaction.channel.id
+          ).forumCategoryId
+        ).children.cache.size >= MAX_TICKET_CHANNELS_IN_A_CATEGORY
+      ) {
+        interaction.reply({
+          content:
+            '**All our support channels are busy, please try again later.**',
+          ephemeral: true
+        })
+        return
+      }
+      if (
+        interaction.guild.channels.cache.find(
+          (channel) =>
+            channel.topic ===
+            `${interaction.user.id}-${
+              getContextParam(serverId)[TICKET_CHANNEL].find(
+                (el) => el.channelId === interaction.channel.id
+              ).forumCategoryId
+            }`
+        )
+      ) {
+        await interaction.reply({
+          content: 'You already have a ticket created',
+          ephemeral: true
+        })
+        return
+      }
+      await interaction.showModal(MODAL_TICKET)
+      break
   }
 }
 
 module.exports = {
-  handleTicketSystemButtons,
   handleTicketSystemDelete,
   handleSumbitTicketForm,
   handleTicketButtonsInteraction

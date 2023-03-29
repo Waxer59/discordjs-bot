@@ -1,33 +1,27 @@
-const { getContextParam } = require('../context/manageContext')
+const { handleMusicButtons } = require('./commands/music/handleMusicChannels')
 const {
-  MUSIC_CHANNEL,
-  TICKET_CHANNEL
-} = require('../context/types/contextTypes')
-const { handleGlobalButtons } = require('./commands/handleGlobalButtons')
-const {
-  handleMusicButtons
-} = require('./commands/music/handleMusicChannels')
-const {
-  handleTicketSystemButtons
+  handleTicketButtonsInteraction
 } = require('./commands/ticketSystem/handleTicketSystemChannels')
 
+const TICKET_BUTTONS = [
+  'close-ticket-confirm',
+  'transcript-ticket',
+  'close-ticket',
+  'open-ticket'
+]
+const MUSIC_BUTTONS = ['pause', 'skip', 'stop', 'loop', 'shuffle']
+
 const handleButtonInteractions = (client, interaction) => {
-  const channelId = interaction.channel.id
+  const buttonId = interaction.customId
+
   if (
-    channelId ===
-      getContextParam(`${interaction.guild.id}`)?.[MUSIC_CHANNEL]?.channelId &&
+    MUSIC_BUTTONS.includes(buttonId) &&
     interaction.guild.members?.me.voice.channelId ===
       interaction.member.voice.channelId
   ) {
     handleMusicButtons(client, interaction)
-  } else if (
-    getContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL]?.find(
-      (el) => el.channelId === channelId
-    )
-  ) {
-    handleTicketSystemButtons(client, interaction)
-  } else {
-    handleGlobalButtons(client, interaction)
+  } else if (TICKET_BUTTONS.includes(buttonId)) {
+    handleTicketButtonsInteraction(client, interaction, buttonId)
   }
 }
 
