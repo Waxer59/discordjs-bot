@@ -1,9 +1,16 @@
 const {
   SlashCommandBuilder,
   PermissionFlagsBits,
-  ChannelType
+  ChannelType,
+  ButtonBuilder,
+  EmbedBuilder,
+  ButtonStyle,
+  ActionRowBuilder
 } = require('discord.js')
-// const DEFAULT_POLL_COLOR = 'Purple'
+const { v4: uuidv4 } = require('uuid')
+
+const DEFAULT_POLL_COLOR = 'Purple'
+const MAX_OPTION_CHARS = 55
 
 module.exports = {
   name: 'poll',
@@ -24,10 +31,18 @@ module.exports = {
         .setRequired(true)
     )
     .addStringOption((option) =>
-      option.setName('option-a').setDescription('Poll option').setRequired(true)
+      option
+        .setName('option-a')
+        .setDescription('Poll option')
+        .setRequired(true)
+        .setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
-      option.setName('option-b').setDescription('Poll option').setRequired(true)
+      option
+        .setName('option-b')
+        .setDescription('Poll option')
+        .setRequired(true)
+        .setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
       option
@@ -40,16 +55,19 @@ module.exports = {
         .setRequired(true)
     )
     .addStringOption((option) =>
-      option.setName('option-c').setDescription('Poll option')
+      option
+        .setName('description')
+        .setDescription('Description of the poll')
+        .setRequired(true)
     )
     .addStringOption((option) =>
-      option.setName('option-d').setDescription('Poll option')
+      option.setName('option-c').setDescription('Poll option').setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
-      option.setName('option-e').setDescription('Poll option')
+      option.setName('option-d').setDescription('Poll option').setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
-      option.setName('description').setDescription('Description of the poll')
+      option.setName('option-e').setDescription('Poll option').setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
       option
@@ -68,27 +86,61 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
-    // const title = interaction.options.getString('title')
-    // const embedColor =
-    //   interaction.options.getString('embed-color') ?? DEFAULT_POLL_COLOR
-    // const description = interaction.options.getString('description') ?? ''
-    // const channel = interaction.options.getChannel('channel')
-    // const votesMode = interaction.options.getString('votes-mode')
-    // const optionA = interaction.options.getString('option-a')
-    // const optionB = interaction.options.getString('option-b')
-    // const optionC = interaction.options.getString('option-c')
-    // const optionD = interaction.options.getString('option-d')
-    // const optionE = interaction.options.getString('option-e')
-    // const embed = new EmbedBuilder()
-    //   .setColor(embedColor)
-    //   .setTitle(title)
-    //   .setDescription(description)
-    // const btns = new ButtonBuilder().addComponents(
-    //   new ButtonBuilder()
-    //     .setCustomId('pause')
-    //     .setLabel('⏯️')
-    //     .setDisabled(false)
-    //     .setStyle(ButtonStyle.Secondary)
-    // )
+    const title = interaction.options.getString('title')
+    const embedColor =
+      interaction.options.getString('embed-color') ?? DEFAULT_POLL_COLOR
+    const description = interaction.options.getString('description')
+    const channel = interaction.options.getChannel('channel')
+    // const votesMode = interaction.options.getString('votes-mode') // TODO: create votes mode
+
+    const optionA = interaction.options.getString('option-a')
+    const optionB = interaction.options.getString('option-b')
+    const optionC = interaction.options.getString('option-c')
+    const optionD = interaction.options.getString('option-d')
+    const optionE = interaction.options.getString('option-e')
+
+    const pollId = uuidv4()
+
+    const optionsArr = [optionA, optionB, optionC, optionD, optionE].filter(
+      (el) => el
+    )
+
+    const embed = new EmbedBuilder()
+      .setColor(embedColor)
+      .setTitle(title)
+      .setDescription(description)
+      .addFields(
+        ...optionsArr.map((el) => {
+          return {
+            name: el,
+            value: '🟦',
+            inline: true
+          }
+        })
+      )
+      .setFooter({
+        text: pollId,
+        iconURL: client.user.displayAvatarURL()
+      })
+
+    const btns = new ActionRowBuilder().addComponents(
+      ...optionsArr.map((el) =>
+        new ButtonBuilder()
+          .setCustomId(`poll:${uuidv4()}-${el}`)
+          .setLabel(el)
+          .setDisabled(false)
+          .setStyle(ButtonStyle.Secondary)
+      )
+    )
+
+    await channel.send({
+      embeds: [embed],
+      components: [btns]
+    })
+
+    await interaction.reply({
+      ephemeral: true,
+      content: 'Poll created!'
+    })
   }
 }

@@ -21,6 +21,7 @@
     "libsodium-wrappers": "0.7.11",
     "mongoose": "7.0.2",
     "sourcebin": "5.0.0",
+    "uuid": "^9.0.0",
     "valid-url": "1.0.9"
   },
   "devDependencies": {

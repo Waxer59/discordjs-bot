@@ -6,7 +6,6 @@ const resetMusicChart = (serverId, client) => {
   const currentChannel = getContextParam(`${serverId}`)?.[MUSIC_CHANNEL]
   const musicEmbed = new EmbedBuilder()
     .setDescription('**No song playing currently.**')
-    //! .setColor(color) TODO: FIX PROPERTY
     .setFooter({
       text: 'Here will appear the url of the song!',
       iconURL: client.user.displayAvatarURL()

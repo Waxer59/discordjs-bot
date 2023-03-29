@@ -1,14 +1,4 @@
-const {
-  ChannelType,
-  PermissionsBitField,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle
-} = require('discord.js')
+const { ChannelType, PermissionsBitField } = require('discord.js')
 const {
   getContextParam,
   editContextParam
@@ -17,42 +7,14 @@ const { TICKET_CHANNEL } = require('../../../context/types/contextTypes')
 const {
   deleteTicketSystemByServerId
 } = require('../../../db/services/ticketSystemService')
-
-const DELETE_TICKET_EMBED = new EmbedBuilder()
-  .setTitle('**Close Ticket**')
-  .setDescription('Close the ticket by clicking the button bellow!')
-  .setColor('Red')
-
-const DELETE_TICKET_COMPONENTS = new ActionRowBuilder().addComponents(
-  new ButtonBuilder()
-    .setCustomId('close-ticket')
-    .setLabel('🔒 Close')
-    .setDisabled(false)
-    .setStyle(ButtonStyle.Secondary),
-
-  new ButtonBuilder()
-    .setCustomId('transcript-ticket')
-    .setLabel('📜 Transcript')
-    .setDisabled(false)
-    .setStyle(ButtonStyle.Primary)
-)
-
-const TICKET_DESCRIPTION = new ActionRowBuilder().addComponents(
-  new TextInputBuilder()
-    .setMinLength(1)
-    .setCustomId('description-ticket')
-    .setLabel('Describe your ticket')
-    .setPlaceholder('Describe in a few words the reason for your ticket')
-    .setStyle(TextInputStyle.Paragraph)
-    .setRequired(true)
-)
-
-const MODAL_TICKET = new ModalBuilder()
-  .setCustomId('form-ticket')
-  .setTitle('New ticket')
-  .addComponents(TICKET_DESCRIPTION)
-
-const MAX_TICKET_CHANNELS_IN_A_CATEGORY = 50
+const discordTranscripts = require('discord-html-transcripts')
+const {
+  MAX_TICKET_CHANNELS_IN_A_CATEGORY,
+  MODAL_TICKET,
+  TICKET_CONTROLS_COMPONENTS,
+  TICKET_CONTROLS_EMBED,
+  DELETE_TICKET_CONFIRMATION_COMPONENT
+} = require('./ticketConstants')
 
 const handleTicketSystemButtons = async (client, interaction) => {
   const buttonId = interaction.customId
@@ -122,8 +84,8 @@ const handleSumbitTicketForm = async (interaction) => {
   })
 
   await ticketChannel.send({
-    embeds: [DELETE_TICKET_EMBED],
-    components: [DELETE_TICKET_COMPONENTS]
+    embeds: [TICKET_CONTROLS_EMBED],
+    components: [TICKET_CONTROLS_COMPONENTS]
   })
 
   await ticketChannel.send({
@@ -171,8 +133,33 @@ const handleTicketSystemDelete = async (client, serverId, channel) => {
   )
 }
 
+const handleTicketButtonsInteraction = async (interaction, action) => {
+  switch (action) {
+    case 'close-ticket-confirm':
+      interaction.channel.delete()
+      break
+    case 'transcript-ticket':
+      const attachment = await discordTranscripts.createTranscript(
+        interaction.channel
+      )
+      interaction.reply({
+        files: [attachment],
+        ephemeral: true
+      })
+      break
+    case 'close-ticket':
+      interaction.reply({
+        content: '**You are about to delete the ticket, are you sure?**',
+        components: [DELETE_TICKET_CONFIRMATION_COMPONENT],
+        ephemeral: true
+      })
+      break
+  }
+}
+
 module.exports = {
   handleTicketSystemButtons,
   handleTicketSystemDelete,
-  handleSumbitTicketForm
+  handleSumbitTicketForm,
+  handleTicketButtonsInteraction
 }

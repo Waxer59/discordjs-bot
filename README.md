@@ -1,4 +1,4 @@
-# How to run the proyect
+# How to run the project
 
 1. Install all the dependencies using
 
@@ -14,11 +14,15 @@ npm install
 docker-compose up -d
 ```
 
-4. Start the proyect using
+4. Start the project using
 
 ```console
 npm run start 
 ```
+
+## Project requirements
+
+* Install ffmpeg for the music library: [Linux](https://www.tecmint.com/install-ffmpeg-in-linux/) | [Windows](https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/)
 
 ## Commands
 

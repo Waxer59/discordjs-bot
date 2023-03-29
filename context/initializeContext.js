@@ -1,9 +1,7 @@
 const {
-  initializeMusicChannels
-} = require('./initializers/musicChannelInitializer')
-const {
+  initializeMusicChannels,
   initializeTicketSystem
-} = require('./initializers/ticketSystemInitializer')
+} = require('./initializers/')
 
 const initializeContext = async (client, id) => {
   initializeMusicChannels(client, id)
