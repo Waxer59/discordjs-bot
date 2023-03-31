@@ -8,42 +8,36 @@ const getAllContext = () => {
   return context
 }
 
-const getContextParam = (param = '') => {
-  return context[param] ?? null
+const getServerContextParam = (serverId = '') => {
+  return context[serverId] ?? null
 }
 
-const createContextParam = (param = '', value, options = OPTIONS) => {
+const createServerContextParam = (param = '', value, options = OPTIONS) => {
   if (context[param] && !options.override) {
-    throw new Error("You can't override a param in createContextParam function")
+    throw new Error("You can't override a param in createServerContextParam function")
   }
   context[param] = { ...value, ...context[param] }
   return context
 }
 
-const editContextParam = (serverId = '', param = '', value) => {
+const editServerContextParam = (serverId = '', param = '', value) => {
   context[serverId][param] = value
   return context[serverId]
 }
 
-const pushContextParam = (serverId = '', param = '', value) => {
-  context[serverId][param].push(value)
-  return context[serverId]
-}
-
-const removeContextParam = (serverId = '', param = '') => {
+const removeServerContextParam = (serverId = '', param = '') => {
   delete context[serverId][param]
 }
 
-const removeContextServer = (serverId = '') => {
+const removeAllServerContext = (serverId = '') => {
   delete context[serverId]
 }
 
 module.exports = {
   getAllContext,
-  getContextParam,
-  createContextParam,
-  removeContextParam,
-  editContextParam,
-  pushContextParam,
-  removeContextServer
+  getServerContextParam,
+  createServerContextParam,
+  removeServerContextParam,
+  editServerContextParam,
+  removeAllServerContext
 }

@@ -1,4 +1,7 @@
-const { handleMusicButtons } = require('./commands/musicSystem/handleMusicSystem')
+const {
+  handleMusicButtonsInteraction
+} = require('./commands/musicSystem/handleMusicSystem')
+const { handlePollButtonsInteraction } = require('./commands/poll/handlePoll')
 const {
   handleTicketButtonsInteraction
 } = require('./commands/ticketSystem/handleTicketSystem')
@@ -20,19 +23,11 @@ const handleButtonInteractions = (client, interaction) => {
     interaction.guild.members?.me.voice.channelId ===
       interaction.member.voice.channelId
   ) {
-    handleMusicButtons(client, interaction)
+    handleMusicButtonsInteraction(client, interaction)
   } else if (TICKET_BUTTONS.includes(buttonId)) {
     handleTicketButtonsInteraction(client, interaction, buttonId)
   } else if (buttonId.includes(POLL_BUTTONS)) {
-    const option = buttonId.split('-').reverse()[0]
-
-    const channelId = interaction.channelId
-    const channel = client.channels.cache.get(channelId)
-
-    interaction.reply({
-      ephemeral: true,
-      content: `You have voted **${option}**`
-    })
+    handlePollButtonsInteraction(client, interaction, buttonId)
   }
 }
 

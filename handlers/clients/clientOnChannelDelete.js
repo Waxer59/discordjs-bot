@@ -1,5 +1,5 @@
 const { Events, ChannelType } = require('discord.js')
-const { getContextParam } = require('../../context/manageContext')
+const { getServerContextParam } = require('../../context/manageContext')
 const {
   MUSIC_CHANNEL,
   TICKET_CHANNEL
@@ -15,7 +15,7 @@ const clientOnChannelDelete = (client) => {
   client.on(Events.ChannelDelete, async (channel) => {
     const channelId = channel.id
     const serverId = channel.guild.id
-    const deletedTicketSystem = getContextParam(`${serverId}`)?.[
+    const deletedTicketSystem = getServerContextParam(`${serverId}`)?.[
       TICKET_CHANNEL
     ]?.find((el) =>
       channel.type === ChannelType.GuildText
@@ -23,7 +23,7 @@ const clientOnChannelDelete = (client) => {
         : el.forumCategoryId === channelId
     )
     switch (channelId) {
-      case getContextParam(`${serverId}`)?.[MUSIC_CHANNEL]?.channelId:
+      case getServerContextParam(`${serverId}`)?.[MUSIC_CHANNEL]?.channelId:
         handleMusicChannelDelete(serverId)
         break
       case deletedTicketSystem?.forumCategoryId:

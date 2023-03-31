@@ -1,7 +1,7 @@
 const { ChannelType, PermissionsBitField } = require('discord.js')
 const {
-  getContextParam,
-  editContextParam
+  getServerContextParam,
+  editServerContextParam
 } = require('../../../context/manageContext')
 const { TICKET_CHANNEL } = require('../../../context/types/contextTypes')
 const {
@@ -20,7 +20,7 @@ const handleSumbitTicketForm = async (interaction) => {
   const serverId = interaction.guild.id
   const ticketDescription =
     interaction.fields.getTextInputValue('description-ticket')
-  const ticketSystem = getContextParam(serverId)[TICKET_CHANNEL].find(
+  const ticketSystem = getServerContextParam(serverId)[TICKET_CHANNEL].find(
     (el) => el.channelId === interaction.channel.id
   )
 
@@ -57,7 +57,7 @@ const handleSumbitTicketForm = async (interaction) => {
 }
 
 const handleTicketSystemDelete = async (client, serverId, channel) => {
-  const deletedTicketSystem = getContextParam(serverId)[TICKET_CHANNEL].find(
+  const deletedTicketSystem = getServerContextParam(serverId)[TICKET_CHANNEL].find(
     (el) =>
       channel.type === ChannelType.GuildText
         ? el.channelId
@@ -82,10 +82,10 @@ const handleTicketSystemDelete = async (client, serverId, channel) => {
       .catch(() => {})
   }
 
-  editContextParam(
+  editServerContextParam(
     serverId,
     TICKET_CHANNEL,
-    getContextParam(serverId)?.[TICKET_CHANNEL].filter(
+    getServerContextParam(serverId)?.[TICKET_CHANNEL].filter(
       (el) => el.channelId !== channel.id
     )
   )
@@ -117,7 +117,7 @@ const handleTicketButtonsInteraction = async (client, interaction, action) => {
     case 'open-ticket':
       if (
         client.channels.cache.get(
-          getContextParam(serverId)[TICKET_CHANNEL].find(
+          getServerContextParam(serverId)[TICKET_CHANNEL].find(
             (el) => el.channelId === interaction.channel.id
           ).forumCategoryId
         ).children.cache.size >= MAX_TICKET_CHANNELS_IN_A_CATEGORY
@@ -134,7 +134,7 @@ const handleTicketButtonsInteraction = async (client, interaction, action) => {
           (channel) =>
             channel.topic ===
             `${interaction.user.id}-${
-              getContextParam(serverId)[TICKET_CHANNEL].find(
+              getServerContextParam(serverId)[TICKET_CHANNEL].find(
                 (el) => el.channelId === interaction.channel.id
               ).forumCategoryId
             }`

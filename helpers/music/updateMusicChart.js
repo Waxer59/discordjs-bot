@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('@discordjs/builders')
-const { getContextParam } = require('../../context/manageContext')
+const { getServerContextParam } = require('../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 
 const updateMusicChart = async (
@@ -19,7 +19,7 @@ const updateMusicChart = async (
 ) => {
   const songsArr = []
   const guildQueue = client.player.getQueue(interaction)
-  const currentChannel = getContextParam(`${interaction.guild.id}`)?.[
+  const currentChannel = getServerContextParam(`${interaction.guild.id}`)?.[
     MUSIC_CHANNEL
   ]
 

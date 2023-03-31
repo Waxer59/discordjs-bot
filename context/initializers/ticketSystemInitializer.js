@@ -2,7 +2,7 @@ const {
   getTicketSystemByServerId,
   deleteTicketSystemByServerId
 } = require('../../db/services/ticketSystemService')
-const { createContextParam } = require('../manageContext')
+const { createServerContextParam } = require('../manageContext')
 const { TICKET_CHANNEL } = require('../types/contextTypes')
 
 const initializeTicketSystem = async (client, serverId) => {
@@ -25,7 +25,7 @@ const initializeTicketSystem = async (client, serverId) => {
       return
     }
   }
-  createContextParam(
+  createServerContextParam(
     `${serverId}`,
     {
       [TICKET_CHANNEL]: content

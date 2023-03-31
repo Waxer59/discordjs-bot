@@ -46,28 +46,27 @@ module.exports = {
     )
     .addStringOption((option) =>
       option
-        .setName('votes-mode')
-        .setDescription('How do you want the votes to be shown?')
-        .addChoices(
-          { name: 'Show number of votes ', value: 'show' },
-          { name: 'Hide number of votes', value: 'hide' }
-        )
-        .setRequired(true)
-    )
-    .addStringOption((option) =>
-      option
         .setName('description')
         .setDescription('Description of the poll')
         .setRequired(true)
     )
     .addStringOption((option) =>
-      option.setName('option-c').setDescription('Poll option').setMaxLength(MAX_OPTION_CHARS)
+      option
+        .setName('option-c')
+        .setDescription('Poll option')
+        .setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
-      option.setName('option-d').setDescription('Poll option').setMaxLength(MAX_OPTION_CHARS)
+      option
+        .setName('option-d')
+        .setDescription('Poll option')
+        .setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
-      option.setName('option-e').setDescription('Poll option').setMaxLength(MAX_OPTION_CHARS)
+      option
+        .setName('option-e')
+        .setDescription('Poll option')
+        .setMaxLength(MAX_OPTION_CHARS)
     )
     .addStringOption((option) =>
       option
@@ -91,7 +90,6 @@ module.exports = {
       interaction.options.getString('embed-color') ?? DEFAULT_POLL_COLOR
     const description = interaction.options.getString('description')
     const channel = interaction.options.getChannel('channel')
-    // const votesMode = interaction.options.getString('votes-mode') // TODO: create votes mode
 
     const optionA = interaction.options.getString('option-a')
     const optionB = interaction.options.getString('option-b')
@@ -113,7 +111,7 @@ module.exports = {
         ...optionsArr.map((el) => {
           return {
             name: el,
-            value: '🟦',
+            value: '0',
             inline: true
           }
         })
