@@ -25,15 +25,9 @@ const initializeTicketSystem = async (client, serverId) => {
       return
     }
   }
-  createServerContextParam(
-    `${serverId}`,
-    {
-      [TICKET_CHANNEL]: content
-    },
-    {
-      override: true
-    }
-  )
+  createServerContextParam(`${serverId}`, {
+    [TICKET_CHANNEL]: content
+  })
 }
 
 module.exports = {

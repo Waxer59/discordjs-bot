@@ -19,7 +19,7 @@ const updateMusicChart = async (
 ) => {
   const songsArr = []
   const guildQueue = client.player.getQueue(interaction)
-  const currentChannel = getServerContextParam(`${interaction.guild.id}`)?.[
+  const currentChannel = getServerContextParam(interaction.guild.id)?.[
     MUSIC_CHANNEL
   ]
 

@@ -17,19 +17,13 @@ const initializeMusicChannels = async (client, serverId) => {
     deleteMusicChannelByServerId(serverId)
     return
   }
-  createServerContextParam(
-    `${serverId}`,
-    {
-      [MUSIC_CHANNEL]: {
-        channelId,
-        serverId,
-        controlsMessage: await channel.messages.fetch(controlsMessageId)
-      }
-    },
-    {
-      override: true
+  createServerContextParam(`${serverId}`, {
+    [MUSIC_CHANNEL]: {
+      channelId,
+      serverId,
+      controlsMessage: await channel.messages.fetch(controlsMessageId)
     }
-  )
+  })
   resetMusicChart(serverId, client)
 }
 

@@ -8,6 +8,12 @@ const {
   ActionRowBuilder
 } = require('discord.js')
 const { v4: uuidv4 } = require('uuid')
+const {
+  getServerContextParam,
+  createServerContextParam,
+  editServerContextParam
+} = require('../../context/manageContext')
+const { POLL } = require('../../context/types/contextTypes')
 
 const DEFAULT_POLL_COLOR = 'Purple'
 const MAX_OPTION_CHARS = 55
@@ -97,11 +103,13 @@ module.exports = {
     const optionD = interaction.options.getString('option-d')
     const optionE = interaction.options.getString('option-e')
 
-    const pollId = uuidv4()
-
     const optionsArr = [optionA, optionB, optionC, optionD, optionE].filter(
       (el) => el
     )
+    const optionsJSON = optionsArr.reduce((obj, option) => {
+      const optionObj = JSON.parse(`{"${option}": { "votes": [] }}`)
+      return { ...obj, ...optionObj }
+    }, {})
 
     const embed = new EmbedBuilder()
       .setColor(embedColor)
@@ -116,10 +124,6 @@ module.exports = {
           }
         })
       )
-      .setFooter({
-        text: pollId,
-        iconURL: client.user.displayAvatarURL()
-      })
 
     const btns = new ActionRowBuilder().addComponents(
       ...optionsArr.map((el) =>
@@ -131,10 +135,31 @@ module.exports = {
       )
     )
 
-    await channel.send({
+    const message = await channel.send({
       embeds: [embed],
       components: [btns]
     })
+
+    const pollId = message.id
+
+    if (getServerContextParam(interaction.guild.id)?.[POLL]) {
+      editServerContextParam(interaction.guild.id, POLL, [
+        ...getServerContextParam(interaction.guild.id)[POLL],
+        {
+          id: pollId,
+          options: optionsJSON
+        }
+      ])
+    } else {
+      createServerContextParam(interaction.guild.id, {
+        [POLL]: [
+          {
+            id: pollId,
+            options: optionsJSON
+          }
+        ]
+      })
+    }
 
     await interaction.reply({
       ephemeral: true,

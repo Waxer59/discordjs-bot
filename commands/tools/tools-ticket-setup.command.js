@@ -101,7 +101,7 @@ module.exports = {
       components: [btnsControls]
     })
 
-    if (getServerContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL]) {
+    if (getServerContextParam(interaction.guild.id)?.[TICKET_CHANNEL]) {
       editServerContextParam(interaction.guild.id, TICKET_CHANNEL, [
         ...getServerContextParam(interaction.guild.id)[TICKET_CHANNEL],
         {
@@ -112,22 +112,16 @@ module.exports = {
         }
       ])
     } else {
-      createServerContextParam(
-        `${interaction.guild.id}`,
-        {
-          [TICKET_CHANNEL]: [
-            {
-              serverId: interaction.guild.id,
-              channelId: channel.id,
-              forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-              controlsMessage
-            }
-          ]
-        },
-        {
-          override: true
-        }
-      )
+      createServerContextParam(interaction.guild.id, {
+        [TICKET_CHANNEL]: [
+          {
+            serverId: interaction.guild.id,
+            channelId: channel.id,
+            forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
+            controlsMessage
+          }
+        ]
+      })
     }
 
     await createTicketSystem({
