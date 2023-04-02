@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "nodemon .",
-    "start": "nodemon ."
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
@@ -17,11 +17,11 @@
     "discord-html-transcripts": "3.1.4",
     "discord.js": "14.8.0",
     "distube": "4.0.4",
-    "ffmpeg-static": "5.1.0",
     "just-jokes": "1.0.2",
     "libsodium-wrappers": "0.7.11",
     "mongoose": "7.0.2",
     "sourcebin": "5.0.0",
+    "uuid": "^9.0.0",
     "valid-url": "1.0.9"
   },
   "devDependencies": {

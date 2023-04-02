@@ -1,12 +1,11 @@
 const { EmbedBuilder } = require('@discordjs/builders')
-const { getContextParam } = require('../../context/manageContext')
+const { getServerContextParam } = require('../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 
 const resetMusicChart = (serverId, client) => {
-  const currentChannel = getContextParam(`${serverId}`)?.[MUSIC_CHANNEL]
+  const currentChannel = getServerContextParam(`${serverId}`)?.[MUSIC_CHANNEL]
   const musicEmbed = new EmbedBuilder()
     .setDescription('**No song playing currently.**')
-    //! .setColor(color) TODO: FIX PROPERTY
     .setFooter({
       text: 'Here will appear the url of the song!',
       iconURL: client.user.displayAvatarURL()

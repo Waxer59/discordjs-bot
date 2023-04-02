@@ -1,4 +1,4 @@
-const { removeContextParam } = require('../../../context/manageContext')
+const { removeServerContextParam } = require('../../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../../context/types/contextTypes')
 const {
   deleteMusicChannelByServerId
@@ -34,7 +34,7 @@ const handleMusicChannels = async (client, interaction) => {
   musicPlay(client, interaction, query)
 }
 
-const handleMusicButtons = async (client, interaction) => {
+const handleMusicButtonsInteraction = async (client, interaction) => {
   const buttonId = interaction.customId
   const guildQueue = client.player.getQueue(interaction.guild.id)
 
@@ -76,12 +76,12 @@ const handleBotDisconnection = (client, interaction) => {
 
 const handleMusicChannelDelete = async (serverId) => {
   await deleteMusicChannelByServerId(serverId)
-  removeContextParam(serverId, MUSIC_CHANNEL)
+  removeServerContextParam(serverId, MUSIC_CHANNEL)
 }
 
 module.exports = {
   handleMusicChannels,
   handleBotDisconnection,
-  handleMusicButtons,
+  handleMusicButtonsInteraction,
   handleMusicChannelDelete
 }

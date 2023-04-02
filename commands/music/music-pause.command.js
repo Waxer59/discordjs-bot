@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const {
   musicPause
-} = require('../../handlers/commands/musicCommand/controllers/musicPause')
+} = require('../../handlers/commands/musicSystem/controllers/musicPause')
 const {
-  handleMusicExceptions
-} = require('../../handlers/commands/musicCommand/handleMusicExceptions')
+  handleMusicSystemExceptions
+} = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 
 module.exports = {
   name: 'music-pause',
@@ -22,7 +22,7 @@ module.exports = {
         )
     ),
   async execute(interaction, client) {
-    if (await handleMusicExceptions(client, interaction)) {
+    if (await handleMusicSystemExceptions(client, interaction)) {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to pause!',
         ephemeral: true

@@ -3,7 +3,7 @@ const {
   deleteMusicChannelByServerId
 } = require('../../db/services/musicChannelService')
 const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
-const { createContextParam } = require('../manageContext')
+const { createServerContextParam } = require('../manageContext')
 const { MUSIC_CHANNEL } = require('../types/contextTypes')
 
 const initializeMusicChannels = async (client, serverId) => {
@@ -17,19 +17,13 @@ const initializeMusicChannels = async (client, serverId) => {
     deleteMusicChannelByServerId(serverId)
     return
   }
-  createContextParam(
-    `${serverId}`,
-    {
-      [MUSIC_CHANNEL]: {
-        channelId,
-        serverId,
-        controlsMessage: await channel.messages.fetch(controlsMessageId)
-      }
-    },
-    {
-      override: true
+  createServerContextParam(`${serverId}`, {
+    [MUSIC_CHANNEL]: {
+      channelId,
+      serverId,
+      controlsMessage: await channel.messages.fetch(controlsMessageId)
     }
-  )
+  })
   resetMusicChart(serverId, client)
 }
 

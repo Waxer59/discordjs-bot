@@ -9,9 +9,9 @@ const {
   PermissionsBitField
 } = require('discord.js')
 const {
-  getContextParam,
-  createContextParam,
-  pushContextParam
+  getServerContextParam,
+  createServerContextParam,
+  editServerContextParam
 } = require('../../context/manageContext')
 const { TICKET_CHANNEL } = require('../../context/types/contextTypes')
 const { createTicketSystem } = require('../../db/services/ticketSystemService')
@@ -101,30 +101,27 @@ module.exports = {
       components: [btnsControls]
     })
 
-    if (getContextParam(`${interaction.guild.id}`)?.[TICKET_CHANNEL]) {
-      pushContextParam(`${interaction.guild.id}`, TICKET_CHANNEL, {
-        serverId: interaction.guild.id,
-        channelId: channel.id,
-        forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-        controlsMessage
-      })
-    } else {
-      createContextParam(
-        `${interaction.guild.id}`,
+    if (getServerContextParam(interaction.guild.id)?.[TICKET_CHANNEL]) {
+      editServerContextParam(interaction.guild.id, TICKET_CHANNEL, [
+        ...getServerContextParam(interaction.guild.id)[TICKET_CHANNEL],
         {
-          [TICKET_CHANNEL]: [
-            {
-              serverId: interaction.guild.id,
-              channelId: channel.id,
-              forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-              controlsMessage
-            }
-          ]
-        },
-        {
-          override: true
+          serverId: interaction.guild.id,
+          channelId: channel.id,
+          forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
+          controlsMessage
         }
-      )
+      ])
+    } else {
+      createServerContextParam(interaction.guild.id, {
+        [TICKET_CHANNEL]: [
+          {
+            serverId: interaction.guild.id,
+            channelId: channel.id,
+            forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
+            controlsMessage
+          }
+        ]
+      })
     }
 
     await createTicketSystem({
