@@ -56,6 +56,12 @@ module.exports = {
         .setDescription('Description of the poll')
         .setRequired(true)
     )
+    .addIntegerOption((option) =>
+      option
+        .setName('expires_at')
+        .setDescription('Time in SECONDS in which the poll closes')
+        .setRequired(true)
+    )
     .addStringOption((option) =>
       option
         .setName('option-c')
@@ -96,6 +102,9 @@ module.exports = {
       interaction.options.getString('embed-color') ?? DEFAULT_POLL_COLOR
     const description = interaction.options.getString('description')
     const channel = interaction.options.getChannel('channel')
+    const expiresAt = interaction.options.getInteger('expires_at') // <-- Seconds
+    const actualDate = new Date()
+    const endPollDate = new Date(actualDate.getTime() + expiresAt * 1000)
 
     const optionA = interaction.options.getString('option-a')
     const optionB = interaction.options.getString('option-b')
@@ -118,12 +127,16 @@ module.exports = {
       .addFields(
         ...optionsArr.map((el) => {
           return {
-            name: el,
-            value: '0',
+            name: el + ' | 0',
+            value: '🟦',
             inline: true
           }
         })
       )
+      .setFooter({
+        text: `This poll ends on ${endPollDate.toLocaleString()}`,
+        iconURL: client.user.displayAvatarURL()
+      })
 
     const btns = new ActionRowBuilder().addComponents(
       ...optionsArr.map((el) =>
@@ -140,6 +153,12 @@ module.exports = {
       components: [btns]
     })
 
+    setTimeout(() => {
+      try {
+        message.edit({ components: [] })
+      } catch (error) {}
+    }, expiresAt * 1000) // <-- Miliseconds
+
     const pollId = message.id
 
     if (getServerContextParam(interaction.guild.id)?.[POLL]) {
@@ -147,7 +166,8 @@ module.exports = {
         ...getServerContextParam(interaction.guild.id)[POLL],
         {
           id: pollId,
-          options: optionsJSON
+          options: optionsJSON,
+          totalVotes: 0
         }
       ])
     } else {
@@ -155,7 +175,8 @@ module.exports = {
         [POLL]: [
           {
             id: pollId,
-            options: optionsJSON
+            options: optionsJSON,
+            totalVotes: 0
           }
         ]
       })

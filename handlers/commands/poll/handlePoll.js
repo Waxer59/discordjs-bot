@@ -32,7 +32,10 @@ const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
     poll.options[userOtherVote].votes = poll.options[
       userOtherVote
     ].votes.filter((el) => el !== userId)
+  } else {
+    poll.totalVotes++
   }
+
   poll.options[option].votes.push(userId)
 
   editServerContextParam(serverId, POLL, [
@@ -43,11 +46,15 @@ const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
   const receivedEmbed = message.embeds[0]
   const editedEmbed = EmbedBuilder.from(receivedEmbed).setFields(
     ...receivedEmbed.fields.map((el) => {
-      el.value = `${poll.options[el.name].votes.length}`
+      const name = el.name.split(" | ")[0]
+      const votes = poll.options[name].votes.length
+      const percentage = (votes / poll.totalVotes) * 100
+      el.name = `${name} | ${votes}`  
+      el.value = "🟦 ".repeat(Math.round(percentage / 10)) || " "
       return el
     })
   )
-
+  
   await message.edit({
     embeds: [editedEmbed]
   })
@@ -59,7 +66,6 @@ const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
 }
 
 const findIdInVotes = (id, options) => {
-  console.log(options)
   for (const option in options) {
     if (
       Array.isArray(options[option].votes) &&
