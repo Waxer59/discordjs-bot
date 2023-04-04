@@ -9,8 +9,8 @@ const {
 } = require('../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
-const { updateMusicChart } = require('../../helpers/music')
 const { btnsControls, rateLimitPerUser, DEFAULT_MUSIC_CHANNEL_NAME } = require('./music-constants')
+const { getMusicChart } = require('../../helpers/music')
 
 module.exports = {
   name: 'music-setup',
@@ -47,7 +47,7 @@ module.exports = {
       rateLimitPerUser
     })
 
-    const musicEmbed = await updateMusicChart(client, interaction, {})
+    const musicEmbed = getMusicChart(client, {})
 
     const controlsMessage = await channel.send({
       embeds: [musicEmbed],

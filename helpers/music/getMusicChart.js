@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js')
 const getMusicChart = (
   client,
   {
-    description = 'No song playing currently.',
+    description = 'No songs playing currently.',
     footer = {
       text: null,
       iconURL: null
