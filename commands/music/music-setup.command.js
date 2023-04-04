@@ -1,8 +1,5 @@
 const {
   SlashCommandBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
   PermissionFlagsBits
 } = require('discord.js')
 const { ChannelType } = require('discord.js')
@@ -12,9 +9,8 @@ const {
 } = require('../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
-const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
-const DEFAULT_MUSIC_CHANNEL_NAME = '🎶 Music'
-const rateLimitPerUser = 5 // <-- Seconds
+const { updateMusicChart } = require('../../helpers/music')
+const { btnsControls, rateLimitPerUser, DEFAULT_MUSIC_CHANNEL_NAME } = require('./music-constants')
 
 module.exports = {
   name: 'music-setup',
@@ -50,38 +46,6 @@ module.exports = {
       type: ChannelType.GuildText,
       rateLimitPerUser
     })
-
-    const btnsControls = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('pause')
-        .setLabel('⏯️')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('skip')
-        .setLabel('⏩')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('stop')
-        .setLabel('⏹️')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('loop')
-        .setDisabled(false)
-        .setLabel('🔄️')
-        .setStyle(ButtonStyle.Secondary),
-
-      new ButtonBuilder()
-        .setCustomId('shuffle')
-        .setLabel('🔀')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary)
-    )
 
     const musicEmbed = await updateMusicChart(client, interaction, {})
 

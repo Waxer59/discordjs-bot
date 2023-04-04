@@ -1,6 +1,6 @@
 const {
   updateMusicChart
-} = require('../../../../helpers/music/updateMusicChart')
+} = require('../../../../helpers/music')
 
 const musicStop = (client, interaction) => {
   client.player.stop(interaction)

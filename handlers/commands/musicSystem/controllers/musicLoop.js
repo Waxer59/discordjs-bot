@@ -1,6 +1,6 @@
 const {
   updateMusicChart
-} = require('../../../../helpers/music/updateMusicChart')
+} = require('../../../../helpers/music')
 
 const musicLoop = (client, interaction, repeatMode) => {
   client.player.setRepeatMode(interaction, repeatMode)

@@ -1,8 +1,11 @@
 const {
   getMusicChannelByServerId,
-  deleteMusicChannelByServerId
+  deleteMusicChannelByServerId,
 } = require('../../db/services/musicChannelService')
-const { resetMusicChart } = require('../../helpers/music/resetMusicChart')
+const {
+  newServerMusicChart
+} = require('../../handlers/commands/musicSystem/handleMusicSystem')
+const { resetMusicChart } = require('../../helpers/music/')
 const { createServerContextParam } = require('../manageContext')
 const { MUSIC_CHANNEL } = require('../types/contextTypes')
 
@@ -17,14 +20,21 @@ const initializeMusicChannels = async (client, serverId) => {
     deleteMusicChannelByServerId(serverId)
     return
   }
+  let controlsMessage
+  try {
+    controlsMessage = await channel.messages.fetch(controlsMessageId)
+    resetMusicChart(serverId, client)
+  } catch (error) {
+    controlsMessage = newServerMusicChart(client, serverId, channel)
+  }
+
   createServerContextParam(`${serverId}`, {
     [MUSIC_CHANNEL]: {
       channelId,
       serverId,
-      controlsMessage: await channel.messages.fetch(controlsMessageId)
+      controlsMessage
     }
   })
-  resetMusicChart(serverId, client)
 }
 
 module.exports = {

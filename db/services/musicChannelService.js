@@ -20,6 +20,11 @@ const getMusicChannelByServerId = async (serverId) => {
   return musicChannel
 }
 
+const updateMusicChannelByServerId = async (serverId, data = {}) => {
+  const musicChannel = await MusicChannel.findOneAndUpdate({ serverId }, data)
+  return musicChannel
+}
+
 const deleteMusicChannelByServerId = async (serverId) => {
   const musicChannel = await MusicChannel.findOneAndRemove({ serverId })
   return musicChannel
@@ -34,5 +39,6 @@ module.exports = {
   getMusicChannelByServerId,
   createMusicChannel,
   deleteMusicChannelByServerId,
-  deleteAllMusicChannelsByServerId
+  deleteAllMusicChannelsByServerId,
+  updateMusicChannelByServerId
 }
