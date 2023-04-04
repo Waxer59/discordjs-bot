@@ -1,24 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js')
-const decisionsAlternatives = [
-  'Absolutely not',
-  'No',
-  'Maybe',
-  'Not sure',
-  'Yes!',
-  'Absolutely yes!',
-  'Likely',
-  'Unlikely',
-  'Very likely',
-  'Not likely',
-  'Possible',
-  'Improbable',
-  'Never',
-  'Impossible',
-  'Certainly',
-  'Definitely not',
-  "I'm certain",
-  "I'm not certain"
-]
+const { decisionsAlternatives } = require('./fun-constants')
 
 module.exports = {
   name: 'decision',
