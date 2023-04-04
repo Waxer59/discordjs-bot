@@ -14,9 +14,7 @@ const {
   editServerContextParam
 } = require('../../context/manageContext')
 const { POLL } = require('../../context/types/contextTypes')
-
-const DEFAULT_POLL_COLOR = 'Purple'
-const MAX_OPTION_CHARS = 55
+const { MAX_OPTION_CHARS, DEFAULT_POLL_COLOR } = require('./constants/tools-poll-constants')
 
 module.exports = {
   name: 'poll',
