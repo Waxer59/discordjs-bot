@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js')
 const {
   handleMusicSystemExceptions
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
-const { updateMusicChart } = require('../../helpers/music/updateMusicChart')
+const { updateMusicChart } = require('../../helpers/music')
 
 module.exports = {
   name: 'music-clear-queue',

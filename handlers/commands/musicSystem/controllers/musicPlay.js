@@ -1,6 +1,6 @@
 const {
   updateMusicChart
-} = require('../../../../helpers/music/updateMusicChart')
+} = require('../../../../helpers/music')
 
 const musicPlay = async (client, interaction, query) => {
   if (

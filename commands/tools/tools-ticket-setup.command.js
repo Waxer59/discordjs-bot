@@ -2,9 +2,6 @@ const {
   SlashCommandBuilder,
   ChannelType,
   PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
   EmbedBuilder,
   PermissionsBitField
 } = require('discord.js')
@@ -15,10 +12,12 @@ const {
 } = require('../../context/manageContext')
 const { TICKET_CHANNEL } = require('../../context/types/contextTypes')
 const { createTicketSystem } = require('../../db/services/ticketSystemService')
-const DEFAULT_TICKET_SYSTEM_NAME = '📌 Ticket system'
-const DEFAULT_TICKET_SYSTEM_DESCRIPTION =
-  'Click the button below to create a new ticket!'
-const DEFAULT_TICKET_SYSTEM_COLOR = 'Purple'
+const {
+  DEFAULT_TICKET_SYSTEM_NAME,
+  DEFAULT_TICKET_SYSTEM_COLOR,
+  DEFAULT_TICKET_SYSTEM_DESCRIPTION,
+  btnsControls
+} = require('./constants/tools-ticket-constants')
 
 module.exports = {
   name: 'ticket-setup',
@@ -82,14 +81,6 @@ module.exports = {
       name,
       type: ChannelType.GuildCategory
     })
-
-    const btnsControls = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('open-ticket')
-        .setLabel('📩 Open ticket')
-        .setDisabled(false)
-        .setStyle(ButtonStyle.Secondary)
-    )
 
     const ticketEmbed = new EmbedBuilder()
       .setTitle(`**${name}**`)

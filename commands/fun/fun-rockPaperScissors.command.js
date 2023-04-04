@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js')
-const rockPaperScissors = ['Rock! 🪨', 'Paper! 📜', 'Scissors! ✂️']
+const { rockPaperScissors } = require('./fun-constants')
 
 module.exports = {
   name: 'rock-paper-scissors',

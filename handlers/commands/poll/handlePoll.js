@@ -65,6 +65,14 @@ const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
   })
 }
 
+const handleDeletePollMessage = (pollId) => {
+  editServerContextParam(
+    serverId,
+    POLL,
+    serverContext?.[POLL].filter((el) => el.id !== pollId)
+  )
+}
+
 const findIdInVotes = (id, options) => {
   for (const option in options) {
     if (
@@ -78,5 +86,6 @@ const findIdInVotes = (id, options) => {
 }
 
 module.exports = {
-  handlePollButtonsInteraction
+  handlePollButtonsInteraction,
+  handleDeletePollMessage
 }

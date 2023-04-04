@@ -1,13 +1,12 @@
-const { EmbedBuilder } = require('@discordjs/builders')
 const { getServerContextParam } = require('../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
+const { getMusicChart } = require('./getMusicChart')
 
 const updateMusicChart = async (
   client,
   interaction,
   {
-    description = '**No song playing currently.**',
-    color = 'Purple',
+    description = 'No songs playing currently.',
     footer = {
       text: null,
       iconURL: null
@@ -36,18 +35,19 @@ const updateMusicChart = async (
     })
   }
 
-  const musicEmbed = new EmbedBuilder()
-    .setDescription(
+  const musicEmbed = getMusicChart(client, {
+    description:
       songsArr
         .map(({ name }) => '• ' + name)
         .splice(0, 10)
-        .join('\n\n') || description
-    )
-    .setFooter({
+        .join('\n\n') || description,
+    footer: {
       text: footer.text ?? songsArr[0]?.url ?? '**Here will appear the url**',
       iconURL: footer.iconURL ?? client.user.displayAvatarURL()
-    })
-    .setImage(songsArr[0]?.img ?? img)
+    },
+    img: songsArr[0]?.img ?? img
+  })
+
   if (editChannel) {
     await currentChannel?.controlsMessage.edit({
       embeds: [musicEmbed]

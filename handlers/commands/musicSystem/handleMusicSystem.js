@@ -1,9 +1,14 @@
-const { removeServerContextParam } = require('../../../context/manageContext')
+const { btnsControls } = require('../../../commands/music/music-constants')
+const {
+  removeServerContextParam,
+  editServerContextParam
+} = require('../../../context/manageContext')
 const { MUSIC_CHANNEL } = require('../../../context/types/contextTypes')
 const {
-  deleteMusicChannelByServerId
+  deleteMusicChannelByServerId,
+  updateMusicChannelByServerId
 } = require('../../../db/services/musicChannelService')
-const { resetMusicChart } = require('../../../helpers/music/resetMusicChart')
+const { resetMusicChart, getMusicChart } = require('../../../helpers/music')
 const {
   musicShuffle,
   musicPause,
@@ -79,9 +84,41 @@ const handleMusicChannelDelete = async (serverId) => {
   removeServerContextParam(serverId, MUSIC_CHANNEL)
 }
 
+const newServerMusicChart = async (client, serverId, channel) => {
+  const musicEmbed = getMusicChart(client, {})
+  const controlsMessage = await channel.send({
+    embeds: [musicEmbed],
+    components: [btnsControls]
+  })
+  await updateMusicChannelByServerId(serverId, {
+    controlsMessageId: controlsMessage.id
+  })
+
+  return controlsMessage
+}
+
+const handleMusicChartDelete = async (client, interaction, serverContext) => {
+  const serverId = interaction.guildId
+  const channelId = serverContext[MUSIC_CHANNEL].channelId
+  const channel = client.channels.cache.get(channelId)
+
+  if (!channel) {
+    return
+  }
+
+  const controlsMessage = newServerMusicChart(client, serverId, channel)
+  editServerContextParam(serverId, MUSIC_CHANNEL, {
+    serverId: interaction.guild.id,
+    channelId: channel.id,
+    controlsMessage
+  })
+}
+
 module.exports = {
   handleMusicChannels,
   handleBotDisconnection,
   handleMusicButtonsInteraction,
-  handleMusicChannelDelete
+  handleMusicChannelDelete,
+  handleMusicChartDelete,
+  newServerMusicChart
 }

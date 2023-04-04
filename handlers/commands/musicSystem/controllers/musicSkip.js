@@ -1,6 +1,6 @@
 const {
   updateMusicChart
-} = require('../../../../helpers/music/updateMusicChart')
+} = require('../../../../helpers/music')
 
 const musicSkip = (client, interaction) => {
   const musicQueue = client.player.getQueue(interaction.guild.id)
