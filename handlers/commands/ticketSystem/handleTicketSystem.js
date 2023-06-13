@@ -25,7 +25,7 @@ const handleSumbitTicketForm = async (interaction) => {
   )
 
   const ticketChannel = await interaction.guild.channels.create({
-    name: `ticket-${interaction.user.username}-${interaction.user.discriminator}`,
+    name: `ticket-${interaction.user.username}`,
     parent: ticketSystem.forumCategoryId,
     type: ChannelType.GuildText,
     topic: `${interaction.user.id}-${ticketSystem.forumCategoryId}`,
