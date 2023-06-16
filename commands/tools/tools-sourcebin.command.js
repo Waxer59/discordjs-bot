@@ -4,7 +4,6 @@ const {
 const { MODAL } = require('./constants/tools-sourcebin-constants')
 
 module.exports = {
-  name: 'sourcebin',
   data: new SlashCommandBuilder()
     .setName('sourcebin')
     .setDescription('Create a link to your text file!'),

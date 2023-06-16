@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('discord.js')
 const { emojis } = require('./fun-constants')
 
 module.exports = {
-  name: 'emoji',
   data: new SlashCommandBuilder()
     .setName('emoji')
     .setDescription('Gives a random emoji!'),

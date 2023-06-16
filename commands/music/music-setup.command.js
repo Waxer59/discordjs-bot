@@ -13,7 +13,6 @@ const { btnsControls, rateLimitPerUser, DEFAULT_MUSIC_CHANNEL_NAME } = require('
 const { getMusicChart } = require('../../helpers/music')
 
 module.exports = {
-  name: 'music-setup',
   data: new SlashCommandBuilder()
     .setName('music-setup')
     .setDescription('Setup a music channel!')

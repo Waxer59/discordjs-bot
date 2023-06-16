@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('discord.js')
 const { updateMusicChart } = require('../../helpers/music')
 
 module.exports = {
-  name: 'music-get-queue',
   data: new SlashCommandBuilder()
     .setName('music-get-queue')
     .setDescription('Get the queue!'),

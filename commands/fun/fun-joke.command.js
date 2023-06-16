@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('discord.js')
 const { randomJoke } = require('just-jokes')
 
 module.exports = {
-  name: 'joke',
   data: new SlashCommandBuilder()
     .setName('joke')
     .setDescription('Tell a joke!'),

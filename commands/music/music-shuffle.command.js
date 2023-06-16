@@ -7,7 +7,6 @@ const {
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 
 module.exports = {
-  name: 'music-shuffle',
   data: new SlashCommandBuilder()
     .setName('music-shuffle')
     .setDescription('Shuffle the queue!'),

@@ -5,7 +5,6 @@ const {
 const { updateMusicChart } = require('../../helpers/music')
 
 module.exports = {
-  name: 'music-clear-queue',
   data: new SlashCommandBuilder()
     .setName('music-clear-queue')
     .setDescription('Clear the queue!'),

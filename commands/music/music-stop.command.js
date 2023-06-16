@@ -7,7 +7,6 @@ const {
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 
 module.exports = {
-  name: 'music-stop',
   data: new SlashCommandBuilder()
     .setName('music-stop')
     .setDescription('Stop the song!'),

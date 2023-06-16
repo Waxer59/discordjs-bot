@@ -17,7 +17,6 @@ const { POLL } = require('../../context/types/contextTypes')
 const { MAX_OPTION_CHARS, DEFAULT_POLL_COLOR } = require('./constants/tools-poll-constants')
 
 module.exports = {
-  name: 'poll',
   data: new SlashCommandBuilder()
     .setName('poll')
     .setDescription('Create a poll!')

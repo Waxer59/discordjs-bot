@@ -20,7 +20,6 @@ const {
 } = require('./constants/tools-ticket-constants')
 
 module.exports = {
-  name: 'ticket-setup',
   data: new SlashCommandBuilder()
     .setName('ticket-setup')
     .setDescription('Setup the ticket system for your server!')

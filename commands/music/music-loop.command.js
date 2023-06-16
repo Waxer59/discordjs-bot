@@ -8,7 +8,6 @@ const {
 const { updateMusicChart } = require('../../helpers/music')
 
 module.exports = {
-  name: 'music-loop',
   data: new SlashCommandBuilder()
     .setName('music-loop')
     .setDescription('Loop your queue!')
