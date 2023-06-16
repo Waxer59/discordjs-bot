@@ -7,7 +7,6 @@ const {
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 
 module.exports = {
-  name: 'music-skip',
   data: new SlashCommandBuilder()
     .setName('music-skip')
     .setDescription('Skip the song!'),

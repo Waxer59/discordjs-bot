@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
 
 module.exports = {
-  name: 'clear-chat',
   data: new SlashCommandBuilder()
     .setName('clear-chat')
     .setDescription('Clear the chat messages!')

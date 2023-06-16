@@ -4,7 +4,6 @@ const {
 } = require('../../handlers/commands/musicSystem/controllers/musicPlay')
 
 module.exports = {
-  name: 'music-play',
   data: new SlashCommandBuilder()
     .setName('music-play')
     .setDescription('Play a song!')

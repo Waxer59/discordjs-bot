@@ -18,7 +18,7 @@ const readCommandFiles = (dir = '', client) => {
       const command = require(`${rootPath}/${folder}/${file}`)
       if (command.data) {
         commands.push(command.data.toJSON())
-        client.commands.set(command.name, command)
+        client.commands.set(command.data.name, command)
       }
     }
   }
