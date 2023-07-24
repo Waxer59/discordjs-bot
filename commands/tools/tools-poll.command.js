@@ -14,7 +14,10 @@ const {
   editServerContextParam
 } = require('../../context/manageContext')
 const { POLL } = require('../../context/types/contextTypes')
-const { MAX_OPTION_CHARS, DEFAULT_POLL_COLOR } = require('./constants/tools-poll-constants')
+const {
+  MAX_OPTION_CHARS,
+  DEFAULT_POLL_COLOR
+} = require('./constants/tools-poll-constants')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -112,6 +115,15 @@ module.exports = {
     const optionsArr = [optionA, optionB, optionC, optionD, optionE].filter(
       (el) => el
     )
+
+    if ([...new Set(optionsArr)].length !== optionsArr.length) {
+      await interaction.reply({
+        content: 'You cannot have the same option twice!',
+        ephemeral: true
+      })
+      return
+    }
+
     const optionsJSON = optionsArr.reduce((obj, option) => {
       const optionObj = JSON.parse(`{"${option}": { "votes": [] }}`)
       return { ...obj, ...optionObj }
@@ -150,13 +162,18 @@ module.exports = {
       components: [btns]
     })
 
+    const pollId = message.id
+
     setTimeout(() => {
       try {
         message.edit({ components: [] })
+        editServerContextParam(
+          serverId,
+          POLL,
+          serverContext?.[POLL].filter((el) => el.id !== pollId)
+        )
       } catch (error) {}
     }, expiresAt * 1000) // <-- Miliseconds
-
-    const pollId = message.id
 
     if (getServerContextParam(interaction.guild.id)?.[POLL]) {
       editServerContextParam(interaction.guild.id, POLL, [

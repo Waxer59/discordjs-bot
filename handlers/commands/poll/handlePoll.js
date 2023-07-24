@@ -46,15 +46,15 @@ const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
   const receivedEmbed = message.embeds[0]
   const editedEmbed = EmbedBuilder.from(receivedEmbed).setFields(
     ...receivedEmbed.fields.map((el) => {
-      const name = el.name.split(" | ")[0]
+      const name = el.name.split(' | ')[0]
       const votes = poll.options[name].votes.length
       const percentage = (votes / poll.totalVotes) * 100
-      el.name = `${name} | ${votes}`  
-      el.value = "🟦 ".repeat(Math.round(percentage / 10)) || " "
+      el.name = `${name} | ${votes}`
+      el.value = '🟦 '.repeat(Math.round(percentage / 10)) || ' '
       return el
     })
   )
-  
+
   await message.edit({
     embeds: [editedEmbed]
   })
@@ -65,7 +65,8 @@ const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
   })
 }
 
-const handleDeletePollMessage = (pollId) => {
+const handleDeletePollMessage = (pollId, serverId) => {
+  const serverContext = getServerContextParam(serverId)
   editServerContextParam(
     serverId,
     POLL,
