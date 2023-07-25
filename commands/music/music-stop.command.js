@@ -3,7 +3,7 @@ const {
   musicStop
 } = require('../../handlers/commands/musicSystem/controllers/musicStop')
 const {
-  handleMusicSystemExceptions
+  handleMusicExceptions
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     .setName('music-stop')
     .setDescription('Stop the song!'),
   async execute(interaction, client) {
-    if (await handleMusicSystemExceptions(client, interaction)) {
+    if (await handleMusicExceptions(client, interaction)) {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to stop!',
         ephemeral: true

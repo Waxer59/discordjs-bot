@@ -9,15 +9,11 @@ const {
 } = require('discord.js')
 const { v4: uuidv4 } = require('uuid')
 const {
-  getServerContextParam,
-  createServerContextParam,
-  editServerContextParam
-} = require('../../context/manageContext')
-const { POLL } = require('../../context/types/contextTypes')
-const {
   MAX_OPTION_CHARS,
   DEFAULT_POLL_COLOR
 } = require('./constants/tools-poll-constants')
+const { deleteValue, setValue } = require('../../cache/client')
+const { POLL } = require('../../cache/types/cacheTypes')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -164,37 +160,18 @@ module.exports = {
 
     const pollId = message.id
 
-    setTimeout(() => {
+    setTimeout(async () => {
       try {
         message.edit({ components: [] })
-        editServerContextParam(
-          serverId,
-          POLL,
-          serverContext?.[POLL].filter((el) => el.id !== pollId)
-        )
+        await deleteValue(`${POLL}:${pollId}`)
       } catch (error) {}
     }, expiresAt * 1000) // <-- Miliseconds
 
-    if (getServerContextParam(interaction.guild.id)?.[POLL]) {
-      editServerContextParam(interaction.guild.id, POLL, [
-        ...getServerContextParam(interaction.guild.id)[POLL],
-        {
-          id: pollId,
-          options: optionsJSON,
-          totalVotes: 0
-        }
-      ])
-    } else {
-      createServerContextParam(interaction.guild.id, {
-        [POLL]: [
-          {
-            id: pollId,
-            options: optionsJSON,
-            totalVotes: 0
-          }
-        ]
-      })
-    }
+    await setValue(`${POLL}:${pollId}`, {
+      id: pollId,
+      options: optionsJSON,
+      totalVotes: 0
+    })
 
     await interaction.reply({
       ephemeral: true,

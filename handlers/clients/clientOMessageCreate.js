@@ -1,20 +1,20 @@
 const { Events } = require('discord.js')
-const { getServerContextParam } = require('../../context/manageContext')
-const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const {
   handleMusicChannels
 } = require('../commands/musicSystem/handleMusicSystem')
+const { getValue } = require('../../cache/client')
+const { MUSIC_CHANNEL } = require('../../cache/types/cacheTypes')
 
 const clientOnMessageCreate = (client) => {
   client.on(Events.MessageCreate, async (interaction) => {
     if (interaction.author.bot) {
       return
     }
-    const channelId = interaction.channel.id
-    if (
-      getServerContextParam(interaction.guild.id)?.[MUSIC_CHANNEL]?.channelId ===
-      channelId
-    ) {
+
+    const musicChannel = await getValue(
+      `${MUSIC_CHANNEL}:${interaction.guild.id}`
+    )
+    if (musicChannel?.channelId === interaction.channelId) {
       await handleMusicChannels(client, interaction)
     }
   })

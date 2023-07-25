@@ -1,16 +1,14 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits
-} = require('discord.js')
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
 const { ChannelType } = require('discord.js')
-const {
-  getServerContextParam,
-  createServerContextParam
-} = require('../../context/manageContext')
-const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
 const { createMusicChannel } = require('../../db/services/musicChannelService')
-const { btnsControls, rateLimitPerUser, DEFAULT_MUSIC_CHANNEL_NAME } = require('./music-constants')
+const {
+  btnsControls,
+  rateLimitPerUser,
+  DEFAULT_MUSIC_CHANNEL_NAME
+} = require('./music-constants')
 const { getMusicChart } = require('../../helpers/music')
+const { getValue, setValue } = require('../../cache/client')
+const { MUSIC_CHANNEL } = require('../../cache/types/cacheTypes')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,7 +25,10 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, client) {
-    if (getServerContextParam(interaction.guild.id)?.[MUSIC_CHANNEL]) {
+    const musicChannel = await getValue(
+      `${MUSIC_CHANNEL}L:${interaction.guild.id}`
+    )
+    if (musicChannel) {
       await interaction.reply({
         content: 'There is already a music channel!',
         ephemeral: true
@@ -53,12 +54,10 @@ module.exports = {
       components: [btnsControls]
     })
 
-    createServerContextParam(interaction.guild.id, {
-      [MUSIC_CHANNEL]: {
-        serverId: interaction.guild.id,
-        channelId: channel.id,
-        controlsMessage
-      }
+    await setValue(`${MUSIC_CHANNEL}:${interaction.guild.id}`, {
+      serverId: interaction.guild.id,
+      channelId: channel.id,
+      controlsMessageId: controlsMessage.id
     })
     await createMusicChannel({
       serverId: interaction.guild.id,

@@ -10,3 +10,29 @@ services:
       MONGODB_DATABASE: discordjs-database
     volumes:
       - ./mongo:/data/db
+  redis:
+    container_name: discordjs_cache
+    restart: always
+    image: redis:latest
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes: 
+      - ./redis:/data
+    environment:
+      - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
+    depends_on:
+      - db
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+    - REDIS_PASSWORD=${REDIS_PASSWORD}
+    - REDIS_USERNAME=${REDIS_USERNAME}
+    depends_on:
+      - redis
+    ports:
+    - "8081:8081"

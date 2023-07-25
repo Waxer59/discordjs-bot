@@ -15,6 +15,15 @@ module.exports = {
     ),
   async execute(interaction, client) {
     const query = interaction.options.getString('query')
+
+    if (!interaction.member.voice.channelId) {
+      await interaction.reply({
+        content: 'You must be in a voice channel to use this command',
+        ephemeral: true
+      })
+      return
+    }
+
     await interaction.reply({
       content: 'Loading...',
       ephemeral: true

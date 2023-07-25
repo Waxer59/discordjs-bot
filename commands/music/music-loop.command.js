@@ -3,7 +3,7 @@ const {
   musicLoop
 } = require('../../handlers/commands/musicSystem/controllers/musicLoop')
 const {
-  handleMusicSystemExceptions
+  handleMusicExceptions
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 const { updateMusicChart } = require('../../helpers/music')
 
@@ -23,7 +23,7 @@ module.exports = {
         )
     ),
   async execute(interaction, client) {
-    if (await handleMusicSystemExceptions(client, interaction)) {
+    if (await handleMusicExceptions(client, interaction)) {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to loop!',
         ephemeral: true

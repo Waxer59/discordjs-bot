@@ -9,10 +9,6 @@ const TicketSystemSchema = new Schema({
     type: String,
     required: [true, 'The channel id is required']
   },
-  controlsMessageId: {
-    type: String,
-    required: [true, 'The controls message is required']
-  },
   forumCategoryId: {
     type: String,
     required: [true, 'The forum category id is required']

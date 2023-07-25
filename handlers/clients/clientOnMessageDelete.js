@@ -1,23 +1,25 @@
 const { Events } = require('discord.js')
-const { getServerContextParam } = require('../../context/manageContext')
-const { MUSIC_CHANNEL, POLL } = require('../../context/types/contextTypes')
 const { handleDeletePollMessage } = require('../commands/poll/handlePoll')
 const {
   handleMusicChartDelete
 } = require('../commands/musicSystem/handleMusicSystem')
+const { getValue } = require('../../cache/client')
+const { MUSIC_CHANNEL, POLL } = require('../../cache/types/cacheTypes')
 
 const clientOnMessageDelete = (client) => {
   client.on(Events.MessageDelete, async (interaction) => {
     const serverId = interaction.guildId
-    const serverContext = getServerContextParam(serverId)
     const interactionId = interaction.id
 
-    if (serverContext?.[MUSIC_CHANNEL]?.controlsMessage?.id === interactionId) {
-      handleMusicChartDelete(client, interaction, serverContext)
+    const musicChannel = await getValue(`${MUSIC_CHANNEL}:${serverId}`)
+    const poll = await getValue(`${POLL}:${interactionId}`)
+
+    if (musicChannel?.controlsMessageId === interactionId) {
+      handleMusicChartDelete(client, interaction, musicChannel)
     }
 
-    if (serverContext?.[POLL]?.find((el) => el.id === interactionId)) {
-      handleDeletePollMessage(interactionId, serverId)
+    if (poll) {
+      handleDeletePollMessage(interactionId)
     }
   })
 }
