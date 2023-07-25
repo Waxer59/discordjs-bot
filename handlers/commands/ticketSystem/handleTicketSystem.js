@@ -57,11 +57,20 @@ const handleSumbitTicketForm = async (interaction) => {
 }
 
 const handleTicketSystemDelete = async (client, serverId, channel) => {
-  const deletedTicketSystem = getServerContextParam(serverId)[TICKET_CHANNEL].find(
-    (el) =>
-      channel.type === ChannelType.GuildText
-        ? el.channelId
-        : el.forumCategoryId === channel.id
+  editServerContextParam(
+    serverId,
+    TICKET_CHANNEL,
+    getServerContextParam(serverId)?.[TICKET_CHANNEL].filter(
+      (el) => el.channelId !== channel.id
+    )
+  )
+
+  const deletedTicketSystem = getServerContextParam(serverId)[
+    TICKET_CHANNEL
+  ].find((el) =>
+    channel.type === ChannelType.GuildText
+      ? el.channelId
+      : el.forumCategoryId === channel.id
   )
 
   await deleteTicketSystemByServerId({
@@ -81,14 +90,6 @@ const handleTicketSystemDelete = async (client, serverId, channel) => {
       .then((channel) => channel.delete())
       .catch(() => {})
   }
-
-  editServerContextParam(
-    serverId,
-    TICKET_CHANNEL,
-    getServerContextParam(serverId)?.[TICKET_CHANNEL].filter(
-      (el) => el.channelId !== channel.id
-    )
-  )
 }
 
 const handleTicketButtonsInteraction = async (client, interaction, action) => {
