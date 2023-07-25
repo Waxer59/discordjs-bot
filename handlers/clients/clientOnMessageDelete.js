@@ -4,7 +4,7 @@ const {
   handleMusicChartDelete
 } = require('../commands/musicSystem/handleMusicSystem')
 const { getValue } = require('../../cache/client')
-const { MUSIC_CHANNEL, POLL } = require('../../cache/types/cacheTypes')
+const { MUSIC_CHANNEL, POLL } = require('../../cache/prefixes/cachePrefixes')
 
 const clientOnMessageDelete = (client) => {
   client.on(Events.MessageDelete, async (interaction) => {

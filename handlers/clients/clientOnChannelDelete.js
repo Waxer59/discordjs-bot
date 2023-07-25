@@ -9,7 +9,7 @@ const { getValue } = require('../../cache/client')
 const {
   TICKET_CHANNEL,
   MUSIC_CHANNEL
-} = require('../../cache/types/cacheTypes')
+} = require('../../cache/prefixes/cachePrefixes')
 
 const clientOnChannelDelete = (client) => {
   client.on(Events.ChannelDelete, async (channel) => {

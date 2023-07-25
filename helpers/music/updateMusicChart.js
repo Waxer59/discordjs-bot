@@ -1,5 +1,5 @@
 const { getValue } = require('../../cache/client')
-const { MUSIC_CHANNEL } = require('../../cache/types/cacheTypes')
+const { MUSIC_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 const { getMusicChart } = require('./getMusicChart')
 
 const updateMusicChart = async (

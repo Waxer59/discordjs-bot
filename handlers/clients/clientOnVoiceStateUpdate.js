@@ -3,7 +3,7 @@ const {
   handleBotDisconnection
 } = require('../commands/musicSystem/handleMusicSystem')
 const { getValue } = require('../../cache/client')
-const { MUSIC_CHANNEL } = require('../../cache/types/cacheTypes')
+const { MUSIC_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 
 const clientOnVoiceStateUpdate = (client) => {
   client.on(Events.VoiceStateUpdate, async (oldState, newState) => {

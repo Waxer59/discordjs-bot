@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js')
 const { getValue, deleteValue, setValue } = require('../../../cache/client')
-const { POLL } = require('../../../cache/types/cacheTypes')
+const { POLL } = require('../../../cache/prefixes/cachePrefixes')
 
 const handlePollButtonsInteraction = async (client, interaction, buttonId) => {
   const option = buttonId.split('-').reverse()[0]

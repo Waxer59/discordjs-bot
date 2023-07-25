@@ -3,7 +3,7 @@ const {
   handleMusicChannels
 } = require('../commands/musicSystem/handleMusicSystem')
 const { getValue } = require('../../cache/client')
-const { MUSIC_CHANNEL } = require('../../cache/types/cacheTypes')
+const { MUSIC_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 
 const clientOnMessageCreate = (client) => {
   client.on(Events.MessageCreate, async (interaction) => {

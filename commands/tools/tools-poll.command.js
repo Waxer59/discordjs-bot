@@ -16,7 +16,7 @@ const {
   MINUTES_TO_MILISECONDS
 } = require('./constants/tools-poll-constants')
 const { deleteValue, setValue } = require('../../cache/client')
-const { POLL } = require('../../cache/types/cacheTypes')
+const { POLL } = require('../../cache/prefixes/cachePrefixes')
 
 module.exports = {
   data: new SlashCommandBuilder()

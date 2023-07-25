@@ -7,7 +7,7 @@ const {
 } = require('../../handlers/commands/musicSystem/handleMusicSystem')
 const { resetMusicChart } = require('../../helpers/music/')
 const { setValue } = require('../client')
-const { MUSIC_CHANNEL } = require('../types/cacheTypes')
+const { MUSIC_CHANNEL } = require('../prefixes/cachePrefixes')
 
 const initializeMusicChannels = async (client, serverId) => {
   const content = await getMusicChannelByServerId(serverId)

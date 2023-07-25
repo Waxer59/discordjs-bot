@@ -8,7 +8,7 @@ const {
 } = require('./music-constants')
 const { getMusicChart } = require('../../helpers/music')
 const { getValue, setValue } = require('../../cache/client')
-const { MUSIC_CHANNEL } = require('../../cache/types/cacheTypes')
+const { MUSIC_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 
 module.exports = {
   data: new SlashCommandBuilder()

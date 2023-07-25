@@ -3,7 +3,7 @@ const {
   deleteTicketSystemByServerId
 } = require('../../db/services/ticketSystemService')
 const { setValue } = require('../client')
-const { TICKET_CHANNEL } = require('../types/cacheTypes')
+const { TICKET_CHANNEL } = require('../prefixes/cachePrefixes')
 
 const initializeTicketSystem = async (client, serverId) => {
   const content = await getTicketSystemByServerId(serverId)

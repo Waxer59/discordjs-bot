@@ -11,7 +11,7 @@ const {
   DELETE_TICKET_CONFIRMATION_COMPONENT
 } = require('./ticketConstants')
 const { getValue, deleteValue } = require('../../../cache/client')
-const { TICKET_CHANNEL } = require('../../../cache/types/cacheTypes')
+const { TICKET_CHANNEL } = require('../../../cache/prefixes/cachePrefixes')
 
 const handleSumbitTicketForm = async (interaction) => {
   const serverId = interaction.guild.id

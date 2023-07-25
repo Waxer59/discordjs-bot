@@ -13,7 +13,7 @@ const {
   btnsControls
 } = require('./constants/tools-ticket-constants')
 const { setValue } = require('../../cache/client')
-const { TICKET_CHANNEL } = require('../../cache/types/cacheTypes')
+const { TICKET_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 
 module.exports = {
   data: new SlashCommandBuilder()

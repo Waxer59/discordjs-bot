@@ -13,7 +13,7 @@ const {
   musicPlay
 } = require('./controllers')
 const { deleteValue, setValue } = require('../../../cache/client')
-const { MUSIC_CHANNEL } = require('../../../cache/types/cacheTypes')
+const { MUSIC_CHANNEL } = require('../../../cache/prefixes/cachePrefixes')
 
 const handleMusicChannels = async (client, interaction) => {
   const voiceChannel = interaction.member.voice.channel?.id
