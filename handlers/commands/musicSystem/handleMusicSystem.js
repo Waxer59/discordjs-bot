@@ -1,10 +1,5 @@
 const { btnsControls } = require('../../../commands/music/music-constants')
 const {
-  removeServerContextParam,
-  editServerContextParam
-} = require('../../../context/manageContext')
-const { MUSIC_CHANNEL } = require('../../../context/types/contextTypes')
-const {
   deleteMusicChannelByServerId,
   updateMusicChannelByServerId
 } = require('../../../db/services/musicChannelService')
@@ -17,6 +12,8 @@ const {
   musicStop,
   musicPlay
 } = require('./controllers')
+const { deleteValue, setValue } = require('../../../cache/client')
+const { MUSIC_CHANNEL } = require('../../../cache/prefixes/cachePrefixes')
 
 const handleMusicChannels = async (client, interaction) => {
   const voiceChannel = interaction.member.voice.channel?.id
@@ -75,13 +72,13 @@ const handleMusicButtonsInteraction = async (client, interaction) => {
   interaction.update({ content: '' })
 }
 
-const handleBotDisconnection = (client, interaction) => {
-  resetMusicChart(interaction.guild.id, client)
+const handleBotDisconnection = async (client, controlsMessage) => {
+  await resetMusicChart(client, controlsMessage)
 }
 
 const handleMusicChannelDelete = async (serverId) => {
   await deleteMusicChannelByServerId(serverId)
-  removeServerContextParam(serverId, MUSIC_CHANNEL)
+  await deleteValue(`${MUSIC_CHANNEL}:${serverId}`)
 }
 
 const newServerMusicChart = async (client, serverId, channel) => {
@@ -97,20 +94,22 @@ const newServerMusicChart = async (client, serverId, channel) => {
   return controlsMessage
 }
 
-const handleMusicChartDelete = async (client, interaction, serverContext) => {
+const handleMusicChartDelete = async (client, interaction, musicChannel) => {
   const serverId = interaction.guildId
-  const channelId = serverContext[MUSIC_CHANNEL].channelId
+  const channelId = musicChannel.channelId
   const channel = client.channels.cache.get(channelId)
 
   if (!channel) {
     return
   }
 
-  const controlsMessage = newServerMusicChart(client, serverId, channel)
-  editServerContextParam(serverId, MUSIC_CHANNEL, {
+  const controlsMessage = await newServerMusicChart(client, serverId, channel)
+
+  await deleteValue(`${MUSIC_CHANNEL}:${serverId}`)
+  await setValue(`${MUSIC_CHANNEL}:${serverId}`, {
     serverId: interaction.guild.id,
     channelId: channel.id,
-    controlsMessage
+    controlsMessageId: controlsMessage.id
   })
 }
 

@@ -5,12 +5,6 @@ const {
   EmbedBuilder,
   PermissionsBitField
 } = require('discord.js')
-const {
-  getServerContextParam,
-  createServerContextParam,
-  editServerContextParam
-} = require('../../context/manageContext')
-const { TICKET_CHANNEL } = require('../../context/types/contextTypes')
 const { createTicketSystem } = require('../../db/services/ticketSystemService')
 const {
   DEFAULT_TICKET_SYSTEM_NAME,
@@ -18,6 +12,8 @@ const {
   DEFAULT_TICKET_SYSTEM_DESCRIPTION,
   btnsControls
 } = require('./constants/tools-ticket-constants')
+const { setValue } = require('../../cache/client')
+const { TICKET_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -86,39 +82,21 @@ module.exports = {
       .setDescription(description)
       .setColor(embedColor)
 
-    const controlsMessage = await channel.send({
+    await channel.send({
       embeds: [ticketEmbed],
       components: [btnsControls]
     })
 
-    if (getServerContextParam(interaction.guild.id)?.[TICKET_CHANNEL]) {
-      editServerContextParam(interaction.guild.id, TICKET_CHANNEL, [
-        ...getServerContextParam(interaction.guild.id)[TICKET_CHANNEL],
-        {
-          serverId: interaction.guild.id,
-          channelId: channel.id,
-          forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-          controlsMessage
-        }
-      ])
-    } else {
-      createServerContextParam(interaction.guild.id, {
-        [TICKET_CHANNEL]: [
-          {
-            serverId: interaction.guild.id,
-            channelId: channel.id,
-            forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-            controlsMessage
-          }
-        ]
-      })
-    }
+    await setValue(`${TICKET_CHANNEL}:${interaction.guild.id}-${channel.id}`, {
+      serverId: interaction.guild.id,
+      channelId: channel.id,
+      forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, '')
+    })
 
     await createTicketSystem({
       serverId: interaction.guild.id,
       channelId: channel.id,
-      forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, ''),
-      controlsMessageId: controlsMessage.id
+      forumCategoryId: `${forumCategory}`.replace(/[^0-9]/g, '')
     })
 
     await interaction.reply({

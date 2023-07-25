@@ -1,32 +1,28 @@
-const { Events, ChannelType } = require('discord.js')
-const { getServerContextParam } = require('../../context/manageContext')
-const {
-  MUSIC_CHANNEL,
-  TICKET_CHANNEL
-} = require('../../context/types/contextTypes')
+const { Events } = require('discord.js')
 const {
   handleMusicChannelDelete
 } = require('../commands/musicSystem/handleMusicSystem')
 const {
   handleTicketSystemDelete
 } = require('../commands/ticketSystem/handleTicketSystem')
+const { getValue } = require('../../cache/client')
+const {
+  TICKET_CHANNEL,
+  MUSIC_CHANNEL
+} = require('../../cache/prefixes/cachePrefixes')
 
 const clientOnChannelDelete = (client) => {
   client.on(Events.ChannelDelete, async (channel) => {
     const channelId = channel.id
     const serverId = channel.guild.id
-    const deletedTicketSystem = getServerContextParam(serverId)?.[
-      TICKET_CHANNEL
-    ]?.find((el) =>
-      channel.type === ChannelType.GuildText
-        ? el.channelId
-        : el.forumCategoryId === channelId
+
+    const deletedTicketSystem = await getValue(
+      `${TICKET_CHANNEL}:${serverId}-${channelId}`
     )
-    const deletedMusicChannel =
-      getServerContextParam(serverId)?.[MUSIC_CHANNEL]?.channelId
+    const deletedMusicChannel = await getValue(`${MUSIC_CHANNEL}:${serverId}`)
 
     switch (channelId) {
-      case deletedMusicChannel:
+      case deletedMusicChannel?.channelId:
         handleMusicChannelDelete(serverId)
         break
       case deletedTicketSystem?.forumCategoryId:

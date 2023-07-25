@@ -2,9 +2,11 @@ const { Events } = require('discord.js')
 const {
   handleBotDisconnection
 } = require('../commands/musicSystem/handleMusicSystem')
+const { getValue } = require('../../cache/client')
+const { MUSIC_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 
 const clientOnVoiceStateUpdate = (client) => {
-  client.on(Events.VoiceStateUpdate, (oldState, newState) => {
+  client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     if (oldState.channelId === newState.chanelId) {
       return
     }
@@ -13,8 +15,24 @@ const clientOnVoiceStateUpdate = (client) => {
       return
     }
 
-    if (oldState.channelId && !newState.channelId) {
-      handleBotDisconnection(client, newState)
+    if (
+      oldState.channelId &&
+      !newState.channelId &&
+      newState.id === newState.guild.members.me.id
+    ) {
+      const musicChannel = await getValue(
+        `${MUSIC_CHANNEL}:${newState.guild.id}`
+      )
+
+      if (!musicChannel) {
+        return
+      }
+
+      const channel = client.channels.cache.get(musicChannel?.channelId)
+      const controlsMessage = await channel.messages.fetch(
+        musicChannel?.controlsMessageId
+      )
+      await handleBotDisconnection(client, controlsMessage)
     }
   })
 }

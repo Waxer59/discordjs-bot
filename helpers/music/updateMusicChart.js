@@ -1,5 +1,5 @@
-const { getServerContextParam } = require('../../context/manageContext')
-const { MUSIC_CHANNEL } = require('../../context/types/contextTypes')
+const { getValue } = require('../../cache/client')
+const { MUSIC_CHANNEL } = require('../../cache/prefixes/cachePrefixes')
 const { getMusicChart } = require('./getMusicChart')
 
 const updateMusicChart = async (
@@ -12,16 +12,14 @@ const updateMusicChart = async (
       iconURL: null
     },
     img = 'https://preview.redd.it/4zh2hgl46cp51.png?width=3325&format=png&auto=webp&s=b9123bff12e1d5b86248d27a059104b4c92e05b5',
-    isSkiped = false,
-    editChannel = true
+    isSkiped = false
   }
 ) => {
   const songsArr = []
   const guildQueue = client.player.getQueue(interaction)
-  const currentChannel = getServerContextParam(interaction.guild.id)?.[
-    MUSIC_CHANNEL
-  ]
-
+  const musicChannel = await getValue(
+    `${MUSIC_CHANNEL}:${interaction.guild.id}`
+  )
   const queueSongs = guildQueue?.songs.filter((el, idx) => {
     if (isSkiped && idx === 0) {
       return false
@@ -48,8 +46,12 @@ const updateMusicChart = async (
     img: songsArr[0]?.img ?? img
   })
 
-  if (editChannel) {
-    await currentChannel?.controlsMessage.edit({
+  if (musicChannel) {
+    const channel = client.channels.cache.get(musicChannel?.channelId)
+    const controlsMessage = await channel.messages.fetch(
+      musicChannel?.controlsMessageId
+    )
+    await controlsMessage.edit({
       embeds: [musicEmbed]
     })
   }

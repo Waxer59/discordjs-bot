@@ -3,7 +3,7 @@ const {
   musicShuffle
 } = require('../../handlers/commands/musicSystem/controllers/musicShuflle')
 const {
-  handleMusicSystemExceptions
+  handleMusicExceptions
 } = require('../../handlers/commands/musicSystem/handleMusicSystemExceptions')
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     .setName('music-shuffle')
     .setDescription('Shuffle the queue!'),
   async execute(interaction, client) {
-    if (await handleMusicSystemExceptions(client, interaction)) {
+    if (await handleMusicExceptions(client, interaction)) {
       await interaction.reply({
         content: 'Your not inside a chanel/Nothing to shuffle!',
         ephemeral: true

@@ -1,10 +1,12 @@
 const { Events } = require('discord.js')
-const { initializeContext } = require('../../context/initializeContext')
+const { initializeCache } = require('../../cache/initializers/initializeCache')
+const { deleteAllValues } = require('../../cache/client')
 
 const clientOnReady = (client) => {
-  client.once(Events.ClientReady, (c) => {
+  client.once(Events.ClientReady, async (c) => {
+    await deleteAllValues()
     c.guilds.cache.forEach((guild) => {
-      initializeContext(client, guild.id)
+      initializeCache(client, guild.id)
     })
     c.user.setPresence({ activities: [{ name: 'discord.js' }] })
   })

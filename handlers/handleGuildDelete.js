@@ -1,4 +1,3 @@
-const { removeAllServerContext } = require('../context/manageContext')
 const {
   deleteAllMusicChannelsByServerId
 } = require('../db/services/musicChannelService')
@@ -9,7 +8,6 @@ const {
 const handleGuildDelete = async (serverId) => {
   await deleteAllMusicChannelsByServerId(serverId)
   await deleteAllTicketSystemsByServerId(serverId)
-  removeAllServerContext(serverId)
 }
 
 module.exports = {

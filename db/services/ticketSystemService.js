@@ -1,15 +1,9 @@
 const TicketSystem = require('../models/ticketSystemModel')
 
-const createTicketSystem = async ({
-  serverId,
-  channelId,
-  controlsMessageId,
-  forumCategoryId
-}) => {
+const createTicketSystem = async ({ serverId, channelId, forumCategoryId }) => {
   const ticketSystem = new TicketSystem({
     serverId,
     channelId,
-    controlsMessageId,
     forumCategoryId
   })
 

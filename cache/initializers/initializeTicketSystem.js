@@ -2,8 +2,8 @@ const {
   getTicketSystemByServerId,
   deleteTicketSystemByServerId
 } = require('../../db/services/ticketSystemService')
-const { createServerContextParam } = require('../manageContext')
-const { TICKET_CHANNEL } = require('../types/contextTypes')
+const { setValue } = require('../client')
+const { TICKET_CHANNEL } = require('../prefixes/cachePrefixes')
 
 const initializeTicketSystem = async (client, serverId) => {
   const content = await getTicketSystemByServerId(serverId)
@@ -24,10 +24,12 @@ const initializeTicketSystem = async (client, serverId) => {
       deleteTicketSystemByServerId({ serverId, channelId, forumCategoryId })
       return
     }
+    await setValue(`${TICKET_CHANNEL}:${serverId}-${channelId}`, {
+      serverId,
+      channelId,
+      forumCategoryId
+    })
   }
-  createServerContextParam(`${serverId}`, {
-    [TICKET_CHANNEL]: content
-  })
 }
 
 module.exports = {

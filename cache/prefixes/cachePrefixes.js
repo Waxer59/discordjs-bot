@@ -1,5 +1,5 @@
 module.exports = {
   MUSIC_CHANNEL: 'MUSIC_CHANNEL',
   TICKET_CHANNEL: 'TICKET_CHANNEL',
-  POLL: "POLL"
+  POLL: 'POLL'
 }
