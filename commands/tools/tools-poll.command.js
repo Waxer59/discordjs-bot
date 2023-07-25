@@ -10,7 +10,10 @@ const {
 const { v4: uuidv4 } = require('uuid')
 const {
   MAX_OPTION_CHARS,
-  DEFAULT_POLL_COLOR
+  DEFAULT_POLL_COLOR,
+  MAX_TIME,
+  MIN_TIME,
+  MINUTES_TO_MILISECONDS
 } = require('./constants/tools-poll-constants')
 const { deleteValue, setValue } = require('../../cache/client')
 const { POLL } = require('../../cache/types/cacheTypes')
@@ -55,8 +58,10 @@ module.exports = {
     .addIntegerOption((option) =>
       option
         .setName('expires_at')
-        .setDescription('Time in SECONDS in which the poll closes')
+        .setDescription('Time in MINUTES in which the poll closes')
         .setRequired(true)
+        .setMaxValue(MAX_TIME)
+        .setMinValue(MIN_TIME)
     )
     .addStringOption((option) =>
       option
@@ -98,9 +103,11 @@ module.exports = {
       interaction.options.getString('embed-color') ?? DEFAULT_POLL_COLOR
     const description = interaction.options.getString('description')
     const channel = interaction.options.getChannel('channel')
-    const expiresAt = interaction.options.getInteger('expires_at') // <-- Seconds
+    const expiresAt = interaction.options.getInteger('expires_at') // <-- Minutes
     const actualDate = new Date()
-    const endPollDate = new Date(actualDate.getTime() + expiresAt * 1000)
+    const endPollDate = new Date(
+      actualDate.getTime() + expiresAt * MINUTES_TO_MILISECONDS
+    )
 
     const optionA = interaction.options.getString('option-a')
     const optionB = interaction.options.getString('option-b')
@@ -165,7 +172,7 @@ module.exports = {
         message.edit({ components: [] })
         await deleteValue(`${POLL}:${pollId}`)
       } catch (error) {}
-    }, expiresAt * 1000) // <-- Miliseconds
+    }, expiresAt * MINUTES_TO_MILISECONDS) // <-- Miliseconds
 
     await setValue(`${POLL}:${pollId}`, {
       id: pollId,
