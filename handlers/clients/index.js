@@ -1,4 +1,4 @@
-const { clientOnMessageCreate } = require('./clientOMessageCreate')
+const { clientOnMessageCreate } = require('./clientOnMessageCreate')
 const { clientOnChannelDelete } = require('./clientOnChannelDelete')
 const { clientOnInteractionCreate } = require('./clientOnInteractionCreate')
 const { clientOnReady } = require('./clientOnReady')
