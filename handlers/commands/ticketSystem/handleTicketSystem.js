@@ -25,7 +25,6 @@ const handleSumbitTicketForm = async (interaction) => {
     name: `ticket-${interaction.user.username}`,
     parent: ticketSystem.forumCategoryId,
     type: ChannelType.GuildText,
-    topic: `${interaction.user.id}-${ticketSystem.forumCategoryId}`,
     permissionOverwrites: [
       {
         id: interaction.guild.id,
